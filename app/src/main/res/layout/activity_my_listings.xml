@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#e8f7fa"
+    tools:context=".MyListings"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/myCurrentListingsTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:text="My Listings"
+        android:textAllCaps="true"
+        android:textColor="#040303"
+        android:textSize="24sp" />
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:queryHint="Search Listing"
+        tools:ignore="MissingConstraints" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/filter_btn_show_all"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Show All"
+            android:textColor="#0d46a0"
+            android:background="@drawable/custom_button2"
+            app:backgroundTint="@android:color/transparent" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/filter_btn_dairy"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Dairy"
+                android:textColor="#0d46a0"
+                android:background="@drawable/custom_button2"
+                app:backgroundTint="@android:color/transparent"/>
+        <Button
+            android:id="@+id/filter_btn_fish"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/filter_btn_meat_or_poultry"
+            android:layout_weight="1"
+            android:text="Fish"
+            android:textColor="#0d46a0"
+            android:background="@drawable/custom_button2"
+            app:backgroundTint="@android:color/transparent"/>
+            <Button
+                android:id="@+id/filter_btn_fruit"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_toRightOf="@+id/filter_btn_dairy"
+                android:text="Fruit"
+                app:backgroundTint="@android:color/transparent"
+                android:textColor="#0d46a0"
+                android:background="@drawable/custom_button2"
+                android:layout_toEndOf="@+id/filter_btn_dairy" />
+            <Button
+                android:id="@+id/filter_btn_veg"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_toRightOf="@+id/filter_btn_fruit"
+                android:text="Veg"
+                android:textColor="#0d46a0"
+                android:background="@drawable/custom_button2"
+                app:backgroundTint="@android:color/transparent"/>
+    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/filter_btn_cereal"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_toRightOf="@+id/filter_btn_veg"
+                android:text="Cereal/Bread"
+                android:background="@drawable/custom_button2"
+                android:textColor="#0d46a0"
+                app:backgroundTint="@android:color/transparent"/>
+            <Button
+                android:id="@+id/filter_btn_meat_or_poultry"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Meat/Poultry"
+                android:textColor="#0d46a0"
+                android:background="@drawable/custom_button2"
+                app:backgroundTint="@android:color/transparent"/>
+            <Button
+                android:id="@+id/filter_btn_cupboard"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_toRightOf="@+id/filter_btn_fish"
+                android:text="Cupboard"
+                android:textColor="#0d46a0"
+                android:background="@drawable/custom_button2"
+                app:backgroundTint="@android:color/transparent"/>
+
+    </LinearLayout>
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/filter_btn_dairy"
+                android:padding="4dp"
+                android:scrollbars="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:layout_editor_absoluteX="171dp"
+                tools:layout_editor_absoluteY="194dp" />
+
+
+
+
+
+</LinearLayout>

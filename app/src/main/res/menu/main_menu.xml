@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single"></group>
+
+    <group>
+        <item
+            android:id="@+id/nav_home"
+            android:title="Home" />
+
+        <item
+            android:id="@+id/nav_shopping_list"
+            android:title="My Shopping List" />
+
+        <item
+            android:id="@+id/nav_upload_listing"
+            android:title="Add Listing" />
+
+        <item
+            android:id="@+id/nav_view_listing"
+            android:title="View Listing" />
+        <item
+            android:id="@+id/nav_view_my_listing"
+            android:title="My Listings" />
+        <item
+            android:id="@+id/user_rating"
+            android:title="Rate User" />
+
+        <item
+            android:id="@+id/nav_scan"
+            android:title="Scan" />
+    </group>
+
+    <item android:title="Profile">
+
+        <menu>
+
+            <group android:checkableBehavior="single">
+
+                <item
+                    android:id="@+id/nav_profile"
+                    android:title="Profile" />
+
+                <item
+                    android:id="@+id/nav_location"
+                    android:title="My Location" />
+
+                <item
+                    android:id="@+id/nav_logout"
+                    android:title="Logout" />
+            </group>
+        </menu>
+    </item>
+
+    <item android:title="Communicate">
+
+        <menu>
+
+            <item
+                android:id="@+id/nav_share_shopping_list"
+                android:title="Share Shopping List" />
+
+            <item
+                android:id="@+id/nav_rate"
+                android:title="Rate Us" />
+        </menu>
+    </item>
+</menu>
+

@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">FYP_1</string>
+    <string name="navigation_drawer_open"> Open navigation drawer</string>
+    <string name="navigation_drawer_close"> Close navigation drawer</string>
+    <string-array name="keep_listed_for_array">
+        <item>Keep Listed For...</item>
+        <item>Always</item>
+        <item>1 Day</item>
+        <item>2 Days</item>
+        <item>3 Days</item>
+        <item>4 Days</item>
+        <item>5 Days</item>
+        <item>6 Days</item>
+        <item>1 Week</item>
+        <item>2 Weeks</item>
+        <item>3 Weeks</item>
+        <item>1 Month</item>
+    </string-array>
+
+    <string-array name="food_category_array">
+        <item>Category...</item>
+        <item>Dairy</item>
+        <item>Meat/Poultry</item>
+        <item>Fish</item>
+        <item>Cupboard</item>
+        <item>Bread/Cereal</item>
+        <item>Fruit</item>
+        <item>Veg</item>
+    </string-array>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_my_listings_tabbed">MyListingsTabbedActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+</resources>
