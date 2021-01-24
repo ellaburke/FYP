@@ -21,6 +21,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+
 public class RegisterActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
@@ -36,6 +38,7 @@ public class RegisterActivity extends AppCompatActivity {
     EditText passwordET;
     EditText confirmPasswordET;
     Button registerButton;
+    ArrayList<String> usersGroceryList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +71,10 @@ public class RegisterActivity extends AppCompatActivity {
                 String firstName = firstNameET.getText().toString();
                 String lastName = lastNameET.getText().toString();
                 String phoneNumber = phoneNumberET.getText().toString();
-                user = new User(email,password,firstName,lastName,phoneNumber);
+                //usersGroceryList.add("test");
+
+
+                user = new User(email,password,firstName,lastName,phoneNumber, usersGroceryList);
                 registerUser(email,password);
             }
         });

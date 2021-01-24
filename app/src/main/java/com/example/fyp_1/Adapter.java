@@ -20,6 +20,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ExampleViewHolder> {
     private Context mContext;
 
     public static class ExampleViewHolder extends RecyclerView.ViewHolder {
+        //Listing
         public ImageView mImageView;
         public TextView textViewName;
         public TextView textViewLocation;
@@ -46,9 +47,10 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ExampleViewHolder> {
     @NonNull
     @Override
     public ExampleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(mContext).inflate(R.layout.listing_item, parent, false);
-        return new ExampleViewHolder(v);
-    }
+            View v = LayoutInflater.from(mContext).inflate(R.layout.listing_item, parent, false);
+            return new ExampleViewHolder(v);
+        }
+
 
     @Override
     public void onBindViewHolder(@NonNull ExampleViewHolder holder, int position) {

@@ -172,11 +172,10 @@ public class ScanActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         //got image from camera
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RESULT_OK) {
+        if (resultCode == RESULT_OK) {
             if (requestCode == IMAGE_PICK_GALLERY_CODE) {
                 //got image from gallery now crop it
-                CropImage.activity(data.getData()).setGuidelines(CropImageView.Guidelines.ON) //enable image guidelines
-                        .start(this);
+                CropImage.activity(data.getData()).setGuidelines(CropImageView.Guidelines.ON).start(this);
             }
             if (requestCode == IMAGE_PICK_CAMERA_CODE) {
                 //got image from camera now crop it

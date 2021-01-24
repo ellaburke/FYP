@@ -108,10 +108,11 @@
         android:layout_height="48dp"
         android:background="@drawable/custom_button"
         android:text="Register"
-        android:textColor="#0094cc"
-        app:backgroundTint="#B9E4EA"
+        app:backgroundTint="#FB9FDF"
+        android:textColor="#fff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/confirmPasswordET" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

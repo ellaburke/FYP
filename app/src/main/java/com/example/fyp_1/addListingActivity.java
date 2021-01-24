@@ -17,6 +17,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.MimeTypeMap;
@@ -327,7 +328,9 @@ public class addListingActivity extends AppCompatActivity implements NavigationV
                 break;
 
         }
-
+        //drawerLayout.closeDrawer(Gravity.START);
+        //drawerLayout.closeDrawer(GravityCompat.START);
+        //drawerLayout.closeDrawers();
         return true;
     }
 
