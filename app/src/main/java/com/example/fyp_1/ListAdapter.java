@@ -32,7 +32,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ExampleViewHol
 
 
     public ListAdapter(Context context, ArrayList<User> groceryLists) {
-        //super();
+        super();
         mContext = context;
         mGroceryList = groceryLists;
     }

@@ -57,7 +57,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ExampleViewHolder> {
         Listing currentListing = mListings.get(position);
         holder.textViewName.setText(currentListing.getName());
         holder.textViewLocation.setText(currentListing.getLocation());
-        holder.textViewExpiryDate.setText(currentListing.getExpiryDate());
+        holder.textViewExpiryDate.setText("Expiry Date: " + currentListing.getExpiryDate());
         Picasso.get()
                 .load(currentListing.getListingImageURL())
                 .placeholder(R.mipmap.ic_launcher)

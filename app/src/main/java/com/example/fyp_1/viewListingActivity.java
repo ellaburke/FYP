@@ -12,16 +12,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +40,12 @@ public class viewListingActivity extends AppCompatActivity {
     DatabaseReference mDatabaseRef;
     SearchView mSearchView;
     SeekBar mSeekbar;
+    ImageView profileImageView;
+
+    //Profile Pic
+//    private String userId;
+//    private FirebaseUser user;
+//    StorageReference storageRef;
 
 
     @Override
@@ -52,6 +62,11 @@ public class viewListingActivity extends AppCompatActivity {
         progressCircle = findViewById(R.id.progress_circle);
         mSearchView = findViewById(R.id.searchView);
         mSeekbar = findViewById(R.id.locationSeekBar);
+        profileImageView = findViewById(R.id.profileImageViewOnListing);
+
+//        user = FirebaseAuth.getInstance().getCurrentUser();
+//        userId = user.getUid();
+//        StorageReference imgRef = storageRef.child(user.getUid() + ".jpg");
 
         mDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -59,6 +74,9 @@ public class viewListingActivity extends AppCompatActivity {
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                     Listing listing = postSnapshot.getValue(Listing.class);
                     mListings.add(listing);
+//                    if(listing.getUserId() == userId){
+//                        profileImageView.setImageURI();
+//                    }
                 }
                 mAdapter = new Adapter(viewListingActivity.this, (ArrayList<Listing>) mListings);
                 mRecyclerView.setAdapter(mAdapter);

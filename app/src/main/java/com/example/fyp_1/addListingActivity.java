@@ -44,7 +44,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;
 
-public class addListingActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class addListingActivity extends AppCompatActivity{
 
     private static final String TAG = "AddListingActivity";
 
@@ -96,21 +96,21 @@ public class addListingActivity extends AppCompatActivity implements NavigationV
         user = FirebaseAuth.getInstance().getCurrentUser();
         userId = user.getUid();
 
-        /*---------------------Hooks------------------------*/
-        drawerLayout = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.nav_view);
-        toolbar = findViewById(R.id.toolbar);
-
-        /*---------------------Tool Bar------------------------*/
-        setSupportActionBar(toolbar);
-
-        /*---------------------Navigation Drawer Menu------------------------*/
-        navigationView.bringToFront();
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(addListingActivity.this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
-        navigationView.setNavigationItemSelectedListener(this);
+//        /*---------------------Hooks------------------------*/
+//        drawerLayout = findViewById(R.id.drawer_layout);
+//        navigationView = findViewById(R.id.nav_view);
+//        toolbar = findViewById(R.id.toolbar);
 //
+//        /*---------------------Tool Bar------------------------*/
+//        setSupportActionBar(toolbar);
+//
+//        /*---------------------Navigation Drawer Menu------------------------*/
+//        //navigationView.bringToFront();
+//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(addListingActivity.this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+//        drawerLayout.addDrawerListener(toggle);
+//        toggle.syncState();
+//        navigationView.setNavigationItemSelectedListener(this);
+
         keepListedForSpinner = (Spinner) findViewById(R.id.keep_listed_for_spinner);
         categorySpinner = (Spinner) findViewById(R.id.food_category_spinner);
         expiryDate = (EditText) findViewById(R.id.expiryDate_et);
@@ -290,62 +290,62 @@ public class addListingActivity extends AppCompatActivity implements NavigationV
 
     }
 
-    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-
-        switch (menuItem.getItemId()) {
-            case R.id.nav_home:
-                Intent intent0 = new Intent(addListingActivity.this, homePageActivity.class);
-                startActivity(intent0);
-                break;
-            case R.id.nav_location:
-                Intent intent = new Intent(addListingActivity.this, MapsActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.nav_view_listing:
-                Intent intent2 = new Intent(addListingActivity.this, viewListingActivity.class);
-                startActivity(intent2);
-                break;
-            case R.id.nav_upload_listing:
-                Intent intent3 = new Intent(addListingActivity.this, addListingActivity.class);
-                startActivity(intent3);
-                break;
-            case R.id.nav_profile:
-                Intent intent4 = new Intent(addListingActivity.this, ProfileActivity.class);
-                intent4.putExtra("email", user.getEmail());
-                startActivity(intent4);
-                break;
-            case R.id.nav_view_my_listing:
-                Intent intent5 = new Intent(addListingActivity.this, MyListings.class);
-                startActivity(intent5);
-                break;
-            case R.id.user_rating:
-                Intent intent6 = new Intent(addListingActivity.this, UserRating.class);
-                startActivity(intent6);
-                break;
-            case R.id.nav_scan:
-                Intent intent7 = new Intent(addListingActivity.this, ScanActivity.class);
-                startActivity(intent7);
-                break;
-
-        }
-        //drawerLayout.closeDrawer(Gravity.START);
-        //drawerLayout.closeDrawer(GravityCompat.START);
-        //drawerLayout.closeDrawers();
-        return true;
-    }
-
-    public void onBackPressed() {
-
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-
-    }
-
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
-
-    }
+//    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+//
+//        switch (menuItem.getItemId()) {
+//            case R.id.nav_home:
+//                Intent intent0 = new Intent(addListingActivity.this, homePageActivity.class);
+//                startActivity(intent0);
+//                break;
+//            case R.id.nav_location:
+//                Intent intent = new Intent(addListingActivity.this, MapsActivity.class);
+//                startActivity(intent);
+//                break;
+//            case R.id.nav_view_listing:
+//                Intent intent2 = new Intent(addListingActivity.this, viewListingActivity.class);
+//                startActivity(intent2);
+//                break;
+//            case R.id.nav_upload_listing:
+//                Intent intent3 = new Intent(addListingActivity.this, addListingActivity.class);
+//                startActivity(intent3);
+//                break;
+//            case R.id.nav_profile:
+//                Intent intent4 = new Intent(addListingActivity.this, ProfileActivity.class);
+//                intent4.putExtra("email", user.getEmail());
+//                startActivity(intent4);
+//                break;
+//            case R.id.nav_view_my_listing:
+//                Intent intent5 = new Intent(addListingActivity.this, MyListings.class);
+//                startActivity(intent5);
+//                break;
+//            case R.id.user_rating:
+//                Intent intent6 = new Intent(addListingActivity.this, UserRating.class);
+//                startActivity(intent6);
+//                break;
+////            case R.id.nav_scan:
+////                Intent intent7 = new Intent(addListingActivity.this, ScanActivity.class);
+////                startActivity(intent7);
+////                break;
+//
+//        }
+//        //drawerLayout.closeDrawer(Gravity.START);
+//        //drawerLayout.closeDrawer(GravityCompat.START);
+//        //drawerLayout.closeDrawers();
+//        return true;
+//    }
+//
+//    public void onBackPressed() {
+//
+//        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+//            drawerLayout.closeDrawer(GravityCompat.START);
+//        } else {
+//            super.onBackPressed();
+//        }
+//
+//    }
+//
+//    @Override
+//    public void onPointerCaptureChanged(boolean hasCapture) {
+//
+//    }
 }

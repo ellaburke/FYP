@@ -89,6 +89,10 @@ public class homePageActivity extends AppCompatActivity implements NavigationVie
                 intent8.putExtra("email", user.getEmail());
                 startActivity(intent8);
                 break;
+            case R.id.nav_recipe:
+                Intent intent9 = new Intent(homePageActivity.this, RecipeActivity.class);
+                startActivity(intent9);
+                break;
 
         }
 

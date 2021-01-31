@@ -19,6 +19,7 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+
     <style name="Theme.FYP_1.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.FYP_1.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
