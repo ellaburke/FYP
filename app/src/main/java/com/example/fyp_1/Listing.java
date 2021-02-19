@@ -1,5 +1,7 @@
 package com.example.fyp_1;
 
+import java.util.List;
+
 public class Listing {
 
     String name;
@@ -15,7 +17,7 @@ public class Listing {
     String listingId;
 
 
-    public Listing() {
+    public Listing(String itemToAdd, String userId, List<String> myGroceryList) {
         name = null;
         location = null;
         listingImageURL = null;

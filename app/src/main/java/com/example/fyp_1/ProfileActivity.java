@@ -63,6 +63,7 @@ public class ProfileActivity extends AppCompatActivity {
         email = intent.getStringExtra("email");
         user = FirebaseAuth.getInstance().getCurrentUser();
         userId = user.getUid();
+        Log.d("USERID", userId);
         updateRef = FirebaseDatabase.getInstance().getReference("user");
         storageRef = FirebaseStorage.getInstance().getReference();
         profilerUpdateRef = storageRef.child(user.getUid() + ".jpg");

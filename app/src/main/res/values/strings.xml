@@ -26,9 +26,30 @@
         <item>Bread/Cereal</item>
         <item>Fruit</item>
         <item>Veg</item>
+        <item>Freezer</item>
+    </string-array>
+
+    <string-array name="item_amount_array">
+        <item>kg</item>
+        <item>g</item>
+        <item>pt</item>
+        <item>oz</item>
+        <item>L</item>
+        <item>lb(s)</item>
+        <item>tsp</item>
+        <item>tbsp</item>
+        <item>Other</item>
     </string-array>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_my_listings_tabbed">MyListingsTabbedActivity</string>
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
+    <string name="cereal_bread">Cereal/Bread</string>
+    <string name="fruit">Fruit</string>
+    <string name="vegtables">Vegtables</string>
+    <string name="cupboard">Cupboard</string>
+    <string name="dairy">Dairy</string>
+    <string name="meat_poultry">Meat/Poultry</string>
+    <string name="fish">Fish</string>
+    <string name="freezer">Freezer</string>
 </resources>

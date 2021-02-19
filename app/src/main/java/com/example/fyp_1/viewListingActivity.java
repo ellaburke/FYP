@@ -62,7 +62,7 @@ public class viewListingActivity extends AppCompatActivity {
         progressCircle = findViewById(R.id.progress_circle);
         mSearchView = findViewById(R.id.searchView);
         mSeekbar = findViewById(R.id.locationSeekBar);
-        profileImageView = findViewById(R.id.profileImageViewOnListing);
+        //profileImageView = findViewById(R.id.profileImageViewOnListing);
 
 //        user = FirebaseAuth.getInstance().getCurrentUser();
 //        userId = user.getUid();

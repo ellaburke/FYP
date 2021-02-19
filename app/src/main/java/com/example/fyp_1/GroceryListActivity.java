@@ -24,10 +24,11 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShoppingListActivity extends AppCompatActivity {
+public class GroceryListActivity extends AppCompatActivity {
 
 
     RecyclerView mRecyclerView;
+    RecyclerView mFruitRecyclerView;
     RecyclerView.Adapter mAdapter;
     RecyclerView.LayoutManager mLayoutManager;
 
@@ -42,10 +43,11 @@ public class ShoppingListActivity extends AppCompatActivity {
     String email;
     String item;
     List<String> myGroceryList;
-    ArrayList<String> ingredients = new ArrayList<>();
     EditText addGroceryItem;
     TextView dairyTV;
-    ArrayList<User> userGroceryList = new ArrayList<User>();
+    GroceryList myGroceryListItem;
+    ArrayList<GroceryList> userGroceryList = new ArrayList<>();
+    ArrayList<String> ids = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,35 +62,67 @@ public class ShoppingListActivity extends AppCompatActivity {
         updateRef = FirebaseDatabase.getInstance().getReference("user");
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
         DatabaseReference userRef = rootRef.child(USER).child(userId).child("usersGroceryList");
+        //DatabaseReference accessListRef = FirebaseDatabase.getInstance().getReference("groceryListItems").child(userId);
 
+        //Veg RCV
         mRecyclerView = findViewById(R.id.vegtables_recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
-        mAdapter = new ListAdapter(ShoppingListActivity.this, userGroceryList);
+        //mAdapter = new MyKitchenIngredientsAdapter(GroceryListActivity.this, ids);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
-        myGroceryList = new ArrayList<String>();
+        //Fruit RCV
+        mFruitRecyclerView = findViewById(R.id.fruit_recycler_view);
+
+        myGroceryList = new ArrayList<>();
         dairyTV = (TextView) findViewById(R.id.dairyFill);
         addGroceryItem = (EditText) findViewById(R.id.input_grocery_item);
 
-        userRef.addValueEventListener(new ValueEventListener() {
+//        mDatabaseRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                Log.d(TAG, "Working 1" );
+//                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+//                    String listItem = postSnapshot.getKey();
+//                    Log.d(TAG, "Working 2 " + listItem );
+//                    //userGroceryList.add(listItem);
+//                    mAdapter.notifyItemInserted(userGroceryList.size() - 1);
+//                }
+//
+//
+//            }
+
+//             mDatabaseRef.addValueEventListener(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                    Log.d(TAG, "Working 1" );
+//                    for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+//                        GroceryList listItem = postSnapshot.getValue(GroceryList.class);
+//                        Log.d(TAG, "Working 2 " + listItem );
+//                        //if (mDatabaseRef.child(userId).equals(userId)) {
+//                            userGroceryList.add(listItem);
+//
+//                        mAdapter = new ListAdapter(GroceryListActivity.this,  userGroceryList);
+//                        mRecyclerView.setAdapter(mAdapter);
+//                        //mAdapter.notifyItemInserted(userGroceryList.size() - 1);
+//                    }
+//                }
+
+        mDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Log.d(TAG, "Working 1" );
-                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                    String listItem = postSnapshot.getKey();
-                    Log.d(TAG, "Working 2 " + listItem );
-                    //userGroceryList.add(listItem);
-                    mAdapter.notifyItemInserted(userGroceryList.size() - 1);
+            public void onDataChange(DataSnapshot snapshot) {
+                for (DataSnapshot childSnapshot: snapshot.getChildren()) {
+                    ids.add(childSnapshot.getValue().toString());
+
                 }
-
-
+                Log.d(TAG, "Working 2 " + ids );
+                mAdapter.notifyItemInserted(ids.size() - 1);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(ShoppingListActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(GroceryListActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
                 Log.w(TAG, "Failed to read value.", error.toException());
             }
 
@@ -108,10 +142,12 @@ public class ShoppingListActivity extends AppCompatActivity {
     private void addItemToGroceryList() {
         itemToAdd = addGroceryItem.getText().toString();
         myGroceryList.add(itemToAdd);
+        myGroceryListItem = new GroceryList(itemToAdd,userId);
 
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
         for (String item : myGroceryList) {
-            updateRef.child(userId).child("usersGroceryList").child(item).setValue(true);
+            //mDatabaseRef.child(userId).child("usersGroceryList").child(item).setValue(true);
+            mDatabaseRef.child(userId).child(item).setValue(true);
         }
     }
 }

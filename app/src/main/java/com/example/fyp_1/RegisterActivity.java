@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -21,7 +20,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.ArrayList;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -38,7 +36,6 @@ public class RegisterActivity extends AppCompatActivity {
     EditText passwordET;
     EditText confirmPasswordET;
     Button registerButton;
-    ArrayList<String> usersGroceryList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,10 +68,9 @@ public class RegisterActivity extends AppCompatActivity {
                 String firstName = firstNameET.getText().toString();
                 String lastName = lastNameET.getText().toString();
                 String phoneNumber = phoneNumberET.getText().toString();
-                //usersGroceryList.add("test");
 
 
-                user = new User(email,password,firstName,lastName,phoneNumber, usersGroceryList);
+                user = new User(email,password,firstName,lastName,phoneNumber);
                 registerUser(email,password);
             }
         });

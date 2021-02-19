@@ -16,6 +16,7 @@
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <application
         android:allowBackup="true"
@@ -24,9 +25,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FYP_1">
-        <activity android:name=".RecipeActivity"></activity>
+        <activity android:name=".MoveItemToListingActivity"></activity>
+        <activity android:name=".MyKitchenIngredientsActivity" />
+        <activity android:name=".RecipeActivity" />
         <activity android:name=".TextRecognitionActivity" />
-        <activity android:name=".ShoppingListActivity" />
+        <activity android:name=".GroceryListActivity" />
         <activity
             android:name=".MyListingsTabbedActivity"
             android:label="@string/title_activity_my_listings_tabbed"
@@ -46,6 +49,11 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
+        <activity
+            android:name=".CaptureAct"
+            android:screenOrientation="fullSensor"
+            android:stateNotNeeded="true"
+            android:windowSoftInputMode="stateAlwaysHidden"></activity>
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" />

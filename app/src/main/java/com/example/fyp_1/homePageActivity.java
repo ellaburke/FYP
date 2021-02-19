@@ -84,8 +84,8 @@ public class homePageActivity extends AppCompatActivity implements NavigationVie
                 Intent intent7 = new Intent(homePageActivity.this, TextRecognitionActivity.class);
                 startActivity(intent7);
                 break;
-            case R.id.nav_shopping_list:
-                Intent intent8 = new Intent(homePageActivity.this, ShoppingListActivity.class);
+            case R.id.nav_my_kitchen:
+                Intent intent8 = new Intent(homePageActivity.this, MyKitchenIngredientsActivity.class);
                 intent8.putExtra("email", user.getEmail());
                 startActivity(intent8);
                 break;
