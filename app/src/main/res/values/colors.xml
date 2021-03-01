@@ -7,4 +7,8 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="wasteify_pink">#FB9FDF</color>
+    <color name="wasteify_faded_pink">#fce4ec</color>
+    <color name="wasteify_faded_orange">#3BFBA290</color>
+    <color name="wasteify_faded_yellow">#31FFFF7A</color>
 </resources>

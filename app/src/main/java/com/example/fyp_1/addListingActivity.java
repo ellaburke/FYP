@@ -2,10 +2,8 @@ package com.example.fyp_1;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.app.DatePickerDialog;
@@ -17,8 +15,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.MenuItem;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.ArrayAdapter;
@@ -29,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.fyp_1.model.Listing;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -273,7 +270,7 @@ public class addListingActivity extends AppCompatActivity{
                     myListing = new Listing(listingID,listingTitleEntered, listingDescriptionEntered,listingFoodCategory, listingExpiryDateEntered, listingLocationEntered, listingPickUpTimesEntered, listingKeepListedFor,
                              downloadUrl.toString(),listingOption, userId);
 
-                    String uploadId = mDatabaseRef.push().getKey();
+                    //String uploadId = mDatabaseRef.push().getKey();
                     mDatabaseRef.child(listingID).setValue(myListing);
 
 

@@ -19,7 +19,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#31FFFF7A"
+                android:background="@color/wasteify_faded_yellow"
                 android:fontFamily="sans-serif-medium"
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp"
@@ -45,7 +45,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#fce4ec"
+                android:background="@color/wasteify_faded_pink"
                 android:fontFamily="sans-serif-medium"
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp"
@@ -72,7 +72,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#3BFBA290"
+                android:background="@color/wasteify_faded_orange"
                 android:fontFamily="sans-serif-medium"
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp"
@@ -98,7 +98,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#31FFFF7A"
+                android:background="@color/wasteify_faded_yellow"
                 android:fontFamily="sans-serif-medium"
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp"
@@ -125,7 +125,7 @@
                 android:id="@+id/dairy_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#31FFFF7A"
+                android:background="@color/wasteify_faded_pink"
                 android:fontFamily="sans-serif-medium"
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp"
@@ -151,7 +151,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#3BFBA290"
+                android:background="@color/wasteify_faded_orange"
                 android:fontFamily="sans-serif-medium"
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp"
@@ -177,7 +177,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#fce4ec"
+                android:background="@color/wasteify_faded_yellow"
                 android:fontFamily="sans-serif-medium"
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp"
@@ -203,7 +203,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#fce4ec"
+                android:background="@color/wasteify_faded_pink"
                 android:fontFamily="sans-serif-medium"
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp"

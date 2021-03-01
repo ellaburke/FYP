@@ -1,4 +1,4 @@
-package com.example.fyp_1;
+package com.example.fyp_1.model;
 
 public class User {
     private String email;

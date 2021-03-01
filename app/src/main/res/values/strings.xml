@@ -52,4 +52,6 @@
     <string name="meat_poultry">Meat/Poultry</string>
     <string name="fish">Fish</string>
     <string name="freezer">Freezer</string>
+    <string name="recipe_item">Recipe Item</string>
+    <string name="missing_ingredients">Missing Ingredients:</string>
 </resources>

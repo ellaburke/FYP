@@ -1,4 +1,4 @@
-package com.example.fyp_1;
+package com.example.fyp_1.model;
 
 import java.util.List;
 
@@ -16,6 +16,9 @@ public class Listing {
     private String userId;
     String listingId;
 
+    public Listing() {
+
+    }
 
     public Listing(String itemToAdd, String userId, List<String> myGroceryList) {
         name = null;

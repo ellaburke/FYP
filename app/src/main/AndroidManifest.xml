@@ -25,7 +25,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FYP_1">
-        <activity android:name=".MoveItemToListingActivity"></activity>
+        <activity android:name=".BarcodeActivity"></activity>
+        <activity android:name=".ViewFullRecipeActivity" />
+        <activity android:name=".ViewAllRecipesActivity" />
+        <activity android:name=".MoveItemToListingActivity" />
         <activity android:name=".MyKitchenIngredientsActivity" />
         <activity android:name=".RecipeActivity" />
         <activity android:name=".TextRecognitionActivity" />
@@ -53,7 +56,7 @@
             android:name=".CaptureAct"
             android:screenOrientation="fullSensor"
             android:stateNotNeeded="true"
-            android:windowSoftInputMode="stateAlwaysHidden"></activity>
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" />

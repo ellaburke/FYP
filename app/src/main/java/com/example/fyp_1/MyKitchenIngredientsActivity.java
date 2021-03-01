@@ -3,14 +3,18 @@ package com.example.fyp_1;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -18,6 +22,8 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -37,7 +43,7 @@ import com.google.zxing.integration.android.IntentResult;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyKitchenIngredientsActivity extends AppCompatActivity implements MyKitchenIngredientsAdapter.OnListingListener{
+public class MyKitchenIngredientsActivity extends AppCompatActivity implements MyKitchenIngredientsAdapter.OnListingListener {
 
     private static final String TAG = "MyKitchenIngredients";
 
@@ -47,6 +53,17 @@ public class MyKitchenIngredientsActivity extends AppCompatActivity implements M
     private String userId;
     String itemId;
     String ingredientId;
+    Dialog popupTipDialog;
+    Button closePopupTipDialog;
+
+    //Barcode
+    String barcode;
+
+    //Upload Listing
+    String itemToList;
+    String itemToListID;
+
+    StringBuffer sb = null;
 
     //RCV
     RecyclerView mVegRecyclerView;
@@ -68,6 +85,7 @@ public class MyKitchenIngredientsActivity extends AppCompatActivity implements M
     private List<MyKitchenItem> mCupboardKitchenItems;
     private List<MyKitchenItem> mCerealKitchenItems;
     private List<MyKitchenItem> mFreezerKitchenItems;
+    CheckBox checkboxSelected;
 
     //FAB Animations
     Animation animatorRotateOpen;
@@ -85,6 +103,12 @@ public class MyKitchenIngredientsActivity extends AppCompatActivity implements M
         setContentView(R.layout.activity_my_kitchen_ingredients);
         user = FirebaseAuth.getInstance().getCurrentUser();
         userId = user.getUid();
+
+        //Popup Dialog
+        popupTipDialog = new Dialog(this);
+        closePopupTipDialog = (Button) findViewById(R.id.got_it_button);
+
+        checkboxSelected = (CheckBox) findViewById(R.id.grocery_list_item_check_box);
 
         //init Veg RCV
         mVegRecyclerView = findViewById(R.id.vegtables_recycler_view);
@@ -170,11 +194,11 @@ public class MyKitchenIngredientsActivity extends AppCompatActivity implements M
                         mVegRecyclerView.setAdapter(mAdapter);
                     } else if (mKI.getUserId().equals(userId) && mKI.itemCategory.equals("Fruit")) {
                         mFruitKitchenItems.add(mKI);
-                        mAdapter = new MyKitchenIngredientsAdapter(MyKitchenIngredientsActivity.this, (ArrayList<MyKitchenItem>) mFruitKitchenItems,MyKitchenIngredientsActivity.this);
+                        mAdapter = new MyKitchenIngredientsAdapter(MyKitchenIngredientsActivity.this, (ArrayList<MyKitchenItem>) mFruitKitchenItems, MyKitchenIngredientsActivity.this);
                         mFruitRecyclerView.setAdapter(mAdapter);
                     } else if (mKI.getUserId().equals(userId) && mKI.itemCategory.equals("Meat/Poultry")) {
                         mMeatKitchenItems.add(mKI);
-                        mAdapter = new MyKitchenIngredientsAdapter(MyKitchenIngredientsActivity.this, (ArrayList<MyKitchenItem>) mMeatKitchenItems,MyKitchenIngredientsActivity.this);
+                        mAdapter = new MyKitchenIngredientsAdapter(MyKitchenIngredientsActivity.this, (ArrayList<MyKitchenItem>) mMeatKitchenItems, MyKitchenIngredientsActivity.this);
                         mMeatRecyclerView.setAdapter(mAdapter);
                     } else if (mKI.getUserId().equals(userId) && mKI.itemCategory.equals("Fish")) {
                         mFishKitchenItems.add(mKI);
@@ -186,7 +210,7 @@ public class MyKitchenIngredientsActivity extends AppCompatActivity implements M
                         mCupboardRecyclerView.setAdapter(mAdapter);
                     } else if (mKI.getUserId().equals(userId) && mKI.itemCategory.equals("Bread/Cereal")) {
                         mCerealKitchenItems.add(mKI);
-                        mAdapter = new MyKitchenIngredientsAdapter(MyKitchenIngredientsActivity.this, (ArrayList<MyKitchenItem>) mCerealKitchenItems,MyKitchenIngredientsActivity.this);
+                        mAdapter = new MyKitchenIngredientsAdapter(MyKitchenIngredientsActivity.this, (ArrayList<MyKitchenItem>) mCerealKitchenItems, MyKitchenIngredientsActivity.this);
                         mCerealRecyclerView.setAdapter(mAdapter);
                     } else if (mKI.getUserId().equals(userId) && mKI.itemCategory.equals("Freezer")) {
                         mFreezerKitchenItems.add(mKI);
@@ -279,6 +303,18 @@ public class MyKitchenIngredientsActivity extends AppCompatActivity implements M
             }
         });
 
+        //Display popup tip upon opening activity
+        popupTipDialog.setContentView(R.layout.tip_popup);
+        popupTipDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popupTipDialog.show();
+//
+//        closePopupTipDialog.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                popupTipDialog.cancel();
+//            }
+//        });
+
     }
 
     private void onScanBtnClicked() {
@@ -303,10 +339,15 @@ public class MyKitchenIngredientsActivity extends AppCompatActivity implements M
                     public void onClick(DialogInterface dialog, int which) {
                         onScanBtnClicked();
                     }
-                }).setNegativeButton("Finish", new DialogInterface.OnClickListener() {
+                }).setNegativeButton("Correct", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         finish();
+                        //System.out.println("THE BARCODE" + result.getContents());
+                        barcode = result.getContents();
+                        Intent barcodeIntent = new Intent(MyKitchenIngredientsActivity.this, BarcodeActivity.class);
+                        barcodeIntent.putExtra("barcode", barcode);
+                        startActivity(barcodeIntent);
                     }
                 });
                 AlertDialog dialog = builder.create();
@@ -316,9 +357,10 @@ public class MyKitchenIngredientsActivity extends AppCompatActivity implements M
                 Toast.makeText(this, "No result found", Toast.LENGTH_LONG).show();
 
             }
-        } else{
+        } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
+
     }
 
     private void onAddToKitchenBtnClicked() {
@@ -384,8 +426,9 @@ public class MyKitchenIngredientsActivity extends AppCompatActivity implements M
         ingredientId = mDairyKitchenItems.get(position).getItemId();
         Log.d(TAG, "THE INGREDIENT ID: " + ingredientId);
         Intent listItemIntent = new Intent(this, MoveItemToListingActivity.class);
-        //listItemIntent.putExtra("item_to_list", ingredientId);
+        listItemIntent.putExtra("item_to_list", ingredientId);
         startActivity(listItemIntent);
 
     }
+
 }
