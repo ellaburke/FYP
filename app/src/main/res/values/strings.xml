@@ -54,4 +54,11 @@
     <string name="freezer">Freezer</string>
     <string name="recipe_item">Recipe Item</string>
     <string name="missing_ingredients">Missing Ingredients:</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="equipment">Equipment</string>
+    <string name="instructions">Instructions</string>
+    <string name="ingredient_list">Ingredient list</string>
+    <string name="method">Method</string>
+    <string name="steps">Steps</string>
+    <string name="equipment_list">Equipment List</string>
 </resources>

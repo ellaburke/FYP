@@ -75,12 +75,15 @@ public class ViewAllRecipesActivity extends AppCompatActivity implements Recipes
     @Override
     public void onRecipeClick(int position) {
         Log.d(TAG, "onRecipeClicked:  clicked");
-        mRecipes.get(position);
         recipeId = mRecipes.get(position).getId();
+        String recipeName = mRecipes.get(position).getTitle();
+        String recipeImageUrl = mRecipes.get(position).getImage();
         Log.d(TAG, "THE RECIPE ID: " + recipeId);
         Intent viewRecipeIntent = new Intent(this, ViewFullRecipeActivity.class);
         //viewRecipeIntent.putExtra("the_recipe_id", (Parcelable) mRecipes.get(position));
         viewRecipeIntent.putExtra("the_recipe_id", recipeId);
+        viewRecipeIntent.putExtra("the_recipe_name", recipeName);
+        viewRecipeIntent.putExtra("the_recipe_image_url", recipeImageUrl);
         startActivity(viewRecipeIntent);
     }
 

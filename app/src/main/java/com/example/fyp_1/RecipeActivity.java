@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.example.fyp_1.model.Recipe;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squareup.okhttp.Callback;
@@ -19,6 +18,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+
+import com.example.fyp_1.model.Recipe;
 
 public class RecipeActivity extends AppCompatActivity {
 
@@ -34,7 +35,11 @@ public class RecipeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe);
 
+        // TODO, extract ingredients from bundle: apples, flour, sugar
+
         mTextViewResult = (TextView) findViewById(R.id.display_recipe_tv);
+
+        // TODO start spinner/loading UI
 
 
         OkHttpClient client = new OkHttpClient();
@@ -93,6 +98,11 @@ public class RecipeActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Parse the Recipe response.
+     * <code>response</code> contains {"key": "value", ..} .. a String
+     * @param response
+     */
     private void parseRecipeResponse(String response) {
         ObjectMapper mapper = new ObjectMapper();
         try {
@@ -138,4 +148,3 @@ public class RecipeActivity extends AppCompatActivity {
     }
 
 }
-
