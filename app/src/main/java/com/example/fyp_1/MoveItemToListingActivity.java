@@ -1,3 +1,4 @@
+
 package com.example.fyp_1;
 
 import androidx.annotation.NonNull;
@@ -32,8 +33,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -45,6 +49,7 @@ public class MoveItemToListingActivity extends AppCompatActivity{
 
     private static final String TAG = "AddListingActivity";
     private static final String MY_KITCHEN_ITEMS = "myKitchenItems";
+    private static final String USER = "user";
 
     private static final int RESULT_LOAD_IMAGE = 1;
     private static final int RESULT_LOAD_LOCATION = 2;
@@ -97,12 +102,52 @@ public class MoveItemToListingActivity extends AppCompatActivity{
         user = FirebaseAuth.getInstance().getCurrentUser();
         userId = user.getUid();
 
+
+
         //Get Item Info and load into fields
         Intent i = getIntent();
         itemToList = getIntent().getStringExtra("item_to_list");
         Log.d(TAG, "ITEM TO LIST: " + itemToList);
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
         DatabaseReference userRef = rootRef.child(MY_KITCHEN_ITEMS);
+
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Iterable<DataSnapshot> children = snapshot.getChildren();
+                for (DataSnapshot child : children) {
+                    currentItem = child.getValue(MyKitchenItem.class);
+                    Log.d(TAG, "LISTING TO UPDATE 3: " + currentItem.getItemId());
+                    Log.d(TAG, "LISTING TO UPDATE 4: " + itemToList);
+                    /*if (currentItem.getItemId().equals(itemToList)) {
+                        itemName = currentItem.getItemName();
+                        itemAmount = currentItem.getItemAmount();
+                        itemCategory = currentItem.getItemCategory();
+                        listingTitle.setText(itemName);
+                        listingDescription.setText("Item Amount: " + itemAmount);
+                        //categorySpinner.setSelection(itemCategory.get);
+                    }*/
+                    if (itemToList.equalsIgnoreCase(currentItem.getItemId())) {
+                        // Retrieved item from DB
+                        currentItem.getItemAmount();
+
+                        // Set the rest of the fields
+                        listingTitle.setText(currentItem.getItemName());
+                        //listingDescription.setText(currentItem.get);
+                        //listingFoodCategory
+                        //currentItem.getItemCategory() == "Meat"
+
+
+                        categorySpinner.setSelection(2);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         keepListedForSpinner = (Spinner) findViewById(R.id.keep_listed_for_spinner1);
         categorySpinner = (Spinner) findViewById(R.id.food_category_spinner1);
@@ -208,39 +253,6 @@ public class MoveItemToListingActivity extends AppCompatActivity{
                 startActivity(listingViewIntent);
             }
         });
-
-//        userRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                Iterable<DataSnapshot> children = snapshot.getChildren();
-//                for (DataSnapshot child : children) {
-//                    currentItem = child.getValue(MyKitchenItem.class);
-//                    Log.d(TAG, "LISTING TO UPDATE 3: " + currentItem.getItemId());
-//                    Log.d(TAG, "LISTING TO UPDATE 4: " + itemToList);
-//                    if (currentItem.getItemId().equals(itemToList)) {
-//                        itemName = currentItem.getItemName();
-//                        itemAmount = currentItem.getItemAmount();
-//                        itemCategory = currentItem.getItemCategory();
-//
-//
-//                        listingTitle.setText(itemName);
-//                        listingDescription.setText("Item Amount: " + itemAmount);
-//                        //categorySpinner.setSelection(itemCategory.get);
-//
-//                    }
-//
-//                }
-//
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
-
-
     }
 
     @Override

@@ -1,13 +1,20 @@
 package com.example.fyp_1;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.example.fyp_1.model.Recipe;
@@ -17,6 +24,8 @@ import com.example.fyp_1.model.RecipeInstructionStepIngredient;
 import com.example.fyp_1.model.RecipeInstructions;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -56,6 +65,41 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
         ingredientEquipmentListTV = (TextView) findViewById(R.id.displayFullRecipeEquipmentListTV);
         ingredientMethodTV = (TextView) findViewById(R.id.displayFullRecipeMethodTV);
         //ingredientMethodListTV = (TextView) findViewById(R.id.displayFullRecipeMethodStepsTV);
+
+
+        //Tab Layout & ViewPager2
+        ViewPager2 viewPager2 = findViewById(R.id.viewPager);
+        viewPager2.setAdapter(new RecipeFragmentAdapter(this));
+
+        //Fragments
+        //IngredientListFragment ingredientListFragment = new IngredientListFragment();
+
+
+        //View ingredientTabView = inflater.inflate(R.layout.fragment_ingredient_list, container, false);
+
+        TabLayout tabLayout = findViewById(R.id.tabLayout);
+        TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tabLayout, viewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
+            @Override
+            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                switch(position){
+                    case 0:{
+                        tab.setText("Ingredients");
+                        tab.setIcon(R.drawable.ingredients_icon);
+                        break;
+                    }case 1:{
+                        tab.setText("Utensils");
+                        tab.setIcon(R.drawable.utensil_icon);
+                        break;
+                    }case 2:{
+                        tab.setText("Method");
+                        tab.setIcon(R.drawable.ic_baseline_format_list_bulleted_24);
+                        break;
+                    }
+                }
+            }
+        });
+        tabLayoutMediator.attach();
+
 
         Intent i = getIntent();
         recipeToDisplay = getIntent().getIntExtra("the_recipe_id", 0);
@@ -172,6 +216,13 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
 
 
         recipeNameTV.setText(recipeNameToDisplay);
+
+        //Fragments
+        IngredientListFragment ingredientListFragment = new IngredientListFragment();
+        Bundle args = new Bundle();
+        args.putString("argText", ingredientsListDisplay);
+        ingredientListFragment.setArguments(args);
+
         recipeIngredientListTV.setText(ingredientsListDisplay);
         ingredientEquipmentListTV.setText(equipmentListDisplay);
         //ingredientMethodListTV.setText(recipe);

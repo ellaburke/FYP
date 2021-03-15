@@ -25,7 +25,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FYP_1">
-        <activity android:name=".BarcodeActivity"></activity>
+        <activity android:name=".MyKitchenIngredients2"></activity>
+        <activity android:name=".BarcodeActivity" />
         <activity android:name=".ViewFullRecipeActivity" />
         <activity android:name=".ViewAllRecipesActivity" />
         <activity android:name=".MoveItemToListingActivity" />

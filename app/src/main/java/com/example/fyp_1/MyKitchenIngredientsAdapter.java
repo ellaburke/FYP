@@ -1,73 +1,73 @@
 package com.example.fyp_1;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MyKitchenIngredientsAdapter extends RecyclerView.Adapter<MyKitchenIngredientsAdapter.ExampleViewHolder> {
     private ArrayList<MyKitchenItem> mGroceryList;
-    private ArrayList<MyKitchenItem> checkedKitchenItems = new ArrayList<>();
+    public ArrayList<MyKitchenItem> mGroceryListChecked  = new ArrayList<>();
     private Context mContext;
-    private OnListingListener mOnListingListener;
-    //private AdapterView.OnItemClickListener;
+    //private OnListingListener mOnListingListener;
 
-    public static class ExampleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    //implements View.OnClickListener
+    public class ExampleViewHolder extends RecyclerView.ViewHolder {
         //Grocery List Item
         public TextView itemName;
-        OnListingListener mOnListingListener;
-        CheckBox mCheckBoxSelected;
-        AdapterView.OnItemClickListener mItemClickListener;
+        public CheckBox checkBox;
+
+        //
+        //OnListingListener mOnListingListener;
 
 
-        public ExampleViewHolder(@NonNull View itemView, OnListingListener onListingListener) {
+        //, OnListingListener onListingListener
+        public ExampleViewHolder(@NonNull View itemView) {
             super(itemView);
             itemName = itemView.findViewById(R.id.grocery_list_item_display);
-            mCheckBoxSelected = itemView.findViewById(R.id.grocery_list_item_check_box);
-            mOnListingListener = onListingListener;
+            checkBox = itemView.findViewById(R.id.grocery_list_item_check_box);
+            //mOnListingListener = onListingListener;
+            //checkBox.setOnClickListener(this);
 
-            itemView.setOnClickListener(this);
-            mCheckBoxSelected.setOnClickListener(this);
         }
 
-        @Override
-        public void onClick(View v) {
 
-            mOnListingListener.onListingClick(getAdapterPosition());
-            this.mItemClickListener.onItemClick((AdapterView<?>) itemView,v,getLayoutPosition(),getItemId());
-        }
+//        @Override
+//        public void onClick(View v) {
+//            mOnListingListener.onListingClick(getAdapterPosition());
+//        }
 
-        public void setmItemClickListener(AdapterView.OnItemClickListener mItemClickListener) {
-            this.mItemClickListener = mItemClickListener;
-        }
     }
 
-    public interface OnListingListener {
-        void onListingClick(int position);
-    }
+//    public interface OnListingListener {
+//        void onListingClick(int position);
+//    }
 
 
-    public MyKitchenIngredientsAdapter(Context context, ArrayList<MyKitchenItem> groceryLists, OnListingListener onListingListener) {
+    //, OnListingListener onListingListener
+    public MyKitchenIngredientsAdapter(Context context, ArrayList<MyKitchenItem> groceryLists) {
         super();
         mContext = context;
         mGroceryList = groceryLists;
-        this.mOnListingListener = onListingListener;
+        //this.mOnListingListener = onListingListener;
     }
 
     @NonNull
     @Override
     public ExampleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(mContext).inflate(R.layout.shopping_list_item, parent, false);
-        return new ExampleViewHolder(v, mOnListingListener);
+        return new ExampleViewHolder(v);
+        //, mOnListingListener
     }
 
 
@@ -76,17 +76,15 @@ public class MyKitchenIngredientsAdapter extends RecyclerView.Adapter<MyKitchenI
         MyKitchenItem currentList = mGroceryList.get(position);
         holder.itemName.setText(currentList.getItemName());
 
-        holder.setmItemClickListener(new AdapterView.OnItemClickListener() {
+        final MyKitchenItem allSelected = mGroceryList.get(position);
+        holder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    CheckBox checkBox = (CheckBox) view;
-
-                    //If checked or not
-                if(checkBox.isChecked()){
-                    checkedKitchenItems.add(mGroceryList.get(position));
-
-                }else if(!checkBox.isChecked()){
-                    checkedKitchenItems.remove(mGroceryList.get(position));
+            public void onClick(View v) {
+                if (holder.checkBox.isChecked()) {
+                    mGroceryListChecked.add(allSelected);
+                    Log.d("SELECTED ITEM", String.valueOf(mGroceryListChecked));
+                } else {
+                    mGroceryListChecked.remove(allSelected);
                 }
             }
         });
@@ -97,5 +95,8 @@ public class MyKitchenIngredientsAdapter extends RecyclerView.Adapter<MyKitchenI
     public int getItemCount() {
 
         return mGroceryList.size();
+    }
+    public ArrayList<MyKitchenItem> listOfSelectedItems() {
+        return mGroceryListChecked;
     }
 }

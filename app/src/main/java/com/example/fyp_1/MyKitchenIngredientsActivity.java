@@ -3,20 +3,15 @@ package com.example.fyp_1;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.animation.Animator;
-import android.animation.AnimatorInflater;
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -43,7 +38,7 @@ import com.google.zxing.integration.android.IntentResult;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyKitchenIngredientsActivity extends AppCompatActivity implements MyKitchenIngredientsAdapter.OnListingListener {
+public class MyKitchenIngredientsActivity extends AppCompatActivity {
 
     private static final String TAG = "MyKitchenIngredients";
 
@@ -56,12 +51,11 @@ public class MyKitchenIngredientsActivity extends AppCompatActivity implements M
     Dialog popupTipDialog;
     Button closePopupTipDialog;
 
+    //checked ingredients
+    ArrayList<MyKitchenItem> selectedList;
+
     //Barcode
     String barcode;
-
-    //Upload Listing
-    String itemToList;
-    String itemToListID;
 
     StringBuffer sb = null;
 
@@ -87,6 +81,7 @@ public class MyKitchenIngredientsActivity extends AppCompatActivity implements M
     private List<MyKitchenItem> mFreezerKitchenItems;
     CheckBox checkboxSelected;
 
+
     //FAB Animations
     Animation animatorRotateOpen;
     Animation animatorRotateClose;
@@ -96,7 +91,7 @@ public class MyKitchenIngredientsActivity extends AppCompatActivity implements M
     Boolean clicked = true;
     String myItemInput, myItemAmountInput, myItemCategory, myItemMeasurement, itemAmountAndMeasurement;
 
-    FloatingActionButton addToKitchenBtn, addToKitchenByScanBtn, addToKitchenByTextBtn;
+    FloatingActionButton addToKitchenBtn, addToKitchenByScanBtn, addToKitchenByTextBtn, checkedItemsBtn;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,6 +112,7 @@ public class MyKitchenIngredientsActivity extends AppCompatActivity implements M
         mVegRecyclerView.setLayoutManager(mLayoutManager);
         mVegKitchenItems = new ArrayList<>();
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("myKitchenItems");
+
 
         //Fruit RCV
         mFruitRecyclerView = findViewById(R.id.fruit_recycler_view);
@@ -178,6 +174,7 @@ public class MyKitchenIngredientsActivity extends AppCompatActivity implements M
         addToKitchenBtn = (FloatingActionButton) findViewById(R.id.fab_add_ingredient);
         addToKitchenByScanBtn = (FloatingActionButton) findViewById(R.id.fab_add_ingredient_by_scan);
         addToKitchenByTextBtn = (FloatingActionButton) findViewById(R.id.fab_add_ingredient_by_text);
+        checkedItemsBtn = (FloatingActionButton) findViewById(R.id.fab_add_ingredient_selected);
 
         mDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -186,35 +183,35 @@ public class MyKitchenIngredientsActivity extends AppCompatActivity implements M
                     MyKitchenItem mKI = postSnapshot.getValue(MyKitchenItem.class);
                     if (mKI.getUserId().equals(userId) && mKI.itemCategory.equals("Dairy")) {
                         mDairyKitchenItems.add(mKI);
-                        mAdapter = new MyKitchenIngredientsAdapter(MyKitchenIngredientsActivity.this, (ArrayList<MyKitchenItem>) mDairyKitchenItems, MyKitchenIngredientsActivity.this);
+                        mAdapter = new MyKitchenIngredientsAdapter(MyKitchenIngredientsActivity.this, (ArrayList<MyKitchenItem>) mDairyKitchenItems);
                         mDairyRecyclerView.setAdapter(mAdapter);
                     } else if (mKI.getUserId().equals(userId) && mKI.itemCategory.equals("Veg")) {
                         mVegKitchenItems.add(mKI);
-                        mAdapter = new MyKitchenIngredientsAdapter(MyKitchenIngredientsActivity.this, (ArrayList<MyKitchenItem>) mVegKitchenItems, MyKitchenIngredientsActivity.this);
+                        mAdapter = new MyKitchenIngredientsAdapter(MyKitchenIngredientsActivity.this, (ArrayList<MyKitchenItem>) mVegKitchenItems);
                         mVegRecyclerView.setAdapter(mAdapter);
                     } else if (mKI.getUserId().equals(userId) && mKI.itemCategory.equals("Fruit")) {
                         mFruitKitchenItems.add(mKI);
-                        mAdapter = new MyKitchenIngredientsAdapter(MyKitchenIngredientsActivity.this, (ArrayList<MyKitchenItem>) mFruitKitchenItems, MyKitchenIngredientsActivity.this);
+                        mAdapter = new MyKitchenIngredientsAdapter(MyKitchenIngredientsActivity.this, (ArrayList<MyKitchenItem>) mFruitKitchenItems);
                         mFruitRecyclerView.setAdapter(mAdapter);
                     } else if (mKI.getUserId().equals(userId) && mKI.itemCategory.equals("Meat/Poultry")) {
                         mMeatKitchenItems.add(mKI);
-                        mAdapter = new MyKitchenIngredientsAdapter(MyKitchenIngredientsActivity.this, (ArrayList<MyKitchenItem>) mMeatKitchenItems, MyKitchenIngredientsActivity.this);
+                        mAdapter = new MyKitchenIngredientsAdapter(MyKitchenIngredientsActivity.this, (ArrayList<MyKitchenItem>) mMeatKitchenItems);
                         mMeatRecyclerView.setAdapter(mAdapter);
                     } else if (mKI.getUserId().equals(userId) && mKI.itemCategory.equals("Fish")) {
                         mFishKitchenItems.add(mKI);
-                        mAdapter = new MyKitchenIngredientsAdapter(MyKitchenIngredientsActivity.this, (ArrayList<MyKitchenItem>) mFishKitchenItems, MyKitchenIngredientsActivity.this);
+                        mAdapter = new MyKitchenIngredientsAdapter(MyKitchenIngredientsActivity.this, (ArrayList<MyKitchenItem>) mFishKitchenItems);
                         mFishRecyclerView.setAdapter(mAdapter);
                     } else if (mKI.getUserId().equals(userId) && mKI.itemCategory.equals("Cupboard")) {
                         mCupboardKitchenItems.add(mKI);
-                        mAdapter = new MyKitchenIngredientsAdapter(MyKitchenIngredientsActivity.this, (ArrayList<MyKitchenItem>) mCupboardKitchenItems, MyKitchenIngredientsActivity.this);
+                        mAdapter = new MyKitchenIngredientsAdapter(MyKitchenIngredientsActivity.this, (ArrayList<MyKitchenItem>) mCupboardKitchenItems);
                         mCupboardRecyclerView.setAdapter(mAdapter);
                     } else if (mKI.getUserId().equals(userId) && mKI.itemCategory.equals("Bread/Cereal")) {
                         mCerealKitchenItems.add(mKI);
-                        mAdapter = new MyKitchenIngredientsAdapter(MyKitchenIngredientsActivity.this, (ArrayList<MyKitchenItem>) mCerealKitchenItems, MyKitchenIngredientsActivity.this);
+                        mAdapter = new MyKitchenIngredientsAdapter(MyKitchenIngredientsActivity.this, (ArrayList<MyKitchenItem>) mCerealKitchenItems);
                         mCerealRecyclerView.setAdapter(mAdapter);
                     } else if (mKI.getUserId().equals(userId) && mKI.itemCategory.equals("Freezer")) {
                         mFreezerKitchenItems.add(mKI);
-                        mAdapter = new MyKitchenIngredientsAdapter(MyKitchenIngredientsActivity.this, (ArrayList<MyKitchenItem>) mFreezerKitchenItems, MyKitchenIngredientsActivity.this);
+                        mAdapter = new MyKitchenIngredientsAdapter(MyKitchenIngredientsActivity.this, (ArrayList<MyKitchenItem>) mFreezerKitchenItems);
                         mFreezerRecyclerView.setAdapter(mAdapter);
                     }
 
@@ -315,6 +312,17 @@ public class MyKitchenIngredientsActivity extends AppCompatActivity implements M
 //            }
 //        });
 
+//        public void CreateList(){
+//            mVegKitchenItems = new ArrayList<>();
+//            for(int i =0; i<20; i++){
+//                MyKitchenItem mKItem = new MyKitchenItem();
+//                mKItem.setItemName("Item  " + (i +1));
+//                mVegKitchenItems.add(mKItem);
+//
+//            }
+//            //mAdapter.setmGroceryList(mVegKitchenItems);
+//        }
+
     }
 
     private void onScanBtnClicked() {
@@ -409,26 +417,50 @@ public class MyKitchenIngredientsActivity extends AppCompatActivity implements M
         }
     }
 
-    @Override
-    public void onListingClick(int position) {
-        //Log.d(TAG, "onListingClicked:  clicked");
-        mDairyKitchenItems.get(position);
-        //Toast.makeText(MyKitchenIngredientsActivity.this, (CharSequence) mDairyKitchenItems.get(position), Toast.LENGTH_SHORT).show();
-        Log.d(TAG, String.valueOf(position));
-        //mVegKitchenItems.get(position);
-        //mFruitKitchenItems.get(position);
-        //mCerealKitchenItems.get(position);
-        //mMeatKitchenItems.get(position);
-        //mFishKitchenItems.get(position);
-        //mFreezerKitchenItems.get(position);
-        //mCupboardKitchenItems.get(position);
+    public void getData(View V) {
+        mAdapter = new MyKitchenIngredientsAdapter(MyKitchenIngredientsActivity.this, (ArrayList<MyKitchenItem>) mKitchenItems);
+        selectedList = ((MyKitchenIngredientsAdapter) mAdapter).listOfSelectedItems();
 
-        ingredientId = mDairyKitchenItems.get(position).getItemId();
-        Log.d(TAG, "THE INGREDIENT ID: " + ingredientId);
-        Intent listItemIntent = new Intent(this, MoveItemToListingActivity.class);
-        listItemIntent.putExtra("item_to_list", ingredientId);
-        startActivity(listItemIntent);
-
+        Log.d("SELECTED", selectedList.toString());
     }
-
 }
+
+//    @Override
+//    public void onListingClick(int position) {
+//        Log.d(TAG, "CLICKED");
+//       // String clickedIngredient = "";
+//       // List<String> IngredientsToSearch = new ArrayList<>();
+//
+//       // clickedIngredient = mCupboardKitchenItems.get(position).getItemName();
+//
+//
+//       //     IngredientsToSearch.add(clickedIngredient);
+//
+//       // Log.d(TAG, "ITEM CLICKED: " + clickedIngredient);
+//       // Log.d(TAG, "ITEM CLICKED ARRAY: " + IngredientsToSearch);
+//
+//    }
+
+//    @Override
+//    public void onListingClick(int position) {
+//        //Log.d(TAG, "onListingClicked:  clicked");
+//        //mDairyKitchenItems.get(position);
+//        //Toast.makeText(MyKitchenIngredientsActivity.this, (CharSequence) mDairyKitchenItems.get(position), Toast.LENGTH_SHORT).show();
+//        Log.d(TAG, String.valueOf(position));
+//        //mVegKitchenItems.get(position);
+//        //mFruitKitchenItems.get(position);
+//        //mCerealKitchenItems.get(position);
+//        //mMeatKitchenItems.get(position);
+//        //mFishKitchenItems.get(position);
+//        //mFreezerKitchenItems.get(position);
+//        //mCupboardKitchenItems.get(position);
+//
+//        ingredientId = mMeatKitchenItems.get(position).getItemId();
+//        //ingredientId = mDairyKitchenItems.get(position).getItemId();
+//        Log.d(TAG, "THE INGREDIENT ID: " + ingredientId);
+//        Intent listItemIntent = new Intent(this, MoveItemToListingActivity.class);
+//        listItemIntent.putExtra("item_to_list", ingredientId);
+//        startActivity(listItemIntent);
+//
+//    }
+

@@ -85,7 +85,7 @@ public class homePageActivity extends AppCompatActivity implements NavigationVie
                 startActivity(intent7);
                 break;
             case R.id.nav_my_kitchen:
-                Intent intent8 = new Intent(homePageActivity.this, MyKitchenIngredientsActivity.class);
+                Intent intent8 = new Intent(homePageActivity.this, MyKitchenIngredients2.class);
                 intent8.putExtra("email", user.getEmail());
                 startActivity(intent8);
                 break;

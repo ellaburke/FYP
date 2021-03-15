@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="10dp"
+    app:cardCornerRadius='4dp'>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/recipe_image_display"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:background="@drawable/two_rounded_corners"/>
+
+        <RelativeLayout
+            android:id="@+id/relLayout1"
+            android:layout_width="280dp"
+            android:layout_height="100dp"
+            android:layout_alignBottom="@id/recipe_image_display"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="-44dp"
+            android:background="@drawable/white_border"
+            android:elevation="10dp"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/recipes_list_item_display"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/suravaram"
+                android:gravity="center"
+                android:text="hello"
+                android:textColor="@android:color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/missed_ingredient_count_title_display"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/recipes_list_item_display"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="@font/suravaram"
+                android:text="@string/missing_ingredients"
+                android:textColor="@android:color/black"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/missed_ingredient_count_display"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/recipes_list_item_display"
+                android:layout_marginStart="2dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="2dp"
+                android:layout_toEndOf="@id/missed_ingredient_count_title_display"
+                android:layout_toRightOf="@id/missed_ingredient_count_title_display"
+                android:fontFamily="@font/suravaram"
+                android:text="()"
+                android:textColor="@android:color/black"
+                android:textSize="14sp" />
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
