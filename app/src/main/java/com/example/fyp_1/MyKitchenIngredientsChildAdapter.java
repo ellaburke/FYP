@@ -3,16 +3,19 @@ package com.example.fyp_1;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MyKitchenIngredientsChildAdapter extends RecyclerView.Adapter<MyKitchenIngredientsChildAdapter.ViewHolder> {
 
     List<MyKitchenItem> items;
+    //public ArrayList<MyKitchenItem> mGroceryListChecked  = new ArrayList<>();
 
     public MyKitchenIngredientsChildAdapter(List<MyKitchenItem> items) {
         this.items = items;
@@ -28,11 +31,11 @@ public class MyKitchenIngredientsChildAdapter extends RecyclerView.Adapter<MyKit
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.itemTextView.setText((CharSequence) items.get(position));
+//        holder.itemTextView.setText((CharSequence) items.get(position));
 
-//        MyKitchenItem section = items.get(position);
-//        String ingredientName = section.getItemName();
-//        holder.itemTextView.setText(ingredientName);
+        MyKitchenItem section = items.get(position);
+        String ingredientName = section.getItemName();
+        holder.itemTextView.setText(ingredientName);
 
 
     }
@@ -45,10 +48,12 @@ public class MyKitchenIngredientsChildAdapter extends RecyclerView.Adapter<MyKit
     class ViewHolder extends RecyclerView.ViewHolder{
 
         TextView itemTextView;
+        //public CheckBox checkBox;
 
         public ViewHolder(@NonNull View itemView){
             super(itemView);
             itemTextView = itemView.findViewById(R.id.grocery_list_item_display);
+            //checkBox = itemView.findViewById(R.id.grocery_list_item_check_box);
         }
     }
 

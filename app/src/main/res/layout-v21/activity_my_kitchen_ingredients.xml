@@ -290,7 +290,6 @@
         android:focusable="true"
         android:src="@drawable/ic_baseline_check_24"
         app:elevation="6dp"
-        app:pressedTranslationZ="12dp"
-        android:onClick="getData"/>
+        app:pressedTranslationZ="12dp" />
 
 </RelativeLayout>

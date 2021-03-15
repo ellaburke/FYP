@@ -8,11 +8,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MyKitchenItemsAdapter2 extends RecyclerView.Adapter<MyKitchenItemsAdapter2.ViewHolder> {
 
-    List<FoodCategorySection> sectionList;
+    private List<FoodCategorySection> sectionList;
 
     public MyKitchenItemsAdapter2(List<FoodCategorySection> sectionList) {
         this.sectionList = sectionList;
@@ -29,7 +30,9 @@ public class MyKitchenItemsAdapter2 extends RecyclerView.Adapter<MyKitchenItemsA
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         FoodCategorySection section = sectionList.get(position);
+        System.out.println("WORKING 1" + section);
         String sectionName = section.getSectionName();
+        System.out.println("WORKING 2" + sectionName);
         List<MyKitchenItem> items = section.getSectionItem();
 
         holder.sectionNameTextView.setText(sectionName);

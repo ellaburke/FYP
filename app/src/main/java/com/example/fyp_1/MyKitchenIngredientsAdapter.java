@@ -77,6 +77,7 @@ public class MyKitchenIngredientsAdapter extends RecyclerView.Adapter<MyKitchenI
         holder.itemName.setText(currentList.getItemName());
 
         final MyKitchenItem allSelected = mGroceryList.get(position);
+        System.out.println("HERE" + allSelected);
         holder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
