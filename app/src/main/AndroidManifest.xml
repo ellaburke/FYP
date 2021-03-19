@@ -67,7 +67,7 @@
         <activity android:name=".getLocationActivity" />
         <activity android:name=".homePageActivity" />
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".LoginActivity">
             <meta-data
                 android:name="com.google.mlkit.vision.DEPENDENCIES"
                 android:value="ocr" />

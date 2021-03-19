@@ -35,6 +35,7 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MyKitchenIngredients2 extends AppCompatActivity {
 
@@ -49,8 +50,10 @@ public class MyKitchenIngredients2 extends AppCompatActivity {
     String ingredientId;
     Dialog popupTipDialog;
     Button closePopupTipDialog;
+    ArrayList<MyKitchenItem> selectedList;
+    //MyKitchenIngredientsChildAdapter myKitchenIngredientsChildAdapter;
 
-//   Barcode
+    //   Barcode
     String barcode;
 
     //FAB Animations
@@ -124,19 +127,19 @@ public class MyKitchenIngredients2 extends AppCompatActivity {
         ArrayList<MyKitchenItem> breadOrCerealSectionItems = new ArrayList<>();
 
 
-
         mDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                foodCategorySectionList.clear();
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                     MyKitchenItem mKI = postSnapshot.getValue(MyKitchenItem.class);
                     if (mKI.getUserId().equals(userId) && mKI.itemCategory.equals("Dairy")) {
                         dairySectionItems.add(mKI);
                         foodCategorySectionList.add(new FoodCategorySection(dairySection, dairySectionItems));
                         Log.d("hello", String.valueOf(dairySectionItems));
-                            Log.d(TAG, "initData: " + foodCategorySectionList);
-                            System.out.println(foodCategorySectionList);
-                            //myKitchenItemsAdapter2.notifyDataSetChanged();
+                        Log.d(TAG, "initData: " + foodCategorySectionList);
+                        System.out.println(foodCategorySectionList);
+                        //myKitchenItemsAdapter2.notifyDataSetChanged();
 
                     } else if (mKI.getUserId().equals(userId) && mKI.itemCategory.equals("Veg")) {
                         vegSectionItems.add(mKI);
@@ -271,6 +274,19 @@ public class MyKitchenIngredients2 extends AppCompatActivity {
                         dialog.dismiss();
                     }
                 });
+
+            }
+        });
+
+        checkedItemsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //MyKitchenIngredientsChildAdapter myKitchenIngredientsChildAdapter = new MyKitchenIngredientsChildAdapter(foodCategorySectionList);
+                //myKitchenItemsAdapter2.
+                //System.out.println("HELLO WORKING" + myKitchenIngredientsChildAdapter);
+                //String like = getIntent().getExtras().getString("Checked_Items");
+                //System.out.println("WORKED" + like);
+                //myKitchenItemsAdapter2.onBindViewHolder();
 
             }
         });

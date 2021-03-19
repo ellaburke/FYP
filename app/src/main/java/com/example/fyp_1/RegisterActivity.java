@@ -37,6 +37,7 @@ public class RegisterActivity extends AppCompatActivity {
     EditText passwordET;
     EditText confirmPasswordET;
     Button registerButton;
+    Button backToHomeButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,10 +52,18 @@ public class RegisterActivity extends AppCompatActivity {
         passwordET = (EditText)findViewById(R.id.passwordET);
         confirmPasswordET = (EditText)findViewById(R.id.confirmPasswordET);
         registerButton = (Button)findViewById(R.id.registerButton);
+        backToHomeButton = (Button)findViewById(R.id.homePageButton);
 
         database = FirebaseDatabase.getInstance();
         mDatabase = database.getReference(USER);
         mAuth = FirebaseAuth.getInstance();
+
+        backToHomeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,7 +112,7 @@ public class RegisterActivity extends AppCompatActivity {
     public void updateUI(FirebaseUser currentUser, String userId){
         //String keyId = mDatabase.push().getKey();
         mDatabase.child(userId).setValue(user);
-        Intent loginIntent = new Intent(this, MainActivity.class);
+        Intent loginIntent = new Intent(this, LoginActivity.class);
         startActivity(loginIntent);
     }
 }

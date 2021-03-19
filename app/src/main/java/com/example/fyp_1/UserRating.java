@@ -22,6 +22,7 @@ public class UserRating extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_rating);
 
+
         rateCount = findViewById(R.id.rateCount);
         ratingBar = findViewById(R.id.ratingBar);
         reviewET = findViewById(R.id.writeReview);
