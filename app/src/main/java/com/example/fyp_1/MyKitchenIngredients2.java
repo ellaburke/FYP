@@ -55,6 +55,7 @@ public class MyKitchenIngredients2 extends AppCompatActivity {
 
     //   Barcode
     String barcode;
+    String barcodeResult;
 
     //FAB Animations
     Animation animatorRotateOpen;
@@ -281,12 +282,25 @@ public class MyKitchenIngredients2 extends AppCompatActivity {
         checkedItemsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //MyKitchenIngredientsChildAdapter myKitchenIngredientsChildAdapter = new MyKitchenIngredientsChildAdapter(foodCategorySectionList);
-                //myKitchenItemsAdapter2.
-                //System.out.println("HELLO WORKING" + myKitchenIngredientsChildAdapter);
-                //String like = getIntent().getExtras().getString("Checked_Items");
-                //System.out.println("WORKED" + like);
-                //myKitchenItemsAdapter2.onBindViewHolder();
+                ArrayList<MyKitchenItem> mSelectedItems = myKitchenItemsAdapter2.childAdapter.listOfSelectedItems();
+                String selectedItemName = "";
+
+                if (mSelectedItems != null) {
+                    for (int index = 0; index < mSelectedItems.size(); index++) {
+                        System.out.println(mSelectedItems.get(index).itemName);
+                        selectedItemName += mSelectedItems.get(index).itemName;
+                        if (index != mSelectedItems.size() - 1) {
+                            selectedItemName += ",+";
+                        }
+                    }
+                }
+                if (selectedItemName != "") {
+                    Intent intentRecipe = new Intent(MyKitchenIngredients2.this, RecipeActivity.class);
+                    intentRecipe.putExtra("ingredientList", selectedItemName.toString());
+                    startActivity(intentRecipe);
+                }
+
+                myKitchenItemsAdapter2.childAdapter.ClearSelectedItems();
 
             }
         });
@@ -297,99 +311,165 @@ public class MyKitchenIngredients2 extends AppCompatActivity {
         popupTipDialog.show();
 
 
-    }
+        }
 
-    private void onScanBtnClicked() {
-        IntentIntegrator integrator = new IntentIntegrator(this);
+private void onScanBtnClicked(){
+        IntentIntegrator integrator=new IntentIntegrator(this);
         integrator.setCaptureActivity(CaptureAct.class);
         integrator.setOrientationLocked(false);
         integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
         integrator.setPrompt("Scan Item");
         integrator.initiateScan();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if (result != null) {
-            if (result.getContents() != null) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage(result.getContents());
-                builder.setTitle("Scan Result");
-                builder.setPositiveButton("Scan Again", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        onScanBtnClicked();
-                    }
-                }).setNegativeButton("Correct", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                        //System.out.println("THE BARCODE" + result.getContents());
-                        barcode = result.getContents();
-                        Intent barcodeIntent = new Intent(MyKitchenIngredients2.this, BarcodeActivity.class);
-                        barcodeIntent.putExtra("barcode", barcode);
-                        startActivity(barcodeIntent);
-                    }
-                });
-                AlertDialog dialog = builder.create();
-                dialog.show();
-
-            } else {
-                Toast.makeText(this, "No result found", Toast.LENGTH_LONG).show();
-
-            }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data);
         }
 
-    }
+@Override
+protected void onActivityResult(int requestCode,int resultCode,Intent data){
+        IntentResult result=IntentIntegrator.parseActivityResult(requestCode,resultCode,data);
+        if(result!=null){
+        if(result.getContents()!=null){
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        builder.setMessage(result.getContents());
+        builder.setTitle("Scan Result");
+        builder.setPositiveButton("Scan Again",new DialogInterface.OnClickListener(){
+@Override
+public void onClick(DialogInterface dialog,int which){
+        onScanBtnClicked();
+        }
+        }).setNegativeButton("Correct",new DialogInterface.OnClickListener(){
+@Override
+public void onClick(DialogInterface dialog,int which){
+        finish();
+        //System.out.println("THE BARCODE" + result.getContents());
+        barcode=result.getContents();
+        Intent barcodeIntent=new Intent(MyKitchenIngredients2.this,BarcodeActivity.class);
+        barcodeIntent.putExtra("barcode",barcode);
+        startActivity(barcodeIntent);
+        //addBarcodeResultToList();
 
-    private void onAddToKitchenBtnClicked() {
+        }
+        });
+        AlertDialog dialog=builder.create();
+        dialog.show();
+
+        }else{
+        Toast.makeText(this,"No result found",Toast.LENGTH_LONG).show();
+
+        }
+        }else{
+        super.onActivityResult(requestCode,resultCode,data);
+        }
+
+        }
+
+public void addBarcodeResultToList(){
+
+        AlertDialog.Builder mBuilder=new AlertDialog.Builder(MyKitchenIngredients2.this);
+        View mView=getLayoutInflater().inflate(R.layout.add_to_my_kitchen_dialog,null);
+        EditText itemInput=(EditText)mView.findViewById(R.id.item_name_et);
+        EditText itemAmountInput=(EditText)mView.findViewById(R.id.item_amount_et);
+        TextView cancelTV=(TextView)mView.findViewById(R.id.cancel_dialog_option);
+        TextView addTV=(TextView)mView.findViewById(R.id.add_dialog_option);
+
+        //set with barcode item name
+        itemInput.setText(barcode);
+
+        //init variables for dialog
+        Spinner itemAmountSpinner=(Spinner)mView.findViewById(R.id.item_amount_spinner);
+        Spinner categorySpinner=(Spinner)mView.findViewById(R.id.food_category_spinner2);
+
+        // Create an ArrayAdapter using the string array and a default spinner
+        ArrayAdapter<CharSequence> staticAdapter=ArrayAdapter.createFromResource(MyKitchenIngredients2.this,R.array.item_amount_array,
+        android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> staticAdapter2=ArrayAdapter.createFromResource(MyKitchenIngredients2.this,R.array.food_category_array,
+        android.R.layout.simple_spinner_item);
+
+        // Specify the layout to use when the list of choices appears
+        staticAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        staticAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // Apply the adapter to the spinner
+        itemAmountSpinner.setAdapter(staticAdapter);
+        categorySpinner.setAdapter(staticAdapter2);
+
+//        addTV.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (!itemInput.getText().toString().isEmpty() && !categorySpinner.getSelectedItem().toString().isEmpty()) {
+//                    myItemInput = itemInput.getText().toString();
+//                    myItemAmountInput = itemAmountInput.getText().toString();
+//                    myItemCategory = categorySpinner.getSelectedItem().toString();
+//                    myItemMeasurement = itemAmountSpinner.getSelectedItem().toString();
+//                    itemAmountAndMeasurement = myItemAmountInput + myItemMeasurement;
+//                    myKitchenItem = new MyKitchenItem(myItemInput, myItemCategory, itemAmountAndMeasurement, userId, itemId);
+//                    mDatabaseRef = FirebaseDatabase.getInstance().getReference("myKitchenItems");
+//                    itemId = mDatabaseRef.push().getKey();
+//                    mDatabaseRef.child(itemId).setValue(myKitchenItem);
+//                    itemInput.setText("");
+//                    itemAmountInput.setText("");
+//                    //categorySpinner.set
+//                    //dialog.dismiss();
+//                }
+//            }
+//        });
+//        mBuilder.setView(mView);
+//        AlertDialog dialog = mBuilder.create();
+//        dialog.show();
+//
+//        cancelTV.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                dialog.dismiss();
+//            }
+//        });
+
+
+        }
+
+private void onAddToKitchenBtnClicked(){
         setVisibility(clicked);
         setAnimation(clicked);
         setClickable(clicked);
-        if (!clicked) {
-            clicked = true;
-        } else {
-            clicked = false;
+        if(!clicked){
+        clicked=true;
+        }else{
+        clicked=false;
         }
-    }
-
-    private void setAnimation(Boolean clicked) {
-        if (!clicked) {
-            addToKitchenByTextBtn.startAnimation(animatorFromBottom);
-            addToKitchenByScanBtn.startAnimation(animatorFromBottom);
-            addToKitchenBtn.startAnimation(animatorRotateOpen);
-        } else {
-            addToKitchenByTextBtn.startAnimation(animatorToBottom);
-            addToKitchenByScanBtn.startAnimation(animatorToBottom);
-            addToKitchenBtn.startAnimation(animatorRotateClose);
-
         }
 
-    }
-
-    private void setVisibility(Boolean clicked) {
-        if (clicked) {
-            addToKitchenByScanBtn.setVisibility(View.VISIBLE);
-            addToKitchenByTextBtn.setVisibility(View.VISIBLE);
-        } else {
-            addToKitchenByScanBtn.setVisibility(View.INVISIBLE);
-            addToKitchenByTextBtn.setVisibility(View.GONE);
+private void setAnimation(Boolean clicked){
+        if(!clicked){
+        addToKitchenByTextBtn.startAnimation(animatorFromBottom);
+        addToKitchenByScanBtn.startAnimation(animatorFromBottom);
+        addToKitchenBtn.startAnimation(animatorRotateOpen);
+        }else{
+        addToKitchenByTextBtn.startAnimation(animatorToBottom);
+        addToKitchenByScanBtn.startAnimation(animatorToBottom);
+        addToKitchenBtn.startAnimation(animatorRotateClose);
 
         }
-    }
 
-    private void setClickable(Boolean clicked) {
-        if (!clicked) {
-            addToKitchenByScanBtn.setClickable(true);
-            addToKitchenByTextBtn.setClickable(true);
-        } else {
-            addToKitchenByScanBtn.setClickable(false);
-            addToKitchenByTextBtn.setClickable(false);
         }
-    }
+
+private void setVisibility(Boolean clicked){
+        if(clicked){
+        addToKitchenByScanBtn.setVisibility(View.VISIBLE);
+        addToKitchenByTextBtn.setVisibility(View.VISIBLE);
+        }else{
+        addToKitchenByScanBtn.setVisibility(View.INVISIBLE);
+        addToKitchenByTextBtn.setVisibility(View.GONE);
+
+        }
+        }
+
+private void setClickable(Boolean clicked){
+        if(!clicked){
+        addToKitchenByScanBtn.setClickable(true);
+        addToKitchenByTextBtn.setClickable(true);
+        }else{
+        addToKitchenByScanBtn.setClickable(false);
+        addToKitchenByTextBtn.setClickable(false);
+        }
+        }
 
 
-}
+        }

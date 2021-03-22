@@ -35,39 +35,30 @@ public class RecipeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe);
 
-        // TODO, extract ingredients from bundle: apples, flour, sugar
-
-        mTextViewResult = (TextView) findViewById(R.id.display_recipe_tv);
-
-        // TODO start spinner/loading UI
+        // Loading Dialog
+        LoadingDialog loadingDialog = new LoadingDialog(RecipeActivity.this);
+        loadingDialog.startLoadingDialog();
 
 
         OkHttpClient client = new OkHttpClient();
 
+        // retreive the passed parameter
+        Intent prevIntent = getIntent();
+        String ingredientList = "";
+
+        if (prevIntent != null) {
+            ingredientList = prevIntent.getStringExtra("ingredientList");
+        } else {
+            ingredientList = "cheese,+chicken,+pasta";
+        }
+
         Request request = new Request.Builder()
                 .url("https://api.spoonacular.com/recipes/findByIngredients?apiKey=f6d9e1e1d7e340208e01b093f6455646&ingredients=cheese,+chicken,+pasta&number=100")
+                .url("https://api.spoonacular.com/recipes/findByIngredients?apiKey=f6d9e1e1d7e340208e01b093f6455646&ingredients=" + ingredientList + "&number=100")
                 .get()
                 .addHeader("x-rapidapi-key", "e716136075msh69b9329992873dbp1c8e3djsn254931884571")
                 .addHeader("x-rapidapi-host", "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com")
                 .build();
-//
-//        Request request1 = new Request.Builder()
-//                .url("https://api.spoonacular.com/recipes/findByIngredients?apiKey=f6d9e1e1d7e340208e01b093f6455646&ingredients=cheese")
-//                .get()
-//                .addHeader("x-rapidapi-key", "e716136075msh69b9329992873dbp1c8e3djsn254931884571")
-//                .addHeader("x-rapidapi-host", "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com")
-//                .build();
-
-//        Request request = new Request.Builder()
-//                .url("https://api.spoonacular.com/recipes/complexSearch??apiKey=f6d9e1e1d7e340208e01b093f6455646&query=pasta&maxFat=25&number=2")
-//                .get()
-//                .addHeader("x-rapidapi-key", "e716136075msh69b9329992873dbp1c8e3djsn254931884571")
-//                .addHeader("x-rapidapi-host", "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com")
-//                .build();
-
-        //Spoonacular API Key - f6d9e1e1d7e340208e01b093f6455646
-        // https://api.spoonacular.com/recipes/716429/information?apiKey=f6d9e1e1d7e340208e01b093f6455646&includeNutrition=true.
-        //
 
         client.newCall(request).enqueue(new Callback() {
             @Override
@@ -77,7 +68,7 @@ public class RecipeActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(Response response) throws IOException {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     String myResponse = response.body().string();
 
 
@@ -101,6 +92,7 @@ public class RecipeActivity extends AppCompatActivity {
     /**
      * Parse the Recipe response.
      * <code>response</code> contains {"key": "value", ..} .. a String
+     *
      * @param response
      */
     private void parseRecipeResponse(String response) {
@@ -132,8 +124,7 @@ public class RecipeActivity extends AppCompatActivity {
     private void jsonParse(String myResponse) throws JSONException {
         JSONArray jsonArray = new JSONArray(myResponse);
         //JSONArray jArray = jsonArray.getJSONArray("ARRAYNAME");
-        for (int i=0; i < jsonArray.length(); i++)
-        {
+        for (int i = 0; i < jsonArray.length(); i++) {
             try {
                 JSONObject oneObject = jsonArray.getJSONObject(i);
                 // Pulling items from the array

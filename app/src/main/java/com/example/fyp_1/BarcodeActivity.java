@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.example.fyp_1.model.BarcodeItem;
 import com.example.fyp_1.model.Recipe;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.OkHttpClient;
@@ -65,8 +66,8 @@ public class BarcodeActivity extends AppCompatActivity {
                     BarcodeActivity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                                parseBarcodeResponse(myResponse);
 
-                            //parseRecipeResponse(myResponse);
                             //mTextViewResult.setText(myResponse);
                         }
                     });
@@ -76,43 +77,49 @@ public class BarcodeActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Parse the Recipe response.
+     * <code>response</code> contains {"key": "value", ..} .. a String
+     * @param response
+     */
     private void parseBarcodeResponse(String response) {
+//        ObjectMapper mapper = new ObjectMapper();
+//        try {
+//             int[] myArray;
+//            BarcodeItem[] barcode1 = mapper.readValue(response, BarcodeItem[].class);
+//
+//            for (BarcodeItem bc : barcode1) {
+//                System.out.println("FOOD ID" + bc.getId());
+//                System.out.println("FOOD TITLE" + bc.getTitle());
+//
+//            }
         ObjectMapper mapper = new ObjectMapper();
         try {
-            // int[] myArray;
-            BarcodeItem[] barcodes = mapper.readValue(response, BarcodeItem[].class);
+            BarcodeItem barcode1 = mapper.readValue(response,BarcodeItem.class);
+            String barcodeName = barcode1.getTitle();
+            System.out.println("FOOD TITLE " + barcodeName);
 
-            for (BarcodeItem bc : barcodes) {
-                System.out.println(bc.getId());
-                System.out.println(bc.getTitle());
-                System.out.println(bc.getImages());
-                System.out.println(bc.getUnit());
-                System.out.println(bc.getNumber());
-                System.out.println(bc.getAisle());
-            }
 
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
     }
 
-    private void jsonParse(String myResponse) throws JSONException {
-        JSONObject jsonObject = new JSONObject(myResponse);
-        //JSONArray jArray = jsonArray.getJSONArray("ARRAYNAME");
-        for (int i=0; i < jsonObject.length(); i++)
-        {
-            try {
-                JSONObject oneObject = jsonObject.getJSONObject(String.valueOf(i));
-                // Pulling items from the array
-                String oneObjectsItem = oneObject.getString("title");
-                System.out.println("WOOOOO" + oneObjectsItem);
-                //String oneObjectsItem2 = oneObject.getString("name");
-                //String oneObjectsItem2 = oneObject.getString("image");
-                mTextViewResult.setText(oneObjectsItem);
-            } catch (JSONException e) {
-                // Oops
-            }
-        }
-    }
+//    private void jsonParse(String myResponse) throws JSONException {
+//        JSONObject jsonObject = new JSONObject(myResponse);
+//        //JSONArray jArray = jsonArray.getJSONArray("ARRAYNAME");
+//        for (int i=0; i < jsonObject.length(); i++)
+//        {
+//            try {
+//                JSONObject oneObject = jsonObject.getJSONObject(String.valueOf(i));
+//                // Pulling items from the array
+//                String oneObjectsItem = oneObject.getString("title");
+//                System.out.println("WOOOOO" + oneObjectsItem);
+//                mTextViewResult.setText(oneObjectsItem);
+//            } catch (JSONException e) {
+//                // Oops
+//            }
+//        }
+//    }
 
 }

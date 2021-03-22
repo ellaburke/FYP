@@ -51,8 +51,8 @@ public class ViewAllRecipesActivity extends AppCompatActivity implements Recipes
         mRecyclerView = findViewById(R.id.recipeRecyclerView);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
-        //mStaggeredGridLayoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.HORIZONTAL);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        //mRecyclerView.setLayoutManager(new LinearLayoutManager);
+        mRecyclerView.setLayoutManager(mLayoutManager);
         //mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true));
 
         for (Recipe recipe : recipes) {
