@@ -6,11 +6,94 @@
     android:layout_height="match_parent"
     tools:context=".BarcodeActivity">
 
-    <TextView
-        android:id="@+id/displayBarcodeProduct"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Barcode Item"
-        android:layout_centerHorizontal="true"
-        />
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:backgroundTint="@color/wasteify_pink"
+        app:cardElevation="2dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:background="#fff">
+
+            <TextView
+                android:id="@+id/displayBarcodeProduct"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="100dp"
+                android:fontFamily="@font/suravaram"
+                android:text="@string/barcode_item"
+                android:textColor="#000"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/barcodeitem_amount_et"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/displayBarcodeProduct"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:hint="Amount"
+                android:inputType="text" />
+
+            <Spinner
+                android:id="@+id/barcodeitem_amount_spinner"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_below="@id/displayBarcodeProduct"
+                android:layout_marginEnd="15dp"
+                android:layout_marginRight="5dp"
+                android:layout_toRightOf="@+id/barcodeitem_amount_et"
+                android:spinnerMode="dropdown" />
+
+            <Spinner
+                android:id="@+id/barcodefood_category_spinner2"
+                android:layout_width="310dp"
+                android:layout_height="50dp"
+                android:layout_below="@id/barcodeitem_amount_spinner"
+                android:layout_margin="15dp"
+                android:spinnerMode="dropdown" />
+
+            <Button
+                android:id="@+id/wrongBarcodeBtn"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_below="@id/barcodefood_category_spinner2"
+                android:layout_marginLeft="120dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/circle_button"
+                android:drawableTop="@drawable/ic_barcode_cancel"
+                app:backgroundTint="#FAA7F5" />
+
+
+            <Button
+                android:id="@+id/correctBarcodeBtn"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_below="@id/barcodefood_category_spinner2"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_toEndOf="@+id/wrongBarcodeBtn"
+                android:layout_toRightOf="@+id/wrongBarcodeBtn"
+                android:background="@drawable/circle_button"
+                android:drawableTop="@drawable/ic_barcode_check"
+                app:backgroundTint="#B2DD80" />
+
+        </RelativeLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+
 </RelativeLayout>

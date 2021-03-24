@@ -52,7 +52,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     //Text Recognition
     implementation 'com.google.android.gms:play-services-mlkit-text-recognition:16.1.2'
-    implementation 'com.google.firebase:firebase-ml-vision:15.0.0'
+    //implementation 'com.google.firebase:firebase-ml-vision:15.0.0'
     implementation 'com.google.firebase:firebase-core:15.0.2'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
@@ -75,5 +75,8 @@ dependencies {
     implementation 'com.google.android.material:material:1.4.0-alpha01'
     //Swipe Reveal
     implementation 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.1'
+    //Text Detect
+    implementation 'com.google.firebase:firebase-functions:19.2.0'
+    implementation 'com.google.code.gson:gson:2.8.6'
 
 }

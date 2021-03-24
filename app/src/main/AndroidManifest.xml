@@ -25,19 +25,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FYP_1">
-        <activity android:name=".MyKitchenIngredients2"></activity>
+        <activity android:name=".TextDetectActivity"></activity>
+        <activity android:name=".MyShoppingListActivity" />
+        <activity android:name=".MyKitchenIngredients2" />
         <activity android:name=".BarcodeActivity" />
         <activity android:name=".ViewFullRecipeActivity" />
         <activity android:name=".ViewAllRecipesActivity" />
         <activity android:name=".MoveItemToListingActivity" />
-        <activity android:name=".MyKitchenIngredientsActivity" />
         <activity android:name=".RecipeActivity" />
         <activity android:name=".TextRecognitionActivity" />
         <activity android:name=".GroceryListActivity" />
-        <activity
-            android:name=".MyListingsTabbedActivity"
-            android:label="@string/title_activity_my_listings_tabbed"
-            android:theme="@style/Theme.FYP_1.NoActionBar" />
         <activity android:name=".ScanActivity" />
         <activity android:name=".UserRating" />
         <activity android:name=".MyListings" />

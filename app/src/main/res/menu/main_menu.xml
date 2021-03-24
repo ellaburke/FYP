@@ -31,6 +31,10 @@
             android:title="Scan" />
 
         <item
+            android:id="@+id/nav_shopping_list"
+            android:title="My Shopping List" />
+
+        <item
             android:id="@+id/nav_recipe"
             android:title="Recipes" />
     </group>

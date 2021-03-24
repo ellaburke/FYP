@@ -9,41 +9,53 @@
     <ImageView
         android:id="@+id/image_view"
         android:layout_width="match_parent"
-        android:layout_height="400dp"/>
+        android:layout_height="400dp" />
 
     <TextView
         android:id="@+id/text_display"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/image_view"
-        android:text=""
-        android:textSize="26dp"
         android:layout_margin="10dp"
-        />
+        android:text=""
+        android:textSize="26dp" />
 
     <Button
         android:id="@+id/gallery_image_btn"
-        android:layout_width="match_parent"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:text="Choose from Gallery"
         android:layout_above="@+id/capture_image_btn"
-        />
+        android:layout_centerHorizontal="true"
+        android:layout_margin="5dp"
+        android:background="@drawable/custom_button3"
+        android:text="Choose from Gallery"
+        android:textColor="#FB9FDF"
+        app:backgroundTint="#FB9FDF" />
 
     <Button
         android:id="@+id/capture_image_btn"
-        android:layout_width="match_parent"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:text="Capture Image"
         android:layout_above="@+id/detect_text_image_btn"
-        />
+        android:layout_centerHorizontal="true"
+        android:layout_margin="5dp"
+        android:background="@drawable/custom_button3"
+        android:text="Capture Image"
+        android:textColor="#FB9FDF"
+        app:backgroundTint="#FB9FDF" />
 
     <Button
         android:id="@+id/detect_text_image_btn"
-        android:layout_width="match_parent"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/custom_button3"
         android:text="Detect Text"
-        />
+        android:textColor="#FB9FDF"
+        app:backgroundTint="#FB9FDF" />
 
 
 </RelativeLayout>

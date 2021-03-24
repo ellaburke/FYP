@@ -22,9 +22,9 @@
         android:layout_below="@+id/tip_logo"
         android:layout_centerHorizontal="true"
         android:fontFamily="@font/suravaram"
-        android:text="Swipe Left to Upload Item to Listing"
+        android:text="@string/check_items_to_search_for_recipe"
         android:textColor="#000"
-        android:textSize="25dp"
+        android:textSize="25sp"
         />
 
     <Button
@@ -34,7 +34,7 @@
         android:layout_below="@id/tip_text"
         android:layout_centerHorizontal="true"
         android:background="@drawable/custom_button"
-        android:text="Got It!"
+        android:text="@string/got_it"
         android:textColor="#fff"
         app:backgroundTint="@color/wasteify_pink" />
 

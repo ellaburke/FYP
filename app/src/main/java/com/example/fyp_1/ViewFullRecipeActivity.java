@@ -2,7 +2,6 @@ package com.example.fyp_1;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
@@ -10,14 +9,11 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TableLayout;
 import android.widget.TextView;
 
-import com.example.fyp_1.model.Recipe;
+import com.example.fyp_1.FullRecipeDisplayFragments.IngredientListFragment;
+import com.example.fyp_1.FullRecipeDisplayFragments.RecipeFragmentAdapter;
 import com.example.fyp_1.model.RecipeInstructionStep;
 import com.example.fyp_1.model.RecipeInstructionStepEquipment;
 import com.example.fyp_1.model.RecipeInstructionStepIngredient;
@@ -31,10 +27,6 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import com.squareup.picasso.Picasso;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -72,7 +64,7 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
         viewPager2.setAdapter(new RecipeFragmentAdapter(this));
 
         //Fragments
-        //IngredientListFragment ingredientListFragment = new IngredientListFragment();
+        IngredientListFragment ingredientListFragment = new IngredientListFragment();
 
 
         //View ingredientTabView = inflater.inflate(R.layout.fragment_ingredient_list, container, false);

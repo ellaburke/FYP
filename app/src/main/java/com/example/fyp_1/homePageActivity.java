@@ -80,10 +80,10 @@ public class homePageActivity extends AppCompatActivity implements NavigationVie
                 Intent intent6 = new Intent(homePageActivity.this, UserRating.class);
                 startActivity(intent6);
                 break;
-            case R.id.nav_scan:
-                Intent intent7 = new Intent(homePageActivity.this, TextRecognitionActivity.class);
-                startActivity(intent7);
-                break;
+//            case R.id.nav_scan:
+//                Intent intent7 = new Intent(homePageActivity.this, TextRecognitionActivity.class);
+//                startActivity(intent7);
+//                break;
             case R.id.nav_my_kitchen:
                 Intent intent8 = new Intent(homePageActivity.this, MyKitchenIngredients2.class);
                 intent8.putExtra("email", user.getEmail());
@@ -92,6 +92,10 @@ public class homePageActivity extends AppCompatActivity implements NavigationVie
             case R.id.nav_recipe:
                 Intent intent9 = new Intent(homePageActivity.this, RecipeActivity.class);
                 startActivity(intent9);
+                break;
+            case R.id.nav_shopping_list:
+                Intent intent10 = new Intent(homePageActivity.this, MyShoppingListActivity.class);
+                startActivity(intent10);
                 break;
 
         }

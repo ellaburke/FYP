@@ -76,4 +76,8 @@
     <string name="loading">Loading</string>
     <string name="brackets">()</string>
     <string name="for_home_cooking">for Home Cooking</string>
+    <string name="check_items_to_search_for_recipe">Check items to search for recipe</string>
+    <string name="got_it">Got It!</string>
+    <string name="add_to_shopping_list">Add to Shopping List</string>
+    <string name="barcode_item">Barcode Item</string>
 </resources>

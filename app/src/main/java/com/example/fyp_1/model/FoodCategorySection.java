@@ -1,5 +1,7 @@
 
-package com.example.fyp_1;
+package com.example.fyp_1.model;
+
+import com.example.fyp_1.MyKitchenItem;
 
 import java.util.List;
 
