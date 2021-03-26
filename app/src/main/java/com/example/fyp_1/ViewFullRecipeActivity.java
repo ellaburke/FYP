@@ -9,6 +9,8 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,6 +18,7 @@ import android.widget.Toast;
 import com.example.fyp_1.FullRecipeDisplayFragments.IngredientListFragment;
 import com.example.fyp_1.FullRecipeDisplayFragments.RecipeFragmentAdapter;
 import com.example.fyp_1.model.Listing;
+import com.example.fyp_1.model.Recipe;
 import com.example.fyp_1.model.RecipeInstructionStep;
 import com.example.fyp_1.model.RecipeInstructionStepEquipment;
 import com.example.fyp_1.model.RecipeInstructionStepIngredient;
@@ -38,6 +41,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ViewFullRecipeActivity extends AppCompatActivity {
@@ -188,8 +192,6 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
      */
     private void displayInstructionsInUi(RecipeInstructions[] recipeInstructions) {
 
-        // TODO remove single string
-        // and replace with dedicated UI components
         //String recipe = recipeNameToDisplay + System.getProperty("line.separator");
         String recipe = "";
         String equipmentListDisplay = "";
@@ -207,51 +209,25 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
             // Looping over each step object from the recipe response
             for (RecipeInstructionStep step : recipeInstruction.getSteps()) {
 
-                // 1. Make Toast
                 // Equipment for step
                 // Ingredients for step
 
                 // All recipe properties are available
                 recipe += step.number + ":" + step.step + System.getProperty("line.separator");
                 stepsList.add(step);
-
-                for (RecipeInstructionStepIngredient ingredient : step.ingredients) {
-                    if (!ingredientList.contains(ingredient)) {
-                        ingredientList.add(ingredient);
-                        ingredientsListDisplay += ingredient.name + System.getProperty("line.separator");
+                int i = 0;
+                //for (RecipeInstructionStepIngredient ingredient : step.ingredients) {
+                RecipeInstructionStepIngredient[] ingredientList2;
+                ingredientList2 = step.ingredients;
+                ingredientList2 = sortList(ingredientList2);
+                System.out.println("SORTED LIST" + ingredientList2);
+                for (RecipeInstructionStepIngredient ing2 : ingredientList2) {
+                    if (i == 0) {
+                        ingredientList.add(ing2);
                     }
-
-                    kitchenItemRef.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                                MyKitchenItem mKI = postSnapshot.getValue(MyKitchenItem.class);
-                                if (mKI.getItemName().equalsIgnoreCase(ingredient.name)) {
-                                    System.out.println("MY INGREDIENT IS" + mKI.getItemName());
-                                    if (!ingredientsIHave.contains(ingredient)) {
-                                        ingredientsIHave.add(ingredient.name);
-                                    }
-                                } else {
-                                    ingredientsIDontHave.add(ingredient.name);
-                                }
-
-                            }
-                            for (String ing : ingredientsIHave) {
-                                myIngList += ing + System.getProperty("line.separator");
-                            }
-                            recipeIngredientListTV.setText(myIngList);
-                            System.out.println("ING I DO" + ingredientsIHave);
-                            System.out.println("ING I DONT" + ingredientsIDontHave);
-                        }
-
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-                            Toast.makeText(ViewFullRecipeActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
-
-                        }
-                    });
-
+                    if (i >= 1 && (!ing2.getName().equalsIgnoreCase(ingredientList.get(ingredientList.size() - 1).getName()))) {
+                        ingredientList.add(ing2);
+                    }
 
                 }
 
@@ -276,6 +252,13 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
         ingredientListFragment.setArguments(args);
 
 
+        for (RecipeInstructionStepIngredient ing : ingredientList) {
+            ingredientsListDisplay += ing.name + System.getProperty("line.separator");
+        }
+
+        System.out.println("ingredientList" + ingredientList);
+        //ingredientsListDisplay = sortList(step.ingredients);
+        //ingredientsListDisplay += ingredient.name + System.getProperty("line.separator");
         recipeIngredientListTV.setText(ingredientsListDisplay);
         ingredientEquipmentListTV.setText(equipmentListDisplay);
         //ingredientMethodListTV.setText(recipe);
@@ -290,4 +273,24 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
         mAdapter = new DisplayRecipeAdapter(ViewFullRecipeActivity.this, stepsList);
         mRecyclerView.setAdapter(mAdapter);
     }
+
+    public RecipeInstructionStepIngredient[] sortList(RecipeInstructionStepIngredient[] ingList) {
+        int size = ingList.length;
+        //logic for sorting
+        for (int i = 0; i < size - 1; i++) {
+            for (int j = i + 1; j < ingList.length; j++) {
+                //compares each elements of the array to all the remaining elements
+                if (ingList[i].getName().compareTo(ingList[j].getName()) > 0) {
+                    //swapping array elements
+                    RecipeInstructionStepIngredient temp = ingList[i];
+                    ingList[i] = ingList[j];
+                    ingList[j] = temp;
+                }
+
+            }
+        }
+        System.out.println("Sorted Array" + Arrays.toString(ingList));
+        return ingList;
+    }
+
 }

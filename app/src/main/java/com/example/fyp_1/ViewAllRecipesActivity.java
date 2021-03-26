@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -69,6 +71,25 @@ public class ViewAllRecipesActivity extends AppCompatActivity implements Recipes
         updateRef = FirebaseDatabase.getInstance().getReference("user");
         storageRef = FirebaseStorage.getInstance().getReference();
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.go_back, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.go_back_icon) {
+            Intent intent = new Intent(ViewAllRecipesActivity.this, MyKitchenIngredients2.class);
+            startActivity(intent);
+            return true;
+        }
+
+        return true;
     }
 
 
