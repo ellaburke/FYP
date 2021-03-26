@@ -1,103 +1,229 @@
 //package com.example.fyp_1;
 //
+//
+//import android.content.Context;
+//import android.content.res.AssetManager;
+//import android.graphics.Bitmap;
+//import android.graphics.BitmapFactory;
+//import android.graphics.Point;
+//import android.graphics.Rect;
+//import android.os.Bundle;
+//import android.util.Pair;
+//import android.view.View;
+//import android.widget.AdapterView;
+//import android.widget.Button;
+//import android.widget.ImageView;
+//import android.widget.Toast;
+//
 //import androidx.annotation.NonNull;
 //import androidx.appcompat.app.AppCompatActivity;
 //
-//import android.graphics.Bitmap;
-//import android.os.Bundle;
-//import android.provider.MediaStore;
-//import android.util.Base64;
-//
-//import com.google.android.gms.tasks.OnCompleteListener;
+//import com.google.android.gms.tasks.OnFailureListener;
+//import com.google.android.gms.tasks.OnSuccessListener;
 //import com.google.android.gms.tasks.Task;
-//import com.google.firebase.functions.FirebaseFunctions;
-//import com.google.firebase.functions.HttpsCallableResult;
-//import com.google.gson.Gson;
-//import com.google.gson.JsonArray;
-//import com.google.gson.JsonElement;
-//import com.google.gson.JsonObject;
-//import com.google.gson.JsonParser;
-//import com.google.gson.JsonPrimitive;
+//import com.google.mlkit.vision.common.InputImage;
+//import com.google.mlkit.vision.text.Text;
+//import com.google.mlkit.vision.text.TextRecognition;
+//import com.google.mlkit.vision.text.TextRecognizer;
 //
-//import java.io.ByteArrayOutputStream;
+//import java.io.IOException;
+//import java.io.InputStream;
+//import java.util.Comparator;
+//import java.util.List;
+//import java.util.Map;
+//import java.util.PriorityQueue;
+//
 //
 //public class TextDetectActivity extends AppCompatActivity {
 //
-//    private FirebaseFunctions mFunctions;
+//    //UI Components
+//    private static final String TAG = "TextDetectActivity";
+//    private ImageView mImageView;
+//    private Button mTextButton;
 //
+//    //Selected Image
+//    private Bitmap mSelectedImage;
+//    // Max width (portrait mode)
+//    private Integer mImageMaxWidth;
+//    // Max height (portrait mode)
+//    private Integer mImageMaxHeight;
+//
+//
+//
+//    //Number of results to show in UI
+//    private static final int RESULTS_TO_SHOW = 3;
+//
+//    //Dimensions of Inputs
+//    private static final int DIM_IMG_SIZE_X = 224;
+//    private static final int DIM_IMG_SIZE_Y = 224;
+//
+//    private final PriorityQueue<Map.Entry<String, Float>> sortedLabels =
+//            new PriorityQueue<>(
+//                    RESULTS_TO_SHOW,
+//                    new Comparator<Map.Entry<String, Float>>() {
+//                        @Override
+//                        public int compare(Map.Entry<String, Float> o1, Map.Entry<String, Float>
+//                                o2) {
+//                            return (o1.getValue()).compareTo(o2.getValue());
+//                        }
+//                    });
 //
 //    @Override
 //    protected void onCreate(Bundle savedInstanceState) {
 //        super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_text_detect);
 //
-//        mFunctions = FirebaseFunctions.getInstance();
+//        mImageView = findViewById(R.id.image_view);
+//        mTextButton = findViewById(R.id.button_text);
 //
-//        // Create json request to cloud vision
-//        JsonObject request = new JsonObject();
-//        // Add image to request
-//        JsonObject image = new JsonObject();
-//        //image.add("content", new JsonPrimitive(base64encoded));
-//        request.add("image", image);
-//        //Add features to the request
-//        JsonObject feature = new JsonObject();
-//        feature.add("type", new JsonPrimitive("TEXT_DETECTION"));
-//        // Alternatively, for DOCUMENT_TEXT_DETECTION:
-//
-//        //feature.add("type", new JsonPrimitive("DOCUMENT_TEXT_DETECTION"));
-//        JsonArray features = new JsonArray();
-//        features.add(feature);
-//        request.add("features", features);
-//
-//
-//        annotateImage(request.toString())
-//                .addOnCompleteListener(new OnCompleteListener<JsonElement>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<JsonElement> task) {
-//                        if (!task.isSuccessful()) {
-//                            // Task failed with an exception
-//                            // ...
-//                        } else {
-//                            // Task completed successfully
-//                            // ...
-//                        }
-//                    }
-//                });
+//        mTextButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                runTextRecognition();
+//            }
+//        });
 //    }
 //
-//    private Bitmap scaleBitmapDown(Bitmap bitmap, int maxDimension) {
-//        int originalWidth = bitmap.getWidth();
-//        int originalHeight = bitmap.getHeight();
-//        int resizedWidth = maxDimension;
-//        int resizedHeight = maxDimension;
+//    private void runTextRecognition() {
+//        InputImage image = InputImage.fromBitmap(mSelectedImage, 0);
+//        TextRecognizer recognizer = TextRecognition.getClient();
+//        mTextButton.setEnabled(false);
+//        recognizer.process(image)
+//                .addOnSuccessListener(
+//                        new OnSuccessListener<Text>() {
+//                            @Override
+//                            public void onSuccess(Text texts) {
+//                                mTextButton.setEnabled(true);
+//                                processTextRecognitionResult(texts);
+//                            }
+//                        })
+//                .addOnFailureListener(
+//                        new OnFailureListener() {
+//                            @Override
+//                            public void onFailure(@NonNull Exception e) {
+//                                // Task failed with an exception
+//                                mTextButton.setEnabled(true);
+//                                e.printStackTrace();
+//                            }
+//                        });
 //
-//        if (originalHeight > originalWidth) {
-//            resizedHeight = maxDimension;
-//            resizedWidth = (int) (resizedHeight * (float) originalWidth / (float) originalHeight);
-//        } else if (originalWidth > originalHeight) {
-//            resizedWidth = maxDimension;
-//            resizedHeight = (int) (resizedWidth * (float) originalHeight / (float) originalWidth);
-//        } else if (originalHeight == originalWidth) {
-//            resizedHeight = maxDimension;
-//            resizedWidth = maxDimension;
+//
+//    }
+//
+//    private void processTextRecognitionResult(Text texts) {
+//        List<Text.TextBlock> blocks = texts.getTextBlocks();
+//        if (blocks.size() == 0) {
+//            Toast.makeText(getApplicationContext(), "No Text Found", Toast.LENGTH_SHORT).show();
+//            return;
 //        }
-//        return Bitmap.createScaledBitmap(bitmap, resizedWidth, resizedHeight, false);
+//        for (int i = 0; i < blocks.size(); i++) {
+//            List<Text.Line> lines = blocks.get(i).getLines();
+//            for (int j = 0; j < lines.size(); j++) {
+//                List<Text.Element> elements = lines.get(j).getElements();
+//                for (int k = 0; k < elements.size(); k++) {
+////                    Graphic textGraphic = new TextGraphic(mGraphicOverlay, elements.get(k));
+////                    mGraphicOverlay.add(textGraphic);
+//
+//                }
+//            }
+//        }
 //    }
 //
-//    private Task<JsonElement> annotateImage(String requestJson) {
-//        return mFunctions
-//                .getHttpsCallable("annotateImage")
-//                .call(requestJson)
-//                .continueWith(new Continuation<HttpsCallableResult, JsonElement>() {
-//                    @Override
-//                    public JsonElement then(@NonNull Task<HttpsCallableResult> task) {
-//                        // This continuation runs on either success or failure, but if the task
-//                        // has failed then getResult() will throw an Exception which will be
-//                        // propagated down.
-//                        return JsonParser.parseString(new Gson().toJson(task.getResult().getData()));
-//                    }
-//                });
+//        // Functions for loading images from app assets.
+//
+//        // Returns max image width, always for portrait mode. Caller needs to swap width / height for
+//        // landscape mode.
+//        private Integer getImageMaxWidth () {
+//            if (mImageMaxWidth == null) {
+//                // Calculate the max width in portrait mode. This is done lazily since we need to
+//                // wait for
+//                // a UI layout pass to get the right values. So delay it to first time image
+//                // rendering time.
+//                mImageMaxWidth = mImageView.getWidth();
+//            }
+//
+//            return mImageMaxWidth;
+//        }
+//
+//        // Returns max image height, always for portrait mode. Caller needs to swap width / height for
+//        // landscape mode.
+//        private Integer getImageMaxHeight () {
+//            if (mImageMaxHeight == null) {
+//                // Calculate the max width in portrait mode. This is done lazily since we need to
+//                // wait for
+//                // a UI layout pass to get the right values. So delay it to first time image
+//                // rendering time.
+//                mImageMaxHeight =
+//                        mImageView.getHeight();
+//            }
+//
+//            return mImageMaxHeight;
+//        }
+//
+//        // Gets the targeted width / height.
+//        private Pair<Integer, Integer> getTargetedWidthHeight () {
+//            int targetWidth;
+//            int targetHeight;
+//            int maxWidthForPortraitMode = getImageMaxWidth();
+//            int maxHeightForPortraitMode = getImageMaxHeight();
+//            targetWidth = maxWidthForPortraitMode;
+//            targetHeight = maxHeightForPortraitMode;
+//            return new Pair<>(targetWidth, targetHeight);
+//        }
+//
+//        public void onItemSelected (AdapterView< ? > parent, View v, int position, long id){
+//            //mGraphicOverlay.clear();
+//            switch (position) {
+//                case 0:
+//                    mSelectedImage = getBitmapFromAsset(this, "Please_walk_on_the_grass.jpg");
+//                    break;
+//                case 1:
+//                    // Whatever you want to happen when the thrid item gets selected
+//                    mSelectedImage = getBitmapFromAsset(this, "grace_hopper.jpg");
+//                    break;
+//            }
+//            if (mSelectedImage != null) {
+//                // Get the dimensions of the View
+//                Pair<Integer, Integer> targetedSize = getTargetedWidthHeight();
+//
+//                int targetWidth = targetedSize.first;
+//                int maxHeight = targetedSize.second;
+//
+//                // Determine how much to scale down the image
+//                float scaleFactor =
+//                        Math.max(
+//                                (float) mSelectedImage.getWidth() / (float) targetWidth,
+//                                (float) mSelectedImage.getHeight() / (float) maxHeight);
+//
+//                Bitmap resizedBitmap =
+//                        Bitmap.createScaledBitmap(
+//                                mSelectedImage,
+//                                (int) (mSelectedImage.getWidth() / scaleFactor),
+//                                (int) (mSelectedImage.getHeight() / scaleFactor),
+//                                true);
+//
+//                mImageView.setImageBitmap(resizedBitmap);
+//                mSelectedImage = resizedBitmap;
+//            }
+//        }
+//
+//        //@Override
+//        public void onNothingSelected (AdapterView < ? > parent){
+//            // Do nothing
+//        }
+//
+//        public static Bitmap getBitmapFromAsset (Context context, String filePath){
+//            AssetManager assetManager = context.getAssets();
+//
+//            InputStream is;
+//            Bitmap bitmap = null;
+//            try {
+//                is = assetManager.open(filePath);
+//                bitmap = BitmapFactory.decodeStream(is);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//            return bitmap;
+//        }
 //    }
-//
-//
-//}

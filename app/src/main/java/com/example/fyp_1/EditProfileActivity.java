@@ -31,7 +31,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
-public class ProfileActivity extends AppCompatActivity {
+public class EditProfileActivity extends AppCompatActivity {
 
     private static final int RESULT_LOAD_IMAGE = 1;
     DatabaseReference updateRef;
@@ -57,7 +57,7 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        setContentView(R.layout.activity_profile_edit);
 
         Intent intent = getIntent();
         email = intent.getStringExtra("email");
@@ -119,7 +119,7 @@ public class ProfileActivity extends AppCompatActivity {
         goBackBtn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProfileActivity.this.finish();
+                EditProfileActivity.this.finish();
             }
         });
 
@@ -196,7 +196,7 @@ public class ProfileActivity extends AppCompatActivity {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception exception) {
-                        Toast.makeText(ProfileActivity.this, "Image Upload Failed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(EditProfileActivity.this, "Image Upload Failed", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -206,12 +206,12 @@ public class ProfileActivity extends AppCompatActivity {
     public void update(View view) {
         if (isFNameChanged() || isLNameChanged() || isPhoneNumberChanged() || selectedImage != null) {
             uploadProfilePicture();
-            Toast.makeText(ProfileActivity.this, "Account Updated", Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(ProfileActivity.this, homePageActivity.class);
+            Toast.makeText(EditProfileActivity.this, "Account Updated", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(EditProfileActivity.this, homePageActivity.class);
             startActivity(intent);
 
         } else
-            Toast.makeText(ProfileActivity.this, "Details are the same & Can not be updated!", Toast.LENGTH_LONG).show();
+            Toast.makeText(EditProfileActivity.this, "Details are the same & Can not be updated!", Toast.LENGTH_LONG).show();
     }
 
     private boolean isPhoneNumberChanged() {

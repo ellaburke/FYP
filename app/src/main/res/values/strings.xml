@@ -80,4 +80,5 @@
     <string name="got_it">Got It!</string>
     <string name="add_to_shopping_list">Add to Shopping List</string>
     <string name="barcode_item">Barcode Item</string>
+    <string name="edit_profile">Edit Profile</string>
 </resources>

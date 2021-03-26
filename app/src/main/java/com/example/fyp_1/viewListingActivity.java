@@ -6,7 +6,9 @@ import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -14,6 +16,8 @@ import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.example.fyp_1.model.Listing;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,19 +30,14 @@ import java.util.List;
 public class viewListingActivity extends AppCompatActivity {
 
     private List<Listing> mListings;
-    private ProgressBar progressCircle;
     RecyclerView mRecyclerView;
     RecyclerView.Adapter mAdapter;
     RecyclerView.LayoutManager mLayoutManager;
     DatabaseReference mDatabaseRef;
     SearchView mSearchView;
-    SeekBar mSeekbar;
-    ImageView profileImageView;
 
-    //Profile Pic
-//    private String userId;
-//    private FirebaseUser user;
-//    StorageReference storageRef;
+    //FAB
+    FloatingActionButton uploadListingFAB;
 
 
     @Override
@@ -52,14 +51,36 @@ public class viewListingActivity extends AppCompatActivity {
         mListings = new ArrayList<>();
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("listings");
         mRecyclerView.setLayoutManager(mLayoutManager);
-        progressCircle = findViewById(R.id.progress_circle);
         mSearchView = findViewById(R.id.searchView);
-        mSeekbar = findViewById(R.id.locationSeekBar);
-        //profileImageView = findViewById(R.id.profileImageViewOnListing);
 
-//        user = FirebaseAuth.getInstance().getCurrentUser();
-//        userId = user.getUid();
-//        StorageReference imgRef = storageRef.child(user.getUid() + ".jpg");
+        //init FAB
+        uploadListingFAB = (FloatingActionButton) findViewById(R.id.fab_upload_listing);
+
+        //Init btm nav
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        //Set Home Selected
+        bottomNavigationView.setSelectedItemId(R.id.MyKitchenNav);
+
+        //Perform ItemSelectedListener
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.MyKitchenNav:
+                        startActivity(new Intent(getApplicationContext(), MyKitchenIngredients2.class));
+                        overridePendingTransition(0, 0);
+                        return true;
+                    case R.id.SearchListingNav:
+                        return true;
+                    case R.id.MyShoppingListNav:
+                        startActivity(new Intent(getApplicationContext(), MyShoppingListActivity.class));
+                        overridePendingTransition(0, 0);
+                        return true;
+                }
+                return false;
+            }
+        });
 
         mDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -67,41 +88,19 @@ public class viewListingActivity extends AppCompatActivity {
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                     Listing listing = postSnapshot.getValue(Listing.class);
                     mListings.add(listing);
-//                    if(listing.getUserId() == userId){
-//                        profileImageView.setImageURI();
-//                    }
                 }
                 mAdapter = new Adapter(viewListingActivity.this, (ArrayList<Listing>) mListings);
                 mRecyclerView.setAdapter(mAdapter);
-                progressCircle.setVisibility(View.INVISIBLE);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(viewListingActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
-                progressCircle.setVisibility(View.INVISIBLE);
 
             }
         });
 
-        mSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-
-        if(mSearchView !=null) {
+        if (mSearchView != null) {
             mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
@@ -116,12 +115,20 @@ public class viewListingActivity extends AppCompatActivity {
             });
         }
 
+        uploadListingFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent uploadListingIntent = new Intent(viewListingActivity.this, addListingActivity.class);
+                startActivity(uploadListingIntent);
+            }
+        });
+
     }
 
-    public void search(String str){
+    public void search(String str) {
         ArrayList<Listing> list = new ArrayList<>();
-        for(Listing obj : mListings){
-            if(obj.getName().toLowerCase().contains(str.toLowerCase())){
+        for (Listing obj : mListings) {
+            if (obj.getName().toLowerCase().contains(str.toLowerCase())) {
                 list.add(obj);
             }
         }

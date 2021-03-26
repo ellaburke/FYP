@@ -8,12 +8,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.fyp_1.model.MyShoppingListAdapter;
 import com.example.fyp_1.model.MyShoppingListItem;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -64,6 +66,33 @@ public class MyShoppingListActivity extends AppCompatActivity {
         MyShoppingListAdapter myShoppingListAdapter = new MyShoppingListAdapter(myShoppingListItems);
         myShoppingListRecyclerView.setAdapter(myShoppingListAdapter);
         myShoppingListRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+
+
+        //Init btm nav
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        //Set Home Selected
+        bottomNavigationView.setSelectedItemId(R.id.MyKitchenNav);
+
+        //Perform ItemSelectedListener
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.MyKitchenNav:
+                        startActivity(new Intent(getApplicationContext(), MyKitchenIngredients2.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                    case R.id.SearchListingNav:
+                        startActivity(new Intent(getApplicationContext(), viewListingActivity.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                    case R.id.MyShoppingListNav:
+                        return true;
+                }
+                return false;
+            }
+        });
 
         //XML Components
         addToListByDocScan = (FloatingActionButton) findViewById(R.id.fab_scan_doc);

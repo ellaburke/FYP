@@ -13,6 +13,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -24,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.fyp_1.model.FoodCategorySection;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -82,6 +84,32 @@ public class MyKitchenIngredients2 extends AppCompatActivity {
         //Popup Dialog
         popupTipDialog = new Dialog(this);
         closePopupTipDialog = (Button) findViewById(R.id.got_it_button);
+
+        //Init btm nav
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        //Set Home Selected
+        bottomNavigationView.setSelectedItemId(R.id.MyKitchenNav);
+
+        //Perform ItemSelectedListener
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.MyKitchenNav:
+                        return true;
+                    case R.id.SearchListingNav:
+                        startActivity(new Intent(getApplicationContext(), viewListingActivity.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                    case R.id.MyShoppingListNav:
+                        startActivity(new Intent(getApplicationContext(), MyShoppingListActivity.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                }
+                    return false;
+            }
+        });
 
         //initialise animations
         animatorRotateOpen = AnimationUtils.loadAnimation(MyKitchenIngredients2.this, R.anim.rotate_open_anim);

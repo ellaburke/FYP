@@ -18,10 +18,7 @@
 
         <item
             android:id="@+id/nav_view_listing"
-            android:title="View Listing" />
-        <item
-            android:id="@+id/nav_view_my_listing"
-            android:title="My Listings" />
+            android:title="Search Listings" />
         <item
             android:id="@+id/user_rating"
             android:title="Rate User" />
@@ -34,9 +31,6 @@
             android:id="@+id/nav_shopping_list"
             android:title="My Shopping List" />
 
-        <item
-            android:id="@+id/nav_recipe"
-            android:title="Recipes" />
     </group>
 
     <item android:title="Profile">

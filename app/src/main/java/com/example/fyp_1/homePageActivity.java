@@ -68,30 +68,22 @@ public class homePageActivity extends AppCompatActivity implements NavigationVie
                 startActivity(intent3);
                 break;
             case R.id.nav_profile:
-                Intent intent4 = new Intent(homePageActivity.this, ProfileActivity.class);
+                Intent intent4 = new Intent(homePageActivity.this, MyListingsProfileActivity.class);
                 intent4.putExtra("email", user.getEmail());
                 startActivity(intent4);
-                break;
-            case R.id.nav_view_my_listing:
-                Intent intent5 = new Intent(homePageActivity.this, MyListings.class);
-                startActivity(intent5);
                 break;
             case R.id.user_rating:
                 Intent intent6 = new Intent(homePageActivity.this, UserRating.class);
                 startActivity(intent6);
                 break;
 //            case R.id.nav_scan:
-//                Intent intent7 = new Intent(homePageActivity.this, TextRecognitionActivity.class);
+//                Intent intent7 = new Intent(homePageActivity.this, TextDetectActivity.class);
 //                startActivity(intent7);
 //                break;
             case R.id.nav_my_kitchen:
                 Intent intent8 = new Intent(homePageActivity.this, MyKitchenIngredients2.class);
                 intent8.putExtra("email", user.getEmail());
                 startActivity(intent8);
-                break;
-            case R.id.nav_recipe:
-                Intent intent9 = new Intent(homePageActivity.this, RecipeActivity.class);
-                startActivity(intent9);
                 break;
             case R.id.nav_shopping_list:
                 Intent intent10 = new Intent(homePageActivity.this, MyShoppingListActivity.class);

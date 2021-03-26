@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MyListingsProfileActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="250dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/listingProfileImageView"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="20dp"
+                    android:src="@drawable/profilepic"
+                    app:civ_border_color="#FF000000"
+                    app:civ_border_width="2dp" />
+
+                <TextView
+                    android:id="@+id/profile_listing_name_display"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_toRightOf="@id/listingProfileImageView"
+                    android:text="Username"
+                    android:textColor="@android:color/black"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/profile_user_location_display"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/profile_listing_name_display"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_toRightOf="@id/listingProfileImageView"
+                    android:text="Location"
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp" />
+
+                <RatingBar
+                    android:id="@+id/profile_listing_ratingBar"
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/profile_user_location_display"
+                    android:layout_marginLeft="20dp"
+                    android:layout_toRightOf="@id/listingProfileImageView" />
+
+                <TextView
+                    android:id="@+id/profile_listing_reuseTV"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/profile_listing_ratingBar"
+                    android:layout_marginLeft="20dp"
+                    android:layout_toRightOf="@id/listingProfileImageView"
+                    android:text="No. of Reuses" />
+
+
+                <Button
+                    android:id="@+id/editMyProfileBtn"
+                    android:layout_width="150dp"
+                    android:layout_height="35dp"
+                    android:layout_below="@id/profile_listing_reuseTV"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_toEndOf="@id/listingProfileImageView"
+                    android:layout_toRightOf="@id/listingProfileImageView"
+                    android:background="@drawable/custom_button"
+                    android:text="@string/edit_profile"
+                    android:textSize="12sp"
+                    app:backgroundTint="@color/wasteify_pink" />
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/myListingsOnProfileRCV"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

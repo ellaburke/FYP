@@ -15,7 +15,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:headerLayout="@layout/header"
-        app:menu="@menu/main_menu" />
+        app:menu="@menu/main_menu"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -25,9 +25,6 @@
             android:id="@+id/toolbar"
             layout="@layout/toolbar"
             app:navigationIcon="@drawable/ic_baseline_menu_24" />
-
-
     </ScrollView>
-
 
 </androidx.drawerlayout.widget.DrawerLayout>
