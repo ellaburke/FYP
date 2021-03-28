@@ -81,4 +81,18 @@
     <string name="add_to_shopping_list">Add to Shopping List</string>
     <string name="barcode_item">Barcode Item</string>
     <string name="edit_profile">Edit Profile</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="expiry_date">Expiry Date</string>
+    <string name="expiry_date_title">Expiry Date:</string>
+    <string name="pick_up_times_e_g_evenings_only">Pick Up Times (e.g. Evenings only)</string>
+    <string name="pick_up_times">Pick Up Times:</string>
+    <string name="pick_up_location">Pick-Up Location</string>
+    <string name="pick_up_location_title">Pick-Up Location:</string>
+    <string name="category">Category</string>
+    <string name="category_title">Category:</string>
+    <string name="description">Description</string>
+    <string name="description_title">Description:</string>
+    <string name="title">Title</string>
+    <string name="title_title">Title:</string>
 </resources>

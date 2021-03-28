@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ViewMyFullListing">
+    tools:context=".UserProfileAndListings.ViewMyFullListing">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,7 +13,7 @@
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="240dp"
+            android:layout_height="250dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
@@ -59,17 +59,47 @@
                 android:layout_height="match_parent">
 
                 <TextView
+                    android:id="@+id/FlistingTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/suravaram"
+                    android:text="@string/title_title"
+                    android:textColor="#0B0A0A"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="5dp" />
+
+                <TextView
                     android:id="@+id/fullListingDisplayTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginLeft="20dp"
+                    android:layout_toRightOf="@id/FlistingTitle"
                     android:layout_marginTop="10dp"
                     android:fontFamily="@font/suravaram"
-                    android:text="Title"
+                    android:text="@string/title"
                     android:textColor="#0B0A0A"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:layout_toEndOf="@id/FlistingTitle" />
+
+                <TextView
+                    android:id="@+id/fListingDisplayDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/fullListingDisplayTitle"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="20dp"
+                    android:maxLength="250"
+                    android:text="@string/description_title"
+                    android:textColor="#0B0A0A"
+                    android:textSize="16sp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="5dp" />
 
 
                 <TextView
@@ -78,57 +108,111 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/fullListingDisplayTitle"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginLeft="20dp"
+                    android:layout_toRightOf="@id/fListingDisplayDescription"
                     android:maxLength="250"
-                    android:text="Description"
+                    android:text="@string/description"
                     android:textColor="#0B0A0A"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:layout_toEndOf="@id/fListingDisplayDescription" />
+
+                <TextView
+                    android:id="@+id/fListingDisplayCategory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/fullListingDisplayDescription"
+                    android:layout_marginLeft="20dp"
+                    android:text="@string/category_title"
+                    android:textColor="#0B0A0A"
+                    android:textSize="16sp"
+                    android:layout_marginStart="20dp" />
 
                 <TextView
                     android:id="@+id/fullListingDisplayCategory"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/fullListingDisplayDescription"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginLeft="20dp"
-                    android:text="Category"
+                    android:layout_toRightOf="@id/fListingDisplayCategory"
+                    android:text="@string/category"
+                    android:layout_marginLeft="5dp"
                     android:textColor="#0B0A0A"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:layout_marginStart="5dp"
+                    android:layout_toEndOf="@id/fListingDisplayCategory" />
+
+                <TextView
+                    android:id="@+id/fListingDisplayLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/fullListingDisplayCategory"
+                    android:layout_marginLeft="20dp"
+                    android:text="@string/pick_up_location_title"
+                    android:textColor="#0B0A0A"
+                    android:textSize="16sp"
+                    android:layout_marginStart="20dp" />
 
                 <TextView
                     android:id="@+id/fullListingDisplayLocation"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/fullListingDisplayCategory"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginLeft="20dp"
-                    android:text="Pick-Up Location"
+                    android:layout_toRightOf="@id/fListingDisplayLocation"
+                    android:layout_marginLeft="5dp"
+                    android:text="@string/pick_up_location"
                     android:textColor="#0B0A0A"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:layout_marginStart="5dp"
+                    android:layout_toEndOf="@id/fListingDisplayLocation" />
+
+                <TextView
+                    android:id="@+id/fListingDisplayPickUpTimes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/fullListingDisplayLocation"
+                    android:layout_marginLeft="20dp"
+                    android:maxLength="100"
+                    android:text="@string/pick_up_times"
+                    android:textColor="#0B0A0A"
+                    android:textSize="16sp"
+                    android:layout_marginStart="20dp" />
 
                 <TextView
                     android:id="@+id/fullListingDisplayPickUpTimes"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/fullListingDisplayLocation"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginLeft="20dp"
+                    android:layout_toRightOf="@id/fListingDisplayPickUpTimes"
+                    android:layout_marginLeft="5dp"
                     android:maxLength="100"
-                    android:text="Pick Up Times (e.g. Evenings only)"
+                    android:text="@string/pick_up_times_e_g_evenings_only"
                     android:textColor="#0B0A0A"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:layout_marginStart="5dp"
+                    android:layout_toEndOf="@id/fListingDisplayPickUpTimes" />
 
+                <TextView
+                    android:id="@+id/fListingDisplayExpiry"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/fullListingDisplayPickUpTimes"
+                    android:layout_marginLeft="20dp"
+                    android:text="@string/expiry_date_title"
+                    android:textColor="#0B0A0A"
+                    android:textSize="16sp"
+                    android:layout_marginStart="20dp" />
 
                 <TextView
                     android:id="@+id/fullListingDisplayExpiry"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/fullListingDisplayPickUpTimes"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginLeft="20dp"
-                    android:text="Expiry Date"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@id/fListingDisplayExpiry"
+                    android:text="@string/expiry_date"
                     android:textColor="#0B0A0A"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_toEndOf="@id/fListingDisplayExpiry"
+                    android:layout_marginStart="5dp" />
 
 
             </RelativeLayout>
@@ -146,20 +230,21 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/custom_button"
                 app:backgroundTint="@color/wasteify_pink"
-                android:text="Edit"
+                android:text="@string/edit"
                 android:layout_marginTop="20dp"
                 android:layout_centerHorizontal="true"/>
 
             <Button
-                android:id="@+id/backToProfileListing"
+                android:id="@+id/fullListingDisplayDeleteBtn"
                 android:layout_width="250dp"
+                android:layout_below="@id/fullListingDisplayEditBtn"
                 android:layout_height="wrap_content"
                 android:background="@drawable/custom_button"
                 app:backgroundTint="@color/wasteify_pink"
-                android:text="Go Back"
-                android:layout_below="@+id/fullListingDisplayEditBtn"
-                android:layout_margin="5dp"
+                android:text="@string/delete"
+                android:layout_marginTop="10dp"
                 android:layout_centerHorizontal="true"/>
+
 
         </RelativeLayout>
 

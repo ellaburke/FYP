@@ -1,4 +1,4 @@
-package com.example.fyp_1;
+package com.example.fyp_1.Recipe;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.fyp_1.MyKitchenIngredients2;
+import com.example.fyp_1.R;
 import com.example.fyp_1.model.Recipe;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

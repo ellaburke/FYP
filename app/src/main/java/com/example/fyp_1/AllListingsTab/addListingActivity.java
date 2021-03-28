@@ -1,4 +1,4 @@
-package com.example.fyp_1;
+package com.example.fyp_1.AllListingsTab;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,6 +25,9 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.fyp_1.Maps.MapsActivity;
+import com.example.fyp_1.R;
+import com.example.fyp_1.homePageActivity;
 import com.example.fyp_1.model.Listing;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;

@@ -3,7 +3,6 @@ package com.example.fyp_1;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,6 +25,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.fyp_1.AllListingsTab.viewListingActivity;
+import com.example.fyp_1.BarcodeScan.BarcodeActivity;
+import com.example.fyp_1.BarcodeScan.CaptureAct;
+import com.example.fyp_1.Recipe.RecipeActivity;
+import com.example.fyp_1.ShoppingListTab.MyShoppingListActivity;
+import com.example.fyp_1.UserProfileAndListings.MyListingsProfileActivity;
 import com.example.fyp_1.model.FoodCategorySection;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -54,12 +59,9 @@ public class MyKitchenIngredients2 extends AppCompatActivity {
     String ingredientId;
     Dialog popupTipDialog;
     Button closePopupTipDialog;
-    ArrayList<MyKitchenItem> selectedList;
-    //MyKitchenIngredientsChildAdapter myKitchenIngredientsChildAdapter;
 
     //   Barcode
     String barcode;
-    String barcodeResult;
 
     //FAB Animations
     Animation animatorRotateOpen;
@@ -74,6 +76,30 @@ public class MyKitchenIngredients2 extends AppCompatActivity {
 
 
     ArrayList<FoodCategorySection> foodCategorySectionList = new ArrayList<>();
+
+    String dairySection = "Dairy";
+    ArrayList<MyKitchenItem> dairySectionItems = new ArrayList<>();
+
+    String vegSection = "Vegtables";
+    ArrayList<MyKitchenItem> vegSectionItems = new ArrayList<>();
+
+    String fruitSection = "Fruit";
+    ArrayList<MyKitchenItem> fruitSectionItems = new ArrayList<>();
+
+    String meatOrPoultrySection = "Meat or Poultry";
+    ArrayList<MyKitchenItem> meatOrPoultrySectionItems = new ArrayList<>();
+
+    String fishSection = "Fish";
+    ArrayList<MyKitchenItem> fishSectionItems = new ArrayList<>();
+
+    String frozenSection = "Frozen";
+    ArrayList<MyKitchenItem> frozenSectionItems = new ArrayList<>();
+
+    String cupboardSection = "Cupboard";
+    ArrayList<MyKitchenItem> cupboardSectionItems = new ArrayList<>();
+
+    String breadOrCerealSection = "Bread or Cereal";
+    ArrayList<MyKitchenItem> breadOrCerealSectionItems = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,19 +123,19 @@ public class MyKitchenIngredients2 extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
+                switch (item.getItemId()) {
                     case R.id.MyKitchenNav:
                         return true;
                     case R.id.SearchListingNav:
                         startActivity(new Intent(getApplicationContext(), viewListingActivity.class));
-                        overridePendingTransition(0,0);
+                        overridePendingTransition(0, 0);
                         return true;
                     case R.id.MyShoppingListNav:
                         startActivity(new Intent(getApplicationContext(), MyShoppingListActivity.class));
-                        overridePendingTransition(0,0);
+                        overridePendingTransition(0, 0);
                         return true;
                 }
-                    return false;
+                return false;
             }
         });
 
@@ -125,37 +151,11 @@ public class MyKitchenIngredients2 extends AppCompatActivity {
         addToKitchenByTextBtn = (FloatingActionButton) findViewById(R.id.fab_add_ingredient_by_text);
         checkedItemsBtn = (FloatingActionButton) findViewById(R.id.fab_add_ingredient_selected);
 
-
         //RCV
         mainRecyclerView = findViewById(R.id.mainRecyclerView);
         MyKitchenItemsAdapter2 myKitchenItemsAdapter2 = new MyKitchenItemsAdapter2(foodCategorySectionList);
         mainRecyclerView.setAdapter(myKitchenItemsAdapter2);
         mainRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-
-
-        String dairySection = "Dairy";
-        ArrayList<MyKitchenItem> dairySectionItems = new ArrayList<>();
-
-        String vegSection = "Vegtables";
-        ArrayList<MyKitchenItem> vegSectionItems = new ArrayList<>();
-
-        String fruitSection = "Fruit";
-        ArrayList<MyKitchenItem> fruitSectionItems = new ArrayList<>();
-
-        String meatOrPoultrySection = "Meat or Poultry";
-        ArrayList<MyKitchenItem> meatOrPoultrySectionItems = new ArrayList<>();
-
-        String fishSection = "Fish";
-        ArrayList<MyKitchenItem> fishSectionItems = new ArrayList<>();
-
-        String frozenSection = "Frozen";
-        ArrayList<MyKitchenItem> frozenSectionItems = new ArrayList<>();
-
-        String cupboardSection = "Cupboard";
-        ArrayList<MyKitchenItem> cupboardSectionItems = new ArrayList<>();
-
-        String breadOrCerealSection = "Bread or Cereal";
-        ArrayList<MyKitchenItem> breadOrCerealSectionItems = new ArrayList<>();
 
 
         mDatabaseRef.addValueEventListener(new ValueEventListener() {
@@ -170,56 +170,48 @@ public class MyKitchenIngredients2 extends AppCompatActivity {
                         Log.d("hello", String.valueOf(dairySectionItems));
                         Log.d(TAG, "initData: " + foodCategorySectionList);
                         System.out.println(foodCategorySectionList);
-                        //myKitchenItemsAdapter2.notifyDataSetChanged();
 
                     } else if (mKI.getUserId().equals(userId) && mKI.itemCategory.equals("Veg")) {
                         vegSectionItems.add(mKI);
                         foodCategorySectionList.add(new FoodCategorySection(vegSection, vegSectionItems));
                         Log.d(TAG, "initData: " + foodCategorySectionList);
                         System.out.println(foodCategorySectionList);
-                        //myKitchenItemsAdapter2.notifyDataSetChanged();
 
                     } else if (mKI.getUserId().equals(userId) && mKI.itemCategory.equals("Fruit")) {
                         fruitSectionItems.add(mKI);
                         foodCategorySectionList.add(new FoodCategorySection(fruitSection, fruitSectionItems));
                         Log.d(TAG, "initData: " + foodCategorySectionList);
                         System.out.println(foodCategorySectionList);
-                        //myKitchenItemsAdapter2.notifyDataSetChanged();
 
                     } else if (mKI.getUserId().equals(userId) && mKI.itemCategory.equals("Meat/Poultry")) {
                         meatOrPoultrySectionItems.add(mKI);
                         foodCategorySectionList.add(new FoodCategorySection(meatOrPoultrySection, meatOrPoultrySectionItems));
                         Log.d(TAG, "initData: " + foodCategorySectionList);
                         System.out.println(foodCategorySectionList);
-                        //myKitchenItemsAdapter2.notifyDataSetChanged();
 
                     } else if (mKI.getUserId().equals(userId) && mKI.itemCategory.equals("Fish")) {
                         fishSectionItems.add(mKI);
                         foodCategorySectionList.add(new FoodCategorySection(fishSection, fishSectionItems));
                         Log.d(TAG, "initData: " + foodCategorySectionList);
                         System.out.println(foodCategorySectionList);
-                        //myKitchenItemsAdapter2.notifyDataSetChanged();
 
                     } else if (mKI.getUserId().equals(userId) && mKI.itemCategory.equals("Cupboard")) {
                         cupboardSectionItems.add(mKI);
                         foodCategorySectionList.add(new FoodCategorySection(cupboardSection, cupboardSectionItems));
                         Log.d(TAG, "initData: " + foodCategorySectionList);
                         System.out.println(foodCategorySectionList);
-                        //myKitchenItemsAdapter2.notifyDataSetChanged();
 
                     } else if (mKI.getUserId().equals(userId) && mKI.itemCategory.equals("Bread/Cereal")) {
                         breadOrCerealSectionItems.add(mKI);
                         foodCategorySectionList.add(new FoodCategorySection(breadOrCerealSection, breadOrCerealSectionItems));
                         Log.d(TAG, "initData: " + foodCategorySectionList);
                         System.out.println(foodCategorySectionList);
-                        //myKitchenItemsAdapter2.notifyDataSetChanged();
 
                     } else if (mKI.getUserId().equals(userId) && mKI.itemCategory.equals("Freezer")) {
                         frozenSectionItems.add(mKI);
                         foodCategorySectionList.add(new FoodCategorySection(frozenSection, frozenSectionItems));
                         Log.d(TAG, "initData: " + foodCategorySectionList);
                         System.out.println(foodCategorySectionList);
-                        //myKitchenItemsAdapter2.notifyDataSetChanged();
                     }
                 }
                 myKitchenItemsAdapter2.notifyDataSetChanged();
@@ -290,8 +282,6 @@ public class MyKitchenIngredients2 extends AppCompatActivity {
                             mDatabaseRef.child(itemId).setValue(myKitchenItem);
                             itemInput.setText("");
                             itemAmountInput.setText("");
-                            //categorySpinner.set
-                            //dialog.dismiss();
                         }
                     }
                 });
@@ -393,7 +383,6 @@ public class MyKitchenIngredients2 extends AppCompatActivity {
                         Intent barcodeIntent = new Intent(MyKitchenIngredients2.this, BarcodeActivity.class);
                         barcodeIntent.putExtra("barcode", barcode);
                         startActivity(barcodeIntent);
-                        //addBarcodeResultToList();
 
                     }
                 });
@@ -407,61 +396,6 @@ public class MyKitchenIngredients2 extends AppCompatActivity {
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
-
-    }
-
-    public void addBarcodeResultToList() {
-
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(MyKitchenIngredients2.this);
-        View mView = getLayoutInflater().inflate(R.layout.add_to_my_kitchen_dialog, null);
-        EditText itemInput = (EditText) mView.findViewById(R.id.item_name_et);
-        EditText itemAmountInput = (EditText) mView.findViewById(R.id.item_amount_et);
-        TextView cancelTV = (TextView) mView.findViewById(R.id.cancel_dialog_option);
-        TextView addTV = (TextView) mView.findViewById(R.id.add_dialog_option);
-
-        //set with barcode item name
-        itemInput.setText(barcode);
-
-        //init variables for dialog
-        Spinner itemAmountSpinner = (Spinner) mView.findViewById(R.id.item_amount_spinner);
-        Spinner categorySpinner = (Spinner) mView.findViewById(R.id.food_category_spinner2);
-
-        // Create an ArrayAdapter using the string array and a default spinner
-        ArrayAdapter<CharSequence> staticAdapter = ArrayAdapter.createFromResource(MyKitchenIngredients2.this, R.array.item_amount_array,
-                android.R.layout.simple_spinner_item);
-        ArrayAdapter<CharSequence> staticAdapter2 = ArrayAdapter.createFromResource(MyKitchenIngredients2.this, R.array.food_category_array,
-                android.R.layout.simple_spinner_item);
-
-        // Specify the layout to use when the list of choices appears
-        staticAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        staticAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        // Apply the adapter to the spinner
-        itemAmountSpinner.setAdapter(staticAdapter);
-        categorySpinner.setAdapter(staticAdapter2);
-
-//        addTV.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (!itemInput.getText().toString().isEmpty() && !categorySpinner.getSelectedItem().toString().isEmpty()) {
-//                    myItemInput = itemInput.getText().toString();
-//                    myItemAmountInput = itemAmountInput.getText().toString();
-//                    myItemCategory = categorySpinner.getSelectedItem().toString();
-//                    myItemMeasurement = itemAmountSpinner.getSelectedItem().toString();
-//                    itemAmountAndMeasurement = myItemAmountInput + myItemMeasurement;
-//                    myKitchenItem = new MyKitchenItem(myItemInput, myItemCategory, itemAmountAndMeasurement, userId, itemId);
-//                    mDatabaseRef = FirebaseDatabase.getInstance().getReference("myKitchenItems");
-//                    itemId = mDatabaseRef.push().getKey();
-//                    mDatabaseRef.child(itemId).setValue(myKitchenItem);
-//                    itemInput.setText("");
-//                    itemAmountInput.setText("");
-//                    //categorySpinner.set
-//                    //dialog.dismiss();
-//                }
-//            }
-//        });
-
-
 
     }
 

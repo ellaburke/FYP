@@ -1,4 +1,4 @@
-package com.example.fyp_1;
+package com.example.fyp_1.AllListingsTab;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,13 +8,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.SeekBar;
 import android.widget.Toast;
 
+import com.example.fyp_1.MyKitchenIngredients2;
+import com.example.fyp_1.R;
+import com.example.fyp_1.ShoppingListTab.MyShoppingListActivity;
+import com.example.fyp_1.UserProfileAndListings.MyListingsProfileActivity;
 import com.example.fyp_1.model.Listing;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -60,7 +62,7 @@ public class viewListingActivity extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         //Set Home Selected
-        bottomNavigationView.setSelectedItemId(R.id.MyKitchenNav);
+        bottomNavigationView.setSelectedItemId(R.id.SearchListingNav);
 
         //Perform ItemSelectedListener
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -134,6 +136,25 @@ public class viewListingActivity extends AppCompatActivity {
         }
         Adapter adapterClass = new Adapter(viewListingActivity.this, (ArrayList<Listing>) list);
         mRecyclerView.setAdapter(adapterClass);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.profile_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.profile_icon) {
+            Intent profileIntent = new Intent(viewListingActivity.this, MyListingsProfileActivity.class);
+            startActivity(profileIntent);
+            return true;
+        }
+
+        return true;
     }
 
 

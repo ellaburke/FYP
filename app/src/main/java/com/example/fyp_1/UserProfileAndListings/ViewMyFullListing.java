@@ -1,18 +1,21 @@
-package com.example.fyp_1;
+package com.example.fyp_1.UserProfileAndListings;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.fyp_1.MyKitchenIngredients2;
+import com.example.fyp_1.R;
 import com.example.fyp_1.model.Listing;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -33,6 +36,8 @@ public class ViewMyFullListing extends AppCompatActivity {
     private FirebaseUser user;
     DatabaseReference updateRef;
     DatabaseReference getListingRef;
+    //Listing ID
+    String IDListing;
 
     //Set value for listing being passed from intent
     String listingToDisplay;
@@ -40,7 +45,7 @@ public class ViewMyFullListing extends AppCompatActivity {
 
     //UI Components
     TextView listingTitleTV, listingDescriptionTV, listingLocationTV, listingExpiryTV, listingCategoryTV, listingPickUpTimesTV;
-    Button fullListingEditBtn, backToProfileListing;
+    Button fullListingEditBtn, getFullListingDeleteBtn;
     ImageView fullListingImage;
 
     //String for setting text in TV
@@ -57,10 +62,12 @@ public class ViewMyFullListing extends AppCompatActivity {
         user = FirebaseAuth.getInstance().getCurrentUser();
         userId = user.getUid();
         updateRef = FirebaseDatabase.getInstance().getReference("listings");
+        getListingRef = FirebaseDatabase.getInstance().getReference("listings");
 
         //Get Intent from ViewMyFullListing
         Intent i = getIntent();
         listingToDisplay = getIntent().getStringExtra("selected_listing_to_display");
+
 
         //Init UI
         listingTitleTV = (TextView) findViewById(R.id.fullListingDisplayTitle);
@@ -70,8 +77,8 @@ public class ViewMyFullListing extends AppCompatActivity {
         listingCategoryTV = (TextView) findViewById(R.id.fullListingDisplayCategory);
         listingPickUpTimesTV = (TextView) findViewById(R.id.fullListingDisplayPickUpTimes);
         fullListingEditBtn = (Button) findViewById(R.id.fullListingDisplayEditBtn);
-        backToProfileListing = (Button) findViewById(R.id.backToProfileListing);
         fullListingImage = (ImageView) findViewById(R.id.fullListingDisplayImage);
+        getFullListingDeleteBtn = (Button) findViewById(R.id.fullListingDisplayDeleteBtn);
 
         fullListingEditBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,10 +90,12 @@ public class ViewMyFullListing extends AppCompatActivity {
             }
         });
 
-        backToProfileListing.setOnClickListener(new View.OnClickListener() {
+        getFullListingDeleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                deleteListing(IDListing);
+                Intent backToProfileIntent = new Intent(ViewMyFullListing.this, MyListingsProfileActivity.class);
+                startActivity(backToProfileIntent);
             }
         });
 
@@ -105,6 +114,7 @@ public class ViewMyFullListing extends AppCompatActivity {
                         FLPickUpTimes = currentItem.getPickUpTime();
                         FLExpiry = currentItem.getExpiryDate();
                         FLImage = currentItem.getListingImageURL();
+                        IDListing = currentItem.getListingId();
 
                         listingTitleTV.setText(FLTitle);
                         listingDescriptionTV.setText(FLDescription);
@@ -128,5 +138,30 @@ public class ViewMyFullListing extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void deleteListing(String idListing) {
+        DatabaseReference deleteRef = deleteRef = FirebaseDatabase.getInstance().getReference("listings").child(idListing);
+        System.out.println("DELETE" + idListing);
+
+        deleteRef.removeValue();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.go_back, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.go_back_icon) {
+            finish();
+            return true;
+        }
+
+        return true;
     }
 }

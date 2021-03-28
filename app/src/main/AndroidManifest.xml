@@ -25,22 +25,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FYP_1">
-        <activity android:name=".EditMyListingActivity"></activity>
-        <activity android:name=".ViewMyFullListing" />
-        <activity android:name=".MyListingsProfileActivity" />
+        <activity android:name=".UserProfileAndListings.EditMyListingActivity"></activity>
+        <activity android:name=".UserProfileAndListings.ViewMyFullListing" />
+        <activity android:name=".UserProfileAndListings.MyListingsProfileActivity" />
         <activity android:name=".TextDetectActivity" />
-        <activity android:name=".MyShoppingListActivity" />
+        <activity android:name=".ShoppingListTab.MyShoppingListActivity" />
         <activity android:name=".MyKitchenIngredients2" />
-        <activity android:name=".BarcodeActivity" />
-        <activity android:name=".ViewFullRecipeActivity" />
-        <activity android:name=".ViewAllRecipesActivity" />
+        <activity android:name=".BarcodeScan.BarcodeActivity" />
+        <activity android:name=".Recipe.ViewFullRecipeActivity" />
+        <activity android:name=".Recipe.ViewAllRecipesActivity" />
         <activity android:name=".MoveItemToListingActivity" />
-        <activity android:name=".RecipeActivity" />
+        <activity android:name=".Recipe.RecipeActivity" />
         <activity android:name=".TextRecognitionActivity" />
-        <activity android:name=".GroceryListActivity" />
         <activity android:name=".ScanActivity" />
         <activity android:name=".UserRating" />
-        <activity android:name=".MyListings" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -54,20 +52,20 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".CaptureAct"
+            android:name=".BarcodeScan.CaptureAct"
             android:screenOrientation="fullSensor"
             android:stateNotNeeded="true"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".MapsActivity"
+            android:name=".Maps.MapsActivity"
             android:label="@string/title_activity_maps" />
-        <activity android:name=".EditProfileActivity" />
-        <activity android:name=".viewListingActivity" />
-        <activity android:name=".addListingActivity" />
+        <activity android:name=".UserProfileAndListings.EditProfileActivity" />
+        <activity android:name=".AllListingsTab.viewListingActivity" />
+        <activity android:name=".AllListingsTab.addListingActivity" />
         <activity android:name=".getLocationActivity" />
         <activity android:name=".homePageActivity" />
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".LoginActivity">
+        <activity android:name=".LoginAndRegister.RegisterActivity" />
+        <activity android:name=".LoginAndRegister.LoginActivity">
             <meta-data
                 android:name="com.google.mlkit.vision.DEPENDENCIES"
                 android:value="ocr" />

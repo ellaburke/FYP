@@ -1,4 +1,4 @@
-package com.example.fyp_1;
+package com.example.fyp_1.Recipe;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,11 +9,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.fyp_1.R;
 import com.example.fyp_1.model.RecipeInstructionStep;
 
 import java.util.ArrayList;
 
-public class DisplayRecipeAdapter extends RecyclerView.Adapter<DisplayRecipeAdapter.ExampleViewHolder> {
+public class DisplayRecipeStepAdapter extends RecyclerView.Adapter<DisplayRecipeStepAdapter.ExampleViewHolder> {
     private ArrayList<RecipeInstructionStep> mStep;
     private Context mContext;
 
@@ -33,7 +34,7 @@ public class DisplayRecipeAdapter extends RecyclerView.Adapter<DisplayRecipeAdap
     
 
 
-    public DisplayRecipeAdapter(Context context, ArrayList<RecipeInstructionStep> recipesSteps) {
+    public DisplayRecipeStepAdapter(Context context, ArrayList<RecipeInstructionStep> recipesSteps) {
         super();
         this.mContext = context;
         this.mStep = recipesSteps;

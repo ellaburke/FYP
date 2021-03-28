@@ -1,4 +1,4 @@
-package com.example.fyp_1;
+package com.example.fyp_1.Recipe;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,16 +9,12 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.fyp_1.FullRecipeDisplayFragments.IngredientListFragment;
 import com.example.fyp_1.FullRecipeDisplayFragments.RecipeFragmentAdapter;
-import com.example.fyp_1.model.Listing;
-import com.example.fyp_1.model.Recipe;
+import com.example.fyp_1.R;
 import com.example.fyp_1.model.RecipeInstructionStep;
 import com.example.fyp_1.model.RecipeInstructionStepEquipment;
 import com.example.fyp_1.model.RecipeInstructionStepIngredient;
@@ -28,11 +24,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -270,7 +263,7 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new DisplayRecipeAdapter(ViewFullRecipeActivity.this, stepsList);
+        mAdapter = new DisplayRecipeStepAdapter(ViewFullRecipeActivity.this, stepsList);
         mRecyclerView.setAdapter(mAdapter);
     }
 

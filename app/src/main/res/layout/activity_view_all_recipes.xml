@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ViewAllRecipesActivity">
+    tools:context=".Recipe.ViewAllRecipesActivity">
 
     <TextView
         android:id="@+id/recipe_found_tv"

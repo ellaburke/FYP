@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MyListingsProfileActivity">
+    tools:context=".UserProfileAndListings.MyListingsProfileActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -49,6 +49,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_toRightOf="@id/listingProfileImageView"
                     android:text="Location"
+                    android:drawableLeft="@drawable/ic_baseline_location_on_24"
                     android:textColor="@android:color/black"
                     android:textSize="14sp" />
 

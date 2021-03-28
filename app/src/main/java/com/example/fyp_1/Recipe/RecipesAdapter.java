@@ -1,4 +1,4 @@
-package com.example.fyp_1;
+package com.example.fyp_1.Recipe;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.fyp_1.R;
 import com.example.fyp_1.model.Recipe;
 import com.squareup.picasso.Picasso;
 

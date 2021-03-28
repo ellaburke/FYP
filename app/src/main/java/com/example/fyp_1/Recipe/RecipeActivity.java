@@ -1,4 +1,4 @@
-package com.example.fyp_1;
+package com.example.fyp_1.Recipe;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.example.fyp_1.LoadingDialog;
+import com.example.fyp_1.R;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squareup.okhttp.Callback;

@@ -1,9 +1,8 @@
-package com.example.fyp_1;
+package com.example.fyp_1.UserProfileAndListings;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,6 +18,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.fyp_1.MyKitchenIngredients2;
+import com.example.fyp_1.R;
 import com.example.fyp_1.model.Listing;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,10 +36,11 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyListingsProfileActivity extends AppCompatActivity implements MyListingProfileAdapter.OnListingListener{
+public class MyListingsProfileActivity extends AppCompatActivity implements MyListingProfileAdapter.OnListingListener {
 
     private static final String LISTING = "listings";
     private static final String USER = "user";
+    private static final String TAG = "ProfileListings";
 
     //Firebase Components
     private FirebaseAuth mAuth;
@@ -49,9 +51,13 @@ public class MyListingsProfileActivity extends AppCompatActivity implements MyLi
     DatabaseReference userProfileRef;
     StorageReference storageRef;
     StorageReference profilerUpdateRef;
+    DatabaseReference userRootRef;
+    DatabaseReference userPRef;
     private String userId;
     String email;
-    String fullName;
+    String userEmail;
+    String fullName = "";
+    String fName, lName;
     //RCV Components
     RecyclerView mRecyclerView;
     RecyclerView.Adapter mAdapter;
@@ -77,12 +83,17 @@ public class MyListingsProfileActivity extends AppCompatActivity implements MyLi
         mAuth = FirebaseAuth.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
         userId = user.getUid();
+        //Listing ref
         rootRef = FirebaseDatabase.getInstance().getReference();
         userRef = rootRef.child(LISTING);
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("listings");
+        //User ref
+        userRootRef = FirebaseDatabase.getInstance().getReference("user");
+        userPRef = userRootRef.child(USER);
+        userEmail = user.getEmail();
+        //Profile Pic ref
         storageRef = FirebaseStorage.getInstance().getReference();
         profilerUpdateRef = storageRef.child(user.getUid() + ".jpg");
-        DatabaseReference userProfileRef = rootRef.child(USER);
 
 
         //Init UI
@@ -97,7 +108,9 @@ public class MyListingsProfileActivity extends AppCompatActivity implements MyLi
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mListings = new ArrayList<>();
-        mRecyclerView.setLayoutManager(new GridLayoutManager(this,numberOfColumns));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
+        mAdapter = new MyListingProfileAdapter(MyListingsProfileActivity.this, (ArrayList<Listing>) mListings, MyListingsProfileActivity.this);
+        mRecyclerView.setAdapter(mAdapter);
 
         profilerUpdateRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
@@ -105,7 +118,6 @@ public class MyListingsProfileActivity extends AppCompatActivity implements MyLi
                 Picasso.get().load(uri).into(uploadProfileImage);
             }
         });
-
 
 
         mDatabaseRef.addValueEventListener(new ValueEventListener() {
@@ -116,9 +128,8 @@ public class MyListingsProfileActivity extends AppCompatActivity implements MyLi
                     if (listing.getUserId().equals(userId)) {
                         mListings.add(listing);
                     }
-                    mAdapter = new MyListingProfileAdapter(MyListingsProfileActivity.this, (ArrayList<Listing>) mListings, MyListingsProfileActivity.this);
-                    mRecyclerView.setAdapter(mAdapter);
 
+                   mAdapter.notifyDataSetChanged();
 
                 }
             }
@@ -130,25 +141,27 @@ public class MyListingsProfileActivity extends AppCompatActivity implements MyLi
             }
         });
 
-        userProfileRef.addValueEventListener(new ValueEventListener() {
+        userRootRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot keyId : snapshot.getChildren()) {
-                    if (keyId.child("email").getValue().equals(email)) {
-                        String fName = keyId.child("firstName").getValue(String.class);
-                        String lName = keyId.child("lastName").getValue(String.class);
-                        fullName = fName + " " + lName;
-
+                    if (keyId.child("email").getValue().equals(userEmail)) {
+                        fName = keyId.child("firstName").getValue(String.class);
+                        lName = keyId.child("lastName").getValue(String.class);
+                        System.out.println("FN" + fName);
                         break;
                     }
                 }
+                fullName = fName + " " + lName;
+                System.out.println("FN2" + fName);
                 userNameTV.setText(fullName);
 
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException());
             }
         });
 
@@ -173,7 +186,8 @@ public class MyListingsProfileActivity extends AppCompatActivity implements MyLi
         int id = item.getItemId();
 
         if (id == R.id.go_back_icon) {
-            finish();
+            Intent backToProfileIntent = new Intent(MyListingsProfileActivity.this, MyKitchenIngredients2.class);
+            startActivity(backToProfileIntent);
             return true;
         }
 

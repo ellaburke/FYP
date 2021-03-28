@@ -1,4 +1,4 @@
-package com.example.fyp_1.model;
+package com.example.fyp_1.ShoppingListTab;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fyp_1.R;
+import com.example.fyp_1.model.MyShoppingListItem;
 
 import java.util.List;
 

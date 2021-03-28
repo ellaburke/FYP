@@ -1,4 +1,4 @@
-package com.example.fyp_1;
+package com.example.fyp_1.UserProfileAndListings;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.fyp_1.R;
 import com.example.fyp_1.model.Listing;
 import com.squareup.picasso.Picasso;
 
