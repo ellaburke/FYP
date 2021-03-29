@@ -30,11 +30,13 @@
     </string-array>
 
     <string-array name="item_amount_array">
+        <item>Unit</item>
         <item>kg</item>
         <item>g</item>
         <item>pt</item>
         <item>oz</item>
         <item>L</item>
+        <item>ml</item>
         <item>lb(s)</item>
         <item>tsp</item>
         <item>tbsp</item>
@@ -54,6 +56,7 @@
     <string name="freezer">Freezer</string>
     <string name="recipe_item">Recipe Item</string>
     <string name="missing_ingredients">Missing Ingredients:</string>
+    <string name="available_ingredients">Available Ingredients : </string>
     <string name="ingredients">Ingredients</string>
     <string name="equipment">Equipment</string>
     <string name="instructions">Instructions</string>
@@ -95,4 +98,5 @@
     <string name="description_title">Description:</string>
     <string name="title">Title</string>
     <string name="title_title">Title:</string>
+    <string name="log_out">Log Out</string>
 </resources>

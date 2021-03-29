@@ -78,5 +78,10 @@ dependencies {
     //Text Detect
     implementation 'com.google.firebase:firebase-functions:19.2.0'
     implementation 'com.google.code.gson:gson:2.8.6'
+    //viewPager
+    //viewPager
+    implementation 'androidx.viewpager2:viewpager2:1.0.0-beta04'
+    implementation 'androidx.fragment:fragment-ktx:1.2.0-alpha04'
+
 
 }

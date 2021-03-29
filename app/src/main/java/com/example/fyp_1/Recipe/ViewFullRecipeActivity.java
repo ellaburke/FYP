@@ -9,6 +9,8 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -34,7 +36,8 @@ import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class ViewFullRecipeActivity extends AppCompatActivity {
@@ -190,8 +193,8 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
         String equipmentListDisplay = "";
         String ingredientsListDisplay = "";
 
-        List<String> ingredientsIHave = new ArrayList<>();
-        List<String> ingredientsIDontHave = new ArrayList<>();
+        //List<String> ingredientsIHave = new ArrayList<>();
+        //List<String> ingredientsIDontHave = new ArrayList<>();
         List<RecipeInstructionStepIngredient> ingredientList = new ArrayList<>();
         List<RecipeInstructionStepEquipment> equipmentList = new ArrayList<>();
         ArrayList<RecipeInstructionStep> stepsList = new ArrayList<>();
@@ -202,9 +205,6 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
             // Looping over each step object from the recipe response
             for (RecipeInstructionStep step : recipeInstruction.getSteps()) {
 
-                // Equipment for step
-                // Ingredients for step
-
                 // All recipe properties are available
                 recipe += step.number + ":" + step.step + System.getProperty("line.separator");
                 stepsList.add(step);
@@ -212,22 +212,14 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
                 //for (RecipeInstructionStepIngredient ingredient : step.ingredients) {
                 RecipeInstructionStepIngredient[] ingredientList2;
                 ingredientList2 = step.ingredients;
-                ingredientList2 = sortList(ingredientList2);
-                System.out.println("SORTED LIST" + ingredientList2);
+                System.out.println("2. SORTED ARRAY PASSED BACK" + ingredientList2);
                 for (RecipeInstructionStepIngredient ing2 : ingredientList2) {
-                    if (i == 0) {
-                        ingredientList.add(ing2);
-                    }
-                    if (i >= 1 && (!ing2.getName().equalsIgnoreCase(ingredientList.get(ingredientList.size() - 1).getName()))) {
-                        ingredientList.add(ing2);
-                    }
-
+                    ingredientList.add(ing2);
                 }
 
                 for (RecipeInstructionStepEquipment equipment : step.equipment) {
                     if (!equipmentList.contains(equipment)) {
                         equipmentList.add(equipment);
-                        equipmentListDisplay += equipment.name + System.getProperty("line.separator");
                     }
 
                 }
@@ -236,19 +228,25 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
         }
 
 
-        recipeNameTV.setText(recipeNameToDisplay);
+        //(1)sort list & remote duplicates
+        equipmentList = sortEquipmentList(equipmentList);
+        //(2) iterate through sorted no duplicate list and then add to UI
+        for (RecipeInstructionStepEquipment equipment : equipmentList) {
+            equipmentListDisplay += equipment.name + System.getProperty("line.separator");
+        }
 
-        //Fragments
-        IngredientListFragment ingredientListFragment = new IngredientListFragment();
-        Bundle args = new Bundle();
-        args.putString("argText", ingredientsListDisplay);
-        ingredientListFragment.setArguments(args);
-
-
+        //(3)sort list & remote duplicates
+        ingredientList = sortIngredientList(ingredientList);
+        //(4) iterate through sorted no duplicate list and then add to UI
         for (RecipeInstructionStepIngredient ing : ingredientList) {
             ingredientsListDisplay += ing.name + System.getProperty("line.separator");
         }
 
+        //Split list into what I Do & Don't have
+
+
+        //Set UI
+        recipeNameTV.setText(recipeNameToDisplay);
         System.out.println("ingredientList" + ingredientList);
         //ingredientsListDisplay = sortList(step.ingredients);
         //ingredientsListDisplay += ingredient.name + System.getProperty("line.separator");
@@ -267,23 +265,62 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(mAdapter);
     }
 
-    public RecipeInstructionStepIngredient[] sortList(RecipeInstructionStepIngredient[] ingList) {
-        int size = ingList.length;
-        //logic for sorting
-        for (int i = 0; i < size - 1; i++) {
-            for (int j = i + 1; j < ingList.length; j++) {
-                //compares each elements of the array to all the remaining elements
-                if (ingList[i].getName().compareTo(ingList[j].getName()) > 0) {
-                    //swapping array elements
-                    RecipeInstructionStepIngredient temp = ingList[i];
-                    ingList[i] = ingList[j];
-                    ingList[j] = temp;
-                }
+    public List<RecipeInstructionStepEquipment> sortEquipmentList(List<RecipeInstructionStepEquipment> eListOriginal) {
+        List<RecipeInstructionStepEquipment> duplicates = new ArrayList<RecipeInstructionStepEquipment>();
+        Collections.sort(eListOriginal, new Comparator<RecipeInstructionStepEquipment>() {
+            @Override
+            public int compare(RecipeInstructionStepEquipment e1, RecipeInstructionStepEquipment e2) {
+                return e1.name.compareTo(e2.name);
+            }
+        });
 
+        for (int i = 1; i < eListOriginal.size(); i++) {
+            if (eListOriginal.get(i - 1).id.equals(eListOriginal.get(i).id)) {
+                duplicates.add(eListOriginal.get(i));
+                eListOriginal.remove(i);
+                i = i - 1;
             }
         }
-        System.out.println("Sorted Array" + Arrays.toString(ingList));
-        return ingList;
+        return eListOriginal;
     }
+
+    public List<RecipeInstructionStepIngredient> sortIngredientList(List<RecipeInstructionStepIngredient> eListOriginal) {
+        List<RecipeInstructionStepIngredient> duplicates = new ArrayList<RecipeInstructionStepIngredient>();
+        Collections.sort(eListOriginal, new Comparator<RecipeInstructionStepIngredient>() {
+            @Override
+            public int compare(RecipeInstructionStepIngredient i1, RecipeInstructionStepIngredient i2) {
+                return i1.name.compareTo(i2.name);
+            }
+        });
+
+        for (int i = 1; i < eListOriginal.size(); i++) {
+            if (eListOriginal.get(i - 1).id.equals(eListOriginal.get(i).id)) {
+                duplicates.add(eListOriginal.get(i));
+                eListOriginal.remove(i);
+                i = i - 1;
+            }
+        }
+        return eListOriginal;
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.go_back, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.go_back_icon) {
+            finish();
+            return true;
+        }
+
+        return true;
+    }
+
 
 }

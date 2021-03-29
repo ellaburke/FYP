@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.fyp_1.LoginAndRegister.LoginActivity;
 import com.example.fyp_1.MyKitchenIngredients2;
 import com.example.fyp_1.R;
 import com.example.fyp_1.model.Listing;
@@ -68,7 +69,7 @@ public class MyListingsProfileActivity extends AppCompatActivity implements MyLi
     ImageView uploadProfileImage;
     private Uri selectedImage;
     TextView userNameTV;
-    Button editProfileButton;
+    Button editProfileButton, logOutProfileButton;
 
 
     @Override
@@ -101,6 +102,7 @@ public class MyListingsProfileActivity extends AppCompatActivity implements MyLi
         uploadProfileImage.setImageURI(selectedImage);
         userNameTV = (TextView) findViewById(R.id.profile_listing_name_display);
         editProfileButton = (Button) findViewById(R.id.editMyProfileBtn);
+        logOutProfileButton = (Button) findViewById(R.id.logOutProfileBtn);
 
         //Init RCV
         mRecyclerView = findViewById(R.id.myListingsOnProfileRCV);
@@ -111,6 +113,15 @@ public class MyListingsProfileActivity extends AppCompatActivity implements MyLi
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
         mAdapter = new MyListingProfileAdapter(MyListingsProfileActivity.this, (ArrayList<Listing>) mListings, MyListingsProfileActivity.this);
         mRecyclerView.setAdapter(mAdapter);
+
+        logOutProfileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAuth.signOut();
+                Intent logoutIntent = new Intent(MyListingsProfileActivity.this, LoginActivity.class);
+                startActivity(logoutIntent);
+            }
+        });
 
         profilerUpdateRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
