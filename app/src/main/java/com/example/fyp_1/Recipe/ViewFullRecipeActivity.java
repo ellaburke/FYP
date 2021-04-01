@@ -7,16 +7,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.fyp_1.FullRecipeDisplayFragments.IngredientListFragment;
 import com.example.fyp_1.FullRecipeDisplayFragments.RecipeFragmentAdapter;
+import com.example.fyp_1.MyKitchenItem;
 import com.example.fyp_1.R;
+import com.example.fyp_1.UserProfileAndListings.MyListingsProfileActivity;
+import com.example.fyp_1.model.Listing;
 import com.example.fyp_1.model.RecipeInstructionStep;
 import com.example.fyp_1.model.RecipeInstructionStepEquipment;
 import com.example.fyp_1.model.RecipeInstructionStepIngredient;
@@ -26,8 +31,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -48,7 +56,7 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
     String myIngList = "";
     String recipeNameToDisplay, recipeImageURLToDisplay;
     ImageView recipeImageView;
-    TextView recipeNameTV, recipeIngredientTV, recipeIngredientListTV, ingredientEquipmentTV, ingredientEquipmentListTV, ingredientMethodTV, ingredientMethodListTV;
+    TextView recipeNameTV, recipeIngredientTV, recipeIngredientListTV, recipeIngredientListTVListed, recipeIngredientListTVShop, ingredientEquipmentTV, ingredientEquipmentListTV, ingredientMethodTV, ingredientMethodListTV;
 
     //RCV compnents
     RecyclerView mRecyclerView;
@@ -67,19 +75,24 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
         recipeNameTV = (TextView) findViewById(R.id.displayFullRecipeNameTV);
         recipeImageView = (ImageView) findViewById(R.id.dislayFullRecipeIV);
         recipeIngredientTV = (TextView) findViewById(R.id.displayFullRecipeIngredientsTV);
-        recipeIngredientListTV = (TextView) findViewById(R.id.displayFullRecipeIngredientsListTV);
+        recipeIngredientTV.setPaintFlags(recipeIngredientTV.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        recipeIngredientListTV = (TextView) findViewById(R.id.displayFullRecipeIngredientsListThatIOwnTV);
+        recipeIngredientListTVListed = (TextView) findViewById(R.id.displayFullRecipeIngredientsListThatIDontOwnListedTV);
+        recipeIngredientListTVShop = (TextView) findViewById(R.id.displayFullRecipeIngredientsListShopForTV);
         ingredientEquipmentTV = (TextView) findViewById(R.id.displayFullRecipeEquipmentTV);
+        ingredientEquipmentTV.setPaintFlags(ingredientEquipmentTV.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         ingredientEquipmentListTV = (TextView) findViewById(R.id.displayFullRecipeEquipmentListTV);
         ingredientMethodTV = (TextView) findViewById(R.id.displayFullRecipeMethodTV);
+        ingredientMethodTV.setPaintFlags(ingredientMethodTV.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         //ingredientMethodListTV = (TextView) findViewById(R.id.displayFullRecipeMethodStepsTV);
 
 
-        //Tab Layout & ViewPager2
-        ViewPager2 viewPager2 = findViewById(R.id.viewPager);
-        viewPager2.setAdapter(new RecipeFragmentAdapter(this));
-
-        //Fragments
-        IngredientListFragment ingredientListFragment = new IngredientListFragment();
+//        //Tab Layout & ViewPager2
+//        ViewPager2 viewPager2 = findViewById(R.id.viewPager);
+//        viewPager2.setAdapter(new RecipeFragmentAdapter(this));
+//
+//        //Fragments
+//        IngredientListFragment ingredientListFragment = new IngredientListFragment();
 
         //Firebase
         //Ref to kitchen item
@@ -90,30 +103,30 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
 
         //View ingredientTabView = inflater.inflate(R.layout.fragment_ingredient_list, container, false);
 
-        TabLayout tabLayout = findViewById(R.id.tabLayout);
-        TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tabLayout, viewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
-            @Override
-            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                switch (position) {
-                    case 0: {
-                        tab.setText("Ingredients");
-                        tab.setIcon(R.drawable.ingredients_icon);
-                        break;
-                    }
-                    case 1: {
-                        tab.setText("Utensils");
-                        tab.setIcon(R.drawable.utensil_icon);
-                        break;
-                    }
-                    case 2: {
-                        tab.setText("Method");
-                        tab.setIcon(R.drawable.ic_baseline_format_list_bulleted_24);
-                        break;
-                    }
-                }
-            }
-        });
-        tabLayoutMediator.attach();
+//        TabLayout tabLayout = findViewById(R.id.tabLayout);
+//        TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tabLayout, viewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
+//            @Override
+//            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+//                switch (position) {
+//                    case 0: {
+//                        tab.setText("Ingredients");
+//                        tab.setIcon(R.drawable.ingredients_icon);
+//                        break;
+//                    }
+//                    case 1: {
+//                        tab.setText("Utensils");
+//                        tab.setIcon(R.drawable.utensil_icon);
+//                        break;
+//                    }
+//                    case 2: {
+//                        tab.setText("Method");
+//                        tab.setIcon(R.drawable.ic_baseline_format_list_bulleted_24);
+//                        break;
+//                    }
+//                }
+//            }
+//        });
+//        tabLayoutMediator.attach();
 
 
         Intent i = getIntent();
@@ -193,11 +206,14 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
         String equipmentListDisplay = "";
         String ingredientsListDisplay = "";
 
-        //List<String> ingredientsIHave = new ArrayList<>();
-        //List<String> ingredientsIDontHave = new ArrayList<>();
-        List<RecipeInstructionStepIngredient> ingredientList = new ArrayList<>();
+        final List<RecipeInstructionStepIngredient>[] ingredientList = new List[]{new ArrayList<>()};
         List<RecipeInstructionStepEquipment> equipmentList = new ArrayList<>();
         ArrayList<RecipeInstructionStep> stepsList = new ArrayList<>();
+        ArrayList<String> doHave = new ArrayList<>();
+        ArrayList<String> dontHave = new ArrayList<>();
+
+        ArrayList<String> availableListings = new ArrayList<>();
+        ArrayList<String> notAvailableAsListing = new ArrayList<>();
 
         // Loop over each recipe (expecting only 1)
         for (RecipeInstructions recipeInstruction : recipeInstructions) {
@@ -209,12 +225,12 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
                 recipe += step.number + ":" + step.step + System.getProperty("line.separator");
                 stepsList.add(step);
                 int i = 0;
+
                 //for (RecipeInstructionStepIngredient ingredient : step.ingredients) {
                 RecipeInstructionStepIngredient[] ingredientList2;
                 ingredientList2 = step.ingredients;
-                System.out.println("2. SORTED ARRAY PASSED BACK" + ingredientList2);
                 for (RecipeInstructionStepIngredient ing2 : ingredientList2) {
-                    ingredientList.add(ing2);
+                    ingredientList[0].add(ing2);
                 }
 
                 for (RecipeInstructionStepEquipment equipment : step.equipment) {
@@ -227,7 +243,6 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
             }
         }
 
-
         //(1)sort list & remote duplicates
         equipmentList = sortEquipmentList(equipmentList);
         //(2) iterate through sorted no duplicate list and then add to UI
@@ -235,24 +250,100 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
             equipmentListDisplay += equipment.name + System.getProperty("line.separator");
         }
 
+        List<String> itemsByName = new ArrayList<>();
         //(3)sort list & remote duplicates
-        ingredientList = sortIngredientList(ingredientList);
+        ingredientList[0] = sortIngredientList(ingredientList[0]);
         //(4) iterate through sorted no duplicate list and then add to UI
-        for (RecipeInstructionStepIngredient ing : ingredientList) {
+        for (RecipeInstructionStepIngredient ing : ingredientList[0]) {
             ingredientsListDisplay += ing.name + System.getProperty("line.separator");
+            itemsByName.add(ing.name);
         }
 
-        //Split list into what I Do & Don't have
+
+        FirebaseDatabase.getInstance().getReference().child("myKitchenItems")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        String ingredientsListDisplay2 = "";
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            MyKitchenItem mKI = snapshot.getValue(MyKitchenItem.class);
+                            if (itemsByName.contains(mKI.getItemName().toLowerCase())) {
+                                doHave.add(mKI.getItemName().toLowerCase());
+                                ingredientsListDisplay2 += mKI.getItemName() + System.getProperty("line.separator");
+
+                            } else {
+                                System.out.println("3. NOT IN LIST: " + mKI.getItemName());
+                            }
+                            recipeIngredientListTV.setText(ingredientsListDisplay2);
+                            itemsByName.removeAll(doHave);
+                            System.out.println("REMOVED LIST 2: " + itemsByName);
+
+                        }
+                    }
 
 
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+
+                });
+
+        FirebaseDatabase.getInstance().getReference().child("listings")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        String ingredientsThatAreListedDisplay = "";
+                        String ingredientsThatAreNotListedDisplay = "";
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            Listing availableListing = snapshot.getValue(Listing.class);
+                            if (itemsByName.contains(availableListing.getName().toLowerCase())) {
+                                availableListings.add(availableListing.getName().toLowerCase());
+                                ingredientsThatAreListedDisplay += availableListing.getName() + System.getProperty("line.separator");
+
+
+                            } else {
+                                //System.out.println("3. NOT IN LIST: " + availableListing.getName());
+                            }
+                            recipeIngredientListTVListed.setText(ingredientsThatAreListedDisplay);
+                            itemsByName.remove(availableListings);
+                            System.out.println("REMOVED LIST 2: " + itemsByName);
+
+                        }
+                        for(String ingToShop: itemsByName) {
+                            ingredientsThatAreNotListedDisplay += ingToShop + System.getProperty("line.separator");
+                        }
+                        recipeIngredientListTVShop.setText(ingredientsThatAreNotListedDisplay);
+                    }
+
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+
+                });
+
+//        String ingredientsThatAreNotListedDisplay = "";
+//        for(String ingToShop: itemsByName) {
+//            ingredientsThatAreNotListedDisplay += ingToShop + System.getProperty("line.separator");
+//        }
+//        recipeIngredientListTVShop.setText(ingredientsThatAreNotListedDisplay);
+
+
+        // String ingredientsThatAreListedDisplay = "";
+        //ingredientsThatAreListedDisplay += mKI.getItemName() + System.getProperty("line.separator");
+        //recipeIngredientListTVListed.setText(ingredientsThatAreListedDisplay);
+
+
+//
+//        List <String> newList= doHave;
+//        for(String ingIHave: newList){
+//            ingredientsListDisplay2 += ingIHave + System.getProperty("line.separator");
+//            System.out.println("4. : " + ingredientsListDisplay2);
+//        }
         //Set UI
         recipeNameTV.setText(recipeNameToDisplay);
-        System.out.println("ingredientList" + ingredientList);
-        //ingredientsListDisplay = sortList(step.ingredients);
-        //ingredientsListDisplay += ingredient.name + System.getProperty("line.separator");
-        recipeIngredientListTV.setText(ingredientsListDisplay);
+        //recipeIngredientListTV.setText(ingredientsListDisplay2);
         ingredientEquipmentListTV.setText(equipmentListDisplay);
-        //ingredientMethodListTV.setText(recipe);
         Picasso.get()
                 .load(recipeImageURLToDisplay)
                 .into(recipeImageView);
@@ -265,7 +356,9 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(mAdapter);
     }
 
-    public List<RecipeInstructionStepEquipment> sortEquipmentList(List<RecipeInstructionStepEquipment> eListOriginal) {
+
+    public List<RecipeInstructionStepEquipment> sortEquipmentList
+            (List<RecipeInstructionStepEquipment> eListOriginal) {
         List<RecipeInstructionStepEquipment> duplicates = new ArrayList<RecipeInstructionStepEquipment>();
         Collections.sort(eListOriginal, new Comparator<RecipeInstructionStepEquipment>() {
             @Override
@@ -284,7 +377,8 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
         return eListOriginal;
     }
 
-    public List<RecipeInstructionStepIngredient> sortIngredientList(List<RecipeInstructionStepIngredient> eListOriginal) {
+    public List<RecipeInstructionStepIngredient> sortIngredientList
+            (List<RecipeInstructionStepIngredient> eListOriginal) {
         List<RecipeInstructionStepIngredient> duplicates = new ArrayList<RecipeInstructionStepIngredient>();
         Collections.sort(eListOriginal, new Comparator<RecipeInstructionStepIngredient>() {
             @Override

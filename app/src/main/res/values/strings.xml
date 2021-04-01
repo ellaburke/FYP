@@ -99,4 +99,7 @@
     <string name="title">Title</string>
     <string name="title_title">Title:</string>
     <string name="log_out">Log Out</string>
+    <string name="available_listing">Available Listing</string>
+    <string name="i_have">I Have</string>
+    <string name="don_t_have">Don\'t Have</string>
 </resources>
