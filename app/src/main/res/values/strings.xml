@@ -102,4 +102,7 @@
     <string name="available_listing">Available Listing</string>
     <string name="i_have">I Have</string>
     <string name="don_t_have">Don\'t Have</string>
+    <string name="close">Close</string>
+    <string name="filter">Filter</string>
+    <string name="title_activity_map_to_shop">Map</string>
 </resources>

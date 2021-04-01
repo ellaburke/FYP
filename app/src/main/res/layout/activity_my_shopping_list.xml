@@ -7,6 +7,17 @@
     android:orientation="vertical"
     tools:context=".ShoppingListTab.MyShoppingListActivity">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Shopping List"
+        android:textSize="25sp"
+        android:layout_marginLeft="10dp"
+        android:textColor="#000"
+        android:textStyle="bold"
+        android:fontFamily="@font/suravaram"
+        android:id="@+id/ShoppingListHeading"/>
+
     <RelativeLayout
         android:id="@+id/addToShoppingListRelLayout"
         android:layout_width="match_parent"

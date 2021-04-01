@@ -1,11 +1,13 @@
 package com.example.fyp_1.ShoppingListTab;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -14,8 +16,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.fyp_1.Maps.MapToShop;
 import com.example.fyp_1.MyKitchenIngredients2;
 import com.example.fyp_1.R;
+import com.example.fyp_1.Recipe.ViewFullRecipeActivity;
 import com.example.fyp_1.UserProfileAndListings.MyListingsProfileActivity;
 import com.example.fyp_1.model.MyShoppingListItem;
 import com.example.fyp_1.AllListingsTab.viewListingActivity;
@@ -55,6 +59,7 @@ public class MyShoppingListActivity extends AppCompatActivity {
     FloatingActionButton addToListByDocScan;
     EditText shoppingListItemInput;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,6 +105,7 @@ public class MyShoppingListActivity extends AppCompatActivity {
 
         //XML Components
         addToListByDocScan = (FloatingActionButton) findViewById(R.id.fab_scan_doc);
+        addToListByDocScan.setTooltipText("Scan to Add To List");
         shoppingListItemInput = (EditText) findViewById(R.id.shopping_list_item_input);
 
         mDatabaseRef.addValueEventListener(new ValueEventListener() {
@@ -124,8 +130,7 @@ public class MyShoppingListActivity extends AppCompatActivity {
         addToListByDocScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent textRecognitionIntent = new Intent(MyShoppingListActivity.this, TextRecognitionActivity.class);
-                //startActivity(textRecognitionIntent);
+                //Text Recognition Scan Recipe
             }
         });
 

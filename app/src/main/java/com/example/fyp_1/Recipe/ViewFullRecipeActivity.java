@@ -1,26 +1,24 @@
 package com.example.fyp_1.Recipe;
 
-import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.graphics.Paint;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.fyp_1.FullRecipeDisplayFragments.IngredientListFragment;
-import com.example.fyp_1.FullRecipeDisplayFragments.RecipeFragmentAdapter;
+import com.example.fyp_1.Maps.MapToShop;
 import com.example.fyp_1.MyKitchenItem;
 import com.example.fyp_1.R;
-import com.example.fyp_1.UserProfileAndListings.MyListingsProfileActivity;
 import com.example.fyp_1.model.Listing;
 import com.example.fyp_1.model.RecipeInstructionStep;
 import com.example.fyp_1.model.RecipeInstructionStepEquipment;
@@ -28,8 +26,6 @@ import com.example.fyp_1.model.RecipeInstructionStepIngredient;
 import com.example.fyp_1.model.RecipeInstructions;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -56,7 +52,7 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
     String myIngList = "";
     String recipeNameToDisplay, recipeImageURLToDisplay;
     ImageView recipeImageView;
-    TextView recipeNameTV, recipeIngredientTV, recipeIngredientListTV, recipeIngredientListTVListed, recipeIngredientListTVShop, ingredientEquipmentTV, ingredientEquipmentListTV, ingredientMethodTV, ingredientMethodListTV;
+    TextView recipeNameTV, recipeIngredientTV, recipeIngredientListTV, recipeIngredientListTVListed, recipeIngredientListTVShop, ingredientEquipmentTV, ingredientEquipmentListTV, ingredientMethodTV, ingredientMethodListTV, shopTVToMap;
 
     //RCV compnents
     RecyclerView mRecyclerView;
@@ -68,6 +64,7 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
     DatabaseReference kitchenItemRef;
     private FirebaseAuth mAuth;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,50 +81,14 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
         ingredientEquipmentListTV = (TextView) findViewById(R.id.displayFullRecipeEquipmentListTV);
         ingredientMethodTV = (TextView) findViewById(R.id.displayFullRecipeMethodTV);
         ingredientMethodTV.setPaintFlags(ingredientMethodTV.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        shopTVToMap = (TextView) findViewById(R.id.TVIWillShopFor);
         //ingredientMethodListTV = (TextView) findViewById(R.id.displayFullRecipeMethodStepsTV);
-
-
-//        //Tab Layout & ViewPager2
-//        ViewPager2 viewPager2 = findViewById(R.id.viewPager);
-//        viewPager2.setAdapter(new RecipeFragmentAdapter(this));
-//
-//        //Fragments
-//        IngredientListFragment ingredientListFragment = new IngredientListFragment();
 
         //Firebase
         //Ref to kitchen item
         mAuth = FirebaseAuth.getInstance();
         rootRef = FirebaseDatabase.getInstance().getReference();
         kitchenItemRef = rootRef.child(KITCHENITEM);
-
-
-        //View ingredientTabView = inflater.inflate(R.layout.fragment_ingredient_list, container, false);
-
-//        TabLayout tabLayout = findViewById(R.id.tabLayout);
-//        TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tabLayout, viewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
-//            @Override
-//            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-//                switch (position) {
-//                    case 0: {
-//                        tab.setText("Ingredients");
-//                        tab.setIcon(R.drawable.ingredients_icon);
-//                        break;
-//                    }
-//                    case 1: {
-//                        tab.setText("Utensils");
-//                        tab.setIcon(R.drawable.utensil_icon);
-//                        break;
-//                    }
-//                    case 2: {
-//                        tab.setText("Method");
-//                        tab.setIcon(R.drawable.ic_baseline_format_list_bulleted_24);
-//                        break;
-//                    }
-//                }
-//            }
-//        });
-//        tabLayoutMediator.attach();
-
 
         Intent i = getIntent();
         recipeToDisplay = getIntent().getIntExtra("the_recipe_id", 0);
@@ -169,6 +130,32 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
                 }
             }
         });
+
+//        recipeIngredientListTVListed.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                String listedIngredientsString = recipeIngredientListTVListed.getText().toString();
+//                String[] arr = listedIngredientsString.split(" ");
+//
+//                for ( String ingredientClicked : arr) {
+//                    System.out.println(ingredientClicked);
+//                    Intent bringMeToListingIntent = new Intent(ViewFullRecipeActivity.this, viewListingActivity.class);
+//
+//                    bringMeToListingIntent.putExtra("ingredient_clicked", ingredientClicked);
+//                    startActivity(bringMeToListingIntent);
+//                }
+//            }
+//        });
+
+        shopTVToMap.setTooltipText("Locate Nearest Supermarkets");
+        shopTVToMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent bringMeToGroceryShopIntent = new Intent(ViewFullRecipeActivity.this, MapToShop.class);
+                startActivity(bringMeToGroceryShopIntent);
+            }
+        });
+
     }
 
     /**
@@ -305,7 +292,7 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
                                 //System.out.println("3. NOT IN LIST: " + availableListing.getName());
                             }
                             recipeIngredientListTVListed.setText(ingredientsThatAreListedDisplay);
-                            itemsByName.remove(availableListings);
+                            itemsByName.removeAll(availableListings);
                             System.out.println("REMOVED LIST 2: " + itemsByName);
 
                         }
@@ -322,24 +309,6 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
 
                 });
 
-//        String ingredientsThatAreNotListedDisplay = "";
-//        for(String ingToShop: itemsByName) {
-//            ingredientsThatAreNotListedDisplay += ingToShop + System.getProperty("line.separator");
-//        }
-//        recipeIngredientListTVShop.setText(ingredientsThatAreNotListedDisplay);
-
-
-        // String ingredientsThatAreListedDisplay = "";
-        //ingredientsThatAreListedDisplay += mKI.getItemName() + System.getProperty("line.separator");
-        //recipeIngredientListTVListed.setText(ingredientsThatAreListedDisplay);
-
-
-//
-//        List <String> newList= doHave;
-//        for(String ingIHave: newList){
-//            ingredientsListDisplay2 += ingIHave + System.getProperty("line.separator");
-//            System.out.println("4. : " + ingredientsListDisplay2);
-//        }
         //Set UI
         recipeNameTV.setText(recipeNameToDisplay);
         //recipeIngredientListTV.setText(ingredientsListDisplay2);
@@ -415,6 +384,8 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
 
         return true;
     }
+
+
 
 
 }

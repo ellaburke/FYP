@@ -6,22 +6,36 @@
     android:layout_height="match_parent"
     tools:context=".AllListingsTab.viewListingActivity">
 
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/searchView"
-            android:layout_width="300dp"
-            android:layout_height="?attr/actionBarSize"
-            android:layout_margin="5dp"
-            android:padding="10dp"
-            app:queryHint="Strawberries.."
-            tools:ignore="MissingConstraints" />
+    <TextView
+        android:id="@+id/AllListingsHeading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:fontFamily="@font/suravaram"
+        android:text="Available Listings"
+        android:textColor="#000"
+        android:textSize="25sp"
+        android:textStyle="bold" />
 
-        <ImageButton
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="15dp"
-            android:layout_toRightOf="@id/searchView"
-            android:background="@drawable/filter_icon" />
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchView"
+        android:layout_width="300dp"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_below="@+id/AllListingsHeading"
+        android:layout_margin="5dp"
+        android:padding="10dp"
+        app:queryHint="Strawberries.."
+        tools:ignore="MissingConstraints" />
+
+    <ImageButton
+        android:id="@+id/filterByCategory"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_toRightOf="@id/searchView"
+        android:background="@drawable/category2" />
 
 
     <androidx.recyclerview.widget.RecyclerView

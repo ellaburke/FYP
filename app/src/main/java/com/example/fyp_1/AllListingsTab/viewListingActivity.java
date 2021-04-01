@@ -1,19 +1,31 @@
 package com.example.fyp_1.AllListingsTab;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.fyp_1.MyKitchenIngredients2;
+import com.example.fyp_1.MyKitchenItem;
 import com.example.fyp_1.R;
 import com.example.fyp_1.ShoppingListTab.MyShoppingListActivity;
 import com.example.fyp_1.UserProfileAndListings.MyListingsProfileActivity;
@@ -37,11 +49,16 @@ public class viewListingActivity extends AppCompatActivity {
     RecyclerView.LayoutManager mLayoutManager;
     DatabaseReference mDatabaseRef;
     SearchView mSearchView;
+    ImageView filterByCategory;
 
     //FAB
     FloatingActionButton uploadListingFAB;
 
+    //Filter Option4
+    String myItemCategory;
 
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,9 +71,12 @@ public class viewListingActivity extends AppCompatActivity {
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("listings");
         mRecyclerView.setLayoutManager(mLayoutManager);
         mSearchView = findViewById(R.id.searchView);
+        filterByCategory = (ImageView) findViewById(R.id.filterByCategory);
+
 
         //init FAB
         uploadListingFAB = (FloatingActionButton) findViewById(R.id.fab_upload_listing);
+        uploadListingFAB.setTooltipText("Upload Listing");
 
         //Init btm nav
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -102,6 +122,16 @@ public class viewListingActivity extends AppCompatActivity {
             }
         });
 
+//        //If ingredient passed from recipe
+//        //Get Intent from ViewMyFullListing
+//        Intent i = getIntent();
+//        String listingToSearch = getIntent().getStringExtra("ingredient_clicked");
+//        listingToSearch = listingToSearch.substring(0, listingToSearch.length() - 1);
+//
+//            mSearchView.setQuery(listingToSearch, false);
+
+
+
         if (mSearchView != null) {
             mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
@@ -114,6 +144,7 @@ public class viewListingActivity extends AppCompatActivity {
                     search(newText);
                     return true;
                 }
+
             });
         }
 
@@ -125,13 +156,62 @@ public class viewListingActivity extends AppCompatActivity {
             }
         });
 
+        filterByCategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(viewListingActivity.this);
+                View mView = getLayoutInflater().inflate(R.layout.filter_by_category_dialog, null);
+                //init variables for dialog
+                TextView cancelTV = (TextView) mView.findViewById(R.id.cancel_dialog_option1);
+                TextView addTV = (TextView) mView.findViewById(R.id.add_dialog_option1);
+                RadioGroup radioGroup = findViewById(R.id.radioGroupCategory);
+                final RadioButton[] selectedRadioButton = new RadioButton[1];
+
+                addTV.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        int selectedRadioButtonId = radioGroup.getCheckedRadioButtonId();
+                            selectedRadioButton[0] = findViewById(selectedRadioButtonId);
+                            String selectedRbText = selectedRadioButton[0].getText().toString();
+                            System.out.println("SELECTED" + selectedRbText);
+
+
+                    }
+                });
+                mBuilder.setView(mView);
+                AlertDialog dialog = mBuilder.create();
+                dialog.show();
+
+                cancelTV.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
+            }
+        });
+
     }
 
     public void search(String str) {
         ArrayList<Listing> list = new ArrayList<>();
         for (Listing obj : mListings) {
-            if (obj.getName().toLowerCase().contains(str.toLowerCase())) {
+            if (obj.getName().toLowerCase().contains(str.toLowerCase()) ) {
                 list.add(obj);
+            }
+        }
+        Adapter adapterClass = new Adapter(viewListingActivity.this, (ArrayList<Listing>) list);
+        mRecyclerView.setAdapter(adapterClass);
+    }
+
+    public void searchByCategory() {
+        ArrayList<Listing> list = new ArrayList<>();
+        for (Listing obj2 : mListings) {
+            if (obj2.getCategory().toLowerCase().contains(myItemCategory.toLowerCase())) {
+                list.add(obj2);
             }
         }
         Adapter adapterClass = new Adapter(viewListingActivity.this, (ArrayList<Listing>) list);

@@ -1,6 +1,7 @@
 package com.example.fyp_1;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -11,6 +12,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -101,6 +103,7 @@ public class MyKitchenIngredients2 extends AppCompatActivity {
     String breadOrCerealSection = "Bread or Cereal";
     ArrayList<MyKitchenItem> breadOrCerealSectionItems = new ArrayList<>();
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,9 +112,6 @@ public class MyKitchenIngredients2 extends AppCompatActivity {
         userId = user.getUid();
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("myKitchenItems");
 
-        //Popup Dialog
-        popupTipDialog = new Dialog(this);
-        closePopupTipDialog = (Button) findViewById(R.id.got_it_button);
 
         //Init btm nav
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -148,8 +148,11 @@ public class MyKitchenIngredients2 extends AppCompatActivity {
         //init FAB
         addToKitchenBtn = (FloatingActionButton) findViewById(R.id.fab_add_ingredient);
         addToKitchenByScanBtn = (FloatingActionButton) findViewById(R.id.fab_add_ingredient_by_scan);
+        addToKitchenByScanBtn.setTooltipText("Scan to Add");
         addToKitchenByTextBtn = (FloatingActionButton) findViewById(R.id.fab_add_ingredient_by_text);
+        addToKitchenByTextBtn.setTooltipText("Add By Text");
         checkedItemsBtn = (FloatingActionButton) findViewById(R.id.fab_add_ingredient_selected);
+        checkedItemsBtn.setTooltipText("Check Items You Wish To Use");
 
         //RCV
         mainRecyclerView = findViewById(R.id.mainRecyclerView);
@@ -324,11 +327,6 @@ public class MyKitchenIngredients2 extends AppCompatActivity {
 
             }
         });
-
-        //Display popup tip upon opening activity
-        popupTipDialog.setContentView(R.layout.tip_popup);
-        popupTipDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        popupTipDialog.show();
 
 
     }
