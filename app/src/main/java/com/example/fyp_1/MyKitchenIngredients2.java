@@ -31,6 +31,7 @@ import com.example.fyp_1.AllListingsTab.viewListingActivity;
 import com.example.fyp_1.BarcodeScan.BarcodeActivity;
 import com.example.fyp_1.BarcodeScan.CaptureAct;
 import com.example.fyp_1.Recipe.RecipeActivity;
+import com.example.fyp_1.Recipe.ViewFullRecipeActivity;
 import com.example.fyp_1.ShoppingListTab.MyShoppingListActivity;
 import com.example.fyp_1.UserProfileAndListings.MyListingsProfileActivity;
 import com.example.fyp_1.model.FoodCategorySection;
@@ -127,7 +128,9 @@ public class MyKitchenIngredients2 extends AppCompatActivity {
                     case R.id.MyKitchenNav:
                         return true;
                     case R.id.SearchListingNav:
-                        startActivity(new Intent(getApplicationContext(), viewListingActivity.class));
+                        Intent emptyIntent = new Intent(MyKitchenIngredients2.this, viewListingActivity.class);
+                        emptyIntent.putExtra("ingredient_clicked", " ");
+                        startActivity(emptyIntent);
                         overridePendingTransition(0, 0);
                         return true;
                     case R.id.MyShoppingListNav:
@@ -327,6 +330,34 @@ public class MyKitchenIngredients2 extends AppCompatActivity {
 
             }
         });
+
+
+        //Delete from list by checking boxes and pressing delete FAB
+//        deleteItemsBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ArrayList<MyKitchenItem> mSelectedItemsToDelete = myKitchenItemsAdapter2.childAdapter.listOfSelectedItems();
+//                String selectedItemToDeleteName = "";
+//
+//                if (mSelectedItemsToDelete != null) {
+//                    for (int index = 0; index < mSelectedItemsToDelete.size(); index++) {
+//                        System.out.println(mSelectedItemsToDelete.get(index).itemName);
+//                        selectedItemToDeleteName += mSelectedItemsToDelete.get(index).itemName;
+//                        if (index != mSelectedItemsToDelete.size() - 1) {
+//                            selectedItemToDeleteName += ",+";
+//                        }
+//                    }
+//                }
+//                if (selectedItemToDeleteName != "") {
+//                    Intent intentRecipe = new Intent(MyKitchenIngredients2.this, RecipeActivity.class);
+//                    intentRecipe.putExtra("ingredientList", selectedItemToDeleteName.toString());
+//                    startActivity(intentRecipe);
+//                }
+//
+//                myKitchenItemsAdapter2.childAdapter.ClearSelectedItems();
+//
+//            }
+//        });
 
 
     }

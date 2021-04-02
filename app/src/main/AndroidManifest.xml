@@ -46,8 +46,10 @@
         <activity android:name=".UserProfileAndListings.ViewMyFullListing" />
         <activity android:name=".UserProfileAndListings.MyListingsProfileActivity" />
         <activity android:name=".TextDetectActivity" />
-        <activity android:name=".ShoppingListTab.MyShoppingListActivity" />
-        <activity android:name=".MyKitchenIngredients2" />
+        <activity android:name=".ShoppingListTab.MyShoppingListActivity"
+            android:windowSoftInputMode="adjustNothing"/>
+        <activity android:name=".MyKitchenIngredients2"
+            android:windowSoftInputMode="adjustNothing"/>
         <activity android:name=".BarcodeScan.BarcodeActivity" />
         <activity android:name=".Recipe.ViewFullRecipeActivity" />
         <activity android:name=".Recipe.ViewAllRecipesActivity" />
@@ -60,12 +62,13 @@
             android:name=".BarcodeScan.CaptureAct"
             android:screenOrientation="fullSensor"
             android:stateNotNeeded="true"
-            android:windowSoftInputMode="stateAlwaysHidden" />
+            android:windowSoftInputMode="stateAlwaysHidden"/>
         <activity
             android:name=".Maps.MapsActivity"
             android:label="@string/title_activity_maps" />
         <activity android:name=".UserProfileAndListings.EditProfileActivity" />
-        <activity android:name=".AllListingsTab.viewListingActivity" />
+        <activity android:name=".AllListingsTab.viewListingActivity"
+            android:windowSoftInputMode="adjustNothing"/>
         <activity android:name=".AllListingsTab.addListingActivity" />
         <activity android:name=".getLocationActivity" />
         <activity android:name=".homePageActivity" />

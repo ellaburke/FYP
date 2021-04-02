@@ -93,7 +93,9 @@ public class MyShoppingListActivity extends AppCompatActivity {
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.SearchListingNav:
-                        startActivity(new Intent(getApplicationContext(), viewListingActivity.class));
+                        Intent emptyIntent = new Intent(MyShoppingListActivity.this, viewListingActivity.class);
+                        emptyIntent.putExtra("ingredient_clicked", " ");
+                        startActivity(emptyIntent);
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.MyShoppingListNav:

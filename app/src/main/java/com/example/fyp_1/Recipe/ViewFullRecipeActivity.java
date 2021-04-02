@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.fyp_1.AllListingsTab.viewListingActivity;
 import com.example.fyp_1.Maps.MapToShop;
 import com.example.fyp_1.MyKitchenItem;
 import com.example.fyp_1.R;
@@ -52,7 +53,7 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
     String myIngList = "";
     String recipeNameToDisplay, recipeImageURLToDisplay;
     ImageView recipeImageView;
-    TextView recipeNameTV, recipeIngredientTV, recipeIngredientListTV, recipeIngredientListTVListed, recipeIngredientListTVShop, ingredientEquipmentTV, ingredientEquipmentListTV, ingredientMethodTV, ingredientMethodListTV, shopTVToMap;
+    TextView recipeNameTV, recipeIngredientTV, recipeIngredientListTV, recipeIngredientListTVListed, recipeIngredientListTVShop, ingredientEquipmentTV, ingredientEquipmentListTV, ingredientMethodTV, ingredientMethodListTV, shopTVToMap, listingsAvailableNearMe;
 
     //RCV compnents
     RecyclerView mRecyclerView;
@@ -82,6 +83,8 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
         ingredientMethodTV = (TextView) findViewById(R.id.displayFullRecipeMethodTV);
         ingredientMethodTV.setPaintFlags(ingredientMethodTV.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         shopTVToMap = (TextView) findViewById(R.id.TVIWillShopFor);
+        listingsAvailableNearMe = (TextView) findViewById(R.id.TVListedNearMe);
+        listingsAvailableNearMe.setTooltipText("Click ingredient to view listings");
         //ingredientMethodListTV = (TextView) findViewById(R.id.displayFullRecipeMethodStepsTV);
 
         //Firebase
@@ -131,21 +134,21 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
             }
         });
 
-//        recipeIngredientListTVListed.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                String listedIngredientsString = recipeIngredientListTVListed.getText().toString();
-//                String[] arr = listedIngredientsString.split(" ");
-//
-//                for ( String ingredientClicked : arr) {
-//                    System.out.println(ingredientClicked);
-//                    Intent bringMeToListingIntent = new Intent(ViewFullRecipeActivity.this, viewListingActivity.class);
-//
-//                    bringMeToListingIntent.putExtra("ingredient_clicked", ingredientClicked);
-//                    startActivity(bringMeToListingIntent);
-//                }
-//            }
-//        });
+        recipeIngredientListTVListed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String listedIngredientsString = recipeIngredientListTVListed.getText().toString();
+                String[] arr = listedIngredientsString.split(" ");
+
+                for ( String ingredientClicked : arr) {
+                    System.out.println(ingredientClicked);
+                    Intent bringMeToListingIntent = new Intent(ViewFullRecipeActivity.this, viewListingActivity.class);
+
+                    bringMeToListingIntent.putExtra("ingredient_clicked", ingredientClicked);
+                    startActivity(bringMeToListingIntent);
+                }
+            }
+        });
 
         shopTVToMap.setTooltipText("Locate Nearest Supermarkets");
         shopTVToMap.setOnClickListener(new View.OnClickListener() {

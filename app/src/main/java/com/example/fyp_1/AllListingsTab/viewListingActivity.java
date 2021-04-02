@@ -71,6 +71,7 @@ public class viewListingActivity extends AppCompatActivity {
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("listings");
         mRecyclerView.setLayoutManager(mLayoutManager);
         mSearchView = findViewById(R.id.searchView);
+        mSearchView.setIconified(false);
         filterByCategory = (ImageView) findViewById(R.id.filterByCategory);
 
 
@@ -104,6 +105,14 @@ public class viewListingActivity extends AppCompatActivity {
             }
         });
 
+        Intent i = getIntent();
+        String listingToSearch2 = getIntent().getStringExtra("ingredient_clicked");
+        String listingToSearch = "";
+        if(!listingToSearch2.equals(" ")) {
+             listingToSearch = listingToSearch2.substring(0, listingToSearch2.length() - 1);
+        }
+
+        final String searchListing = listingToSearch;
         mDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -113,6 +122,10 @@ public class viewListingActivity extends AppCompatActivity {
                 }
                 mAdapter = new Adapter(viewListingActivity.this, (ArrayList<Listing>) mListings);
                 mRecyclerView.setAdapter(mAdapter);
+                if(!searchListing.isEmpty()) {
+                    search(searchListing);
+                }
+
             }
 
             @Override
@@ -122,21 +135,25 @@ public class viewListingActivity extends AppCompatActivity {
             }
         });
 
-//        //If ingredient passed from recipe
-//        //Get Intent from ViewMyFullListing
+        //If ingredient passed from recipe
+        //Get Intent from ViewMyFullListing
 //        Intent i = getIntent();
 //        String listingToSearch = getIntent().getStringExtra("ingredient_clicked");
 //        listingToSearch = listingToSearch.substring(0, listingToSearch.length() - 1);
-//
-//            mSearchView.setQuery(listingToSearch, false);
+
+//            search(listingToSearch);
+            mSearchView.setQuery(listingToSearch, true);
+            mSearchView.setFocusedByDefault(true);
 
 
 
-        if (mSearchView != null) {
+        if (mSearchView.getQuery() != null) {
             mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
-                    return false;
+
+                    search(query);
+                    return true;
                 }
 
                 @Override
@@ -203,6 +220,7 @@ public class viewListingActivity extends AppCompatActivity {
                 list.add(obj);
             }
         }
+
         Adapter adapterClass = new Adapter(viewListingActivity.this, (ArrayList<Listing>) list);
         mRecyclerView.setAdapter(adapterClass);
     }
