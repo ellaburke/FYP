@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,7 +29,9 @@ import com.example.fyp_1.MyKitchenIngredients2;
 import com.example.fyp_1.MyKitchenItem;
 import com.example.fyp_1.R;
 import com.example.fyp_1.ShoppingListTab.MyShoppingListActivity;
+import com.example.fyp_1.UserProfileAndListings.MyListingProfileAdapter;
 import com.example.fyp_1.UserProfileAndListings.MyListingsProfileActivity;
+import com.example.fyp_1.UserProfileAndListings.ViewMyFullListing;
 import com.example.fyp_1.model.Listing;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -41,7 +44,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class viewListingActivity extends AppCompatActivity {
+public class viewListingActivity extends AppCompatActivity implements Adapter.OnListingListener{
+
+    private static final String TAG = "viewListingActivity";
 
     private List<Listing> mListings;
     RecyclerView mRecyclerView;
@@ -56,6 +61,9 @@ public class viewListingActivity extends AppCompatActivity {
 
     //Filter Option4
     String myItemCategory;
+
+    //Clicked ID
+    String listingID;
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -120,7 +128,7 @@ public class viewListingActivity extends AppCompatActivity {
                     Listing listing = postSnapshot.getValue(Listing.class);
                     mListings.add(listing);
                 }
-                mAdapter = new Adapter(viewListingActivity.this, (ArrayList<Listing>) mListings);
+                mAdapter = new Adapter(viewListingActivity.this, (ArrayList<Listing>) mListings, viewListingActivity.this);
                 mRecyclerView.setAdapter(mAdapter);
                 if(!searchListing.isEmpty()) {
                     search(searchListing);
@@ -221,7 +229,7 @@ public class viewListingActivity extends AppCompatActivity {
             }
         }
 
-        Adapter adapterClass = new Adapter(viewListingActivity.this, (ArrayList<Listing>) list);
+        Adapter adapterClass = new Adapter(viewListingActivity.this, (ArrayList<Listing>) list, viewListingActivity.this);
         mRecyclerView.setAdapter(adapterClass);
     }
 
@@ -232,7 +240,7 @@ public class viewListingActivity extends AppCompatActivity {
                 list.add(obj2);
             }
         }
-        Adapter adapterClass = new Adapter(viewListingActivity.this, (ArrayList<Listing>) list);
+        Adapter adapterClass = new Adapter(viewListingActivity.this, (ArrayList<Listing>) list, viewListingActivity.this );
         mRecyclerView.setAdapter(adapterClass);
     }
 
@@ -253,6 +261,18 @@ public class viewListingActivity extends AppCompatActivity {
         }
 
         return true;
+    }
+
+    @Override
+    public void onListingClick(int position) {
+        Log.d(TAG, "onListingClicked:  clicked");
+        mListings.get(position);
+        listingID = mListings.get(position).getListingId();
+        Log.d(TAG, "THE LISTING ID: " + listingID);
+        Intent viewFullListingIntent = new Intent(this, ViewFullListingActivity.class);
+        viewFullListingIntent.putExtra("selected_listing_to_display", listingID);
+        startActivity(viewFullListingIntent);
+
     }
 
 
