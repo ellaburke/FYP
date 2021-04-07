@@ -30,6 +30,7 @@ import android.widget.Toast;
 import com.example.fyp_1.AllListingsTab.viewListingActivity;
 import com.example.fyp_1.BarcodeScan.BarcodeActivity;
 import com.example.fyp_1.BarcodeScan.CaptureAct;
+import com.example.fyp_1.Notifications.NotificationActivity;
 import com.example.fyp_1.Recipe.RecipeActivity;
 import com.example.fyp_1.Recipe.ViewFullRecipeActivity;
 import com.example.fyp_1.ShoppingListTab.MyShoppingListActivity;
@@ -364,7 +365,9 @@ public class MyKitchenIngredients2 extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.notification_menu, menu);
         getMenuInflater().inflate(R.menu.profile_menu, menu);
+
         return true;
     }
 
@@ -374,6 +377,11 @@ public class MyKitchenIngredients2 extends AppCompatActivity {
 
         if (id == R.id.profile_icon) {
             Intent profileIntent = new Intent(MyKitchenIngredients2.this, MyListingsProfileActivity.class);
+            startActivity(profileIntent);
+            return true;
+        }
+        if (id == R.id.notification_menu_icon) {
+            Intent profileIntent = new Intent(MyKitchenIngredients2.this, NotificationActivity.class);
             startActivity(profileIntent);
             return true;
         }

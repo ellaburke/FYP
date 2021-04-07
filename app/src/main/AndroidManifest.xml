@@ -25,7 +25,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FYP_1">
-        <activity android:name=".AllListingsTab.ViewFullListingActivity"></activity>
+        <activity android:name=".Chat.ChatActivity"></activity>
+        <activity android:name=".Notifications.NotificationActivity" />
+        <activity android:name=".AllListingsTab.ViewFullListingActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -41,7 +43,9 @@
         <activity
             android:name=".Maps.MapToShop"
             android:label="@string/title_activity_map_to_shop" />
-        <activity android:name=".UserProfileAndListings.EditMyListingActivity" />
+        <activity
+            android:name=".UserProfileAndListings.EditMyListingActivity"
+            android:windowSoftInputMode="adjustNothing" />
         <activity android:name=".UserProfileAndListings.ViewMyFullListing" />
         <activity android:name=".UserProfileAndListings.MyListingsProfileActivity" />
         <activity android:name=".TextDetectActivity" />
@@ -67,11 +71,15 @@
         <activity
             android:name=".Maps.MapsActivity"
             android:label="@string/title_activity_maps" />
-        <activity android:name=".UserProfileAndListings.EditProfileActivity" />
+        <activity
+            android:name=".UserProfileAndListings.EditProfileActivity"
+            android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".AllListingsTab.viewListingActivity"
             android:windowSoftInputMode="adjustNothing" />
-        <activity android:name=".AllListingsTab.addListingActivity" />
+        <activity
+            android:name=".AllListingsTab.addListingActivity"
+            android:windowSoftInputMode="adjustNothing" />
         <activity android:name=".getLocationActivity" />
         <activity android:name=".homePageActivity" />
         <activity android:name=".LoginAndRegister.RegisterActivity" />

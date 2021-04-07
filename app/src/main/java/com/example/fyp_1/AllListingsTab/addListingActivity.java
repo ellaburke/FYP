@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.ArrayAdapter;
@@ -26,12 +27,15 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.fyp_1.Maps.MapsActivity;
+import com.example.fyp_1.MyKitchenIngredients2;
 import com.example.fyp_1.R;
+import com.example.fyp_1.ShoppingListTab.MyShoppingListActivity;
 import com.example.fyp_1.homePageActivity;
 import com.example.fyp_1.model.Listing;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -122,6 +126,36 @@ public class addListingActivity extends AppCompatActivity{
         listingLocation = (EditText) findViewById(R.id.location_et);
         listingTitle = (EditText) findViewById(R.id.title_et);
         listingPickUpTimes = (EditText) findViewById(R.id.pickup_times_et);
+
+        //Init btm nav
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        //Set Home Selected
+        bottomNavigationView.setSelectedItemId(R.id.SearchListingNav);
+
+        //Perform ItemSelectedListener
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.MyKitchenNav:
+                        startActivity(new Intent(getApplicationContext(), MyKitchenIngredients2.class));
+                        overridePendingTransition(0, 0);
+                        return true;
+                    case R.id.SearchListingNav:
+                        Intent emptyIntent = new Intent(addListingActivity.this, viewListingActivity.class);
+                        emptyIntent.putExtra("ingredient_clicked", " ");
+                        startActivity(emptyIntent);
+                        overridePendingTransition(0, 0);
+                        return true;
+                    case R.id.MyShoppingListNav:
+                        startActivity(new Intent(getApplicationContext(), MyShoppingListActivity.class));
+                        overridePendingTransition(0, 0);
+                        return true;
+                }
+                return false;
+            }
+        });
 
 
         // Create an ArrayAdapter using the string array and a default spinner

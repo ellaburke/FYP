@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="2dp"
+    android:elevation="5dp"
+    android:id="@+id/notificationCardView">
+
+    <RelativeLayout
+        android:id="@+id/notificationRelLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#fff">
+
+        <TextView
+            android:id="@+id/requestOrApprovalOrDeclineTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="Request/Approval/Declined"
+            android:textColor="@android:color/black"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/listingTitleNotification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/requestOrApprovalOrDeclineTV"
+            android:layout_marginLeft="15dp"
+            android:layout_marginBottom="8dp"
+            android:text="Item Title"
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/notificationImage"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentRight="true"
+            android:layout_margin="10dp" />
+
+        <Button
+            android:id="@+id/acceptBtnNotifcation"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/listingTitleNotification"
+            android:layout_marginLeft="15dp"
+            android:background="@drawable/circle_button"
+            android:gravity="center"
+            android:textAllCaps="true"
+            app:backgroundTint="@color/wasteify_pink"
+            app:icon="@drawable/ic_baseline_check_24"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconTint="#000"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/declineBtnNotifcation"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/listingTitleNotification"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/acceptBtnNotifcation"
+            android:background="@drawable/circle_button"
+            android:gravity="center"
+            android:textAllCaps="true"
+            app:backgroundTint="#FFFF7A"
+            app:icon="@drawable/ic_decline"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconTint="#000" />
+
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

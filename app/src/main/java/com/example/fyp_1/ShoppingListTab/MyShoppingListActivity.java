@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.example.fyp_1.Maps.MapToShop;
 import com.example.fyp_1.MyKitchenIngredients2;
+import com.example.fyp_1.Notifications.NotificationActivity;
 import com.example.fyp_1.R;
 import com.example.fyp_1.Recipe.ViewFullRecipeActivity;
 import com.example.fyp_1.UserProfileAndListings.MyListingsProfileActivity;
@@ -160,7 +161,9 @@ public class MyShoppingListActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.notification_menu, menu);
         getMenuInflater().inflate(R.menu.profile_menu, menu);
+
         return true;
     }
 
@@ -170,6 +173,11 @@ public class MyShoppingListActivity extends AppCompatActivity {
 
         if (id == R.id.profile_icon) {
             Intent profileIntent = new Intent(MyShoppingListActivity.this, MyListingsProfileActivity.class);
+            startActivity(profileIntent);
+            return true;
+        }
+        if (id == R.id.notification_menu_icon) {
+            Intent profileIntent = new Intent(MyShoppingListActivity.this, NotificationActivity.class);
             startActivity(profileIntent);
             return true;
         }
