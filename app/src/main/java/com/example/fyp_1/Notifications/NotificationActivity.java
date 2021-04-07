@@ -25,6 +25,7 @@ import com.example.fyp_1.ShoppingListTab.MyShoppingListActivity;
 import com.example.fyp_1.UserProfileAndListings.MyListingsProfileActivity;
 import com.example.fyp_1.model.Listing;
 import com.example.fyp_1.model.Notification;
+import com.example.fyp_1.model.UserReuseTotal;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -59,8 +60,15 @@ public class NotificationActivity extends AppCompatActivity implements Notificat
 
     Button declineBtn;
 
+    //User Reuse total update
+    UserReuseTotal myUserReuseTotal;
+    int reuseNo1;
+    int reuseNo2;
+    String theReuseID;
+
     //Firebase
     DatabaseReference mDatabaseRef;
+    DatabaseReference userReuseRef;
     DatabaseReference updateNotificationState;
     private FirebaseAuth mAuth;
     private FirebaseUser user;
@@ -85,6 +93,7 @@ public class NotificationActivity extends AppCompatActivity implements Notificat
         //Init Firebase
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("notifications");
         updateNotificationState = FirebaseDatabase.getInstance().getReference("notifications");
+        userReuseRef = FirebaseDatabase.getInstance().getReference("userReuses");
         mAuth = FirebaseAuth.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
         userId = user.getUid();
@@ -193,11 +202,39 @@ public class NotificationActivity extends AppCompatActivity implements Notificat
                 String notificationID = mDatabaseRef.push().getKey();
                 myNotification = new Notification(title, imageURL, type, approvalUserID, UserRequestApprovedID, notificationID);
                 mDatabaseRef.child(notificationID).setValue(myNotification);
-                //finish();
-                //mNotifications.remove(position);
-                //Toast.makeText(NotificationActivity.this, "Listing Request Approved", Toast.LENGTH_SHORT).show();
-                //mAdapter.notifyDataSetChanged();
 
+
+
+                userReuseRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                            UserReuseTotal reuseRef = postSnapshot.getValue(UserReuseTotal.class);
+                            if (postSnapshot.child("userID").getValue().equals(userId)) {
+                                reuseNo1 = 0 + reuseRef.getReuseNumber();
+                                System.out.println("REUSE NO" + reuseNo1);
+                                reuseNo2 = reuseNo1 + 1;
+                                System.out.println("REUSE NO" + reuseNo2);
+                                theReuseID = reuseRef.getReuseID();
+                            }
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(NotificationActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+
+                if(reuseNo2 <1) {
+                    String reuseID = userReuseRef.push().getKey();
+                    myUserReuseTotal = new UserReuseTotal(approvalUserID, 1, reuseID);
+                    userReuseRef.child(reuseID).setValue(myUserReuseTotal);
+                }else{
+                    userReuseRef.child(theReuseID).child("reuseNumber").setValue(reuseNo2);
+                }
 
             }
 

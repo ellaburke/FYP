@@ -20,8 +20,10 @@ import android.widget.Toast;
 
 import com.example.fyp_1.LoginAndRegister.LoginActivity;
 import com.example.fyp_1.MyKitchenIngredients2;
+import com.example.fyp_1.MyKitchenItem;
 import com.example.fyp_1.R;
 import com.example.fyp_1.model.Listing;
+import com.example.fyp_1.model.UserReuseTotal;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -53,6 +55,7 @@ public class MyListingsProfileActivity extends AppCompatActivity implements MyLi
     StorageReference storageRef;
     StorageReference profilerUpdateRef;
     DatabaseReference userRootRef;
+    DatabaseReference userReuseRef;
     DatabaseReference userPRef;
     private String userId;
     String email;
@@ -68,9 +71,11 @@ public class MyListingsProfileActivity extends AppCompatActivity implements MyLi
     //UI Components
     ImageView uploadProfileImage;
     private Uri selectedImage;
-    TextView userNameTV;
+    TextView userNameTV, reuseTotalTV;
     Button editProfileButton, logOutProfileButton;
-
+    UserReuseTotal currentItem;
+    int noOfReuse;
+    String numberOfReuse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +100,8 @@ public class MyListingsProfileActivity extends AppCompatActivity implements MyLi
         //Profile Pic ref
         storageRef = FirebaseStorage.getInstance().getReference();
         profilerUpdateRef = storageRef.child(user.getUid() + ".jpg");
+        //Reuse ref
+        userReuseRef = FirebaseDatabase.getInstance().getReference("userReuses");
 
 
         //Init UI
@@ -103,6 +110,7 @@ public class MyListingsProfileActivity extends AppCompatActivity implements MyLi
         userNameTV = (TextView) findViewById(R.id.profile_listing_name_display);
         editProfileButton = (Button) findViewById(R.id.editMyProfileBtn);
         logOutProfileButton = (Button) findViewById(R.id.logOutProfileBtn);
+        reuseTotalTV = (TextView) findViewById(R.id.profile_listing_reuseTV);
 
         //Init RCV
         mRecyclerView = findViewById(R.id.myListingsOnProfileRCV);
@@ -175,6 +183,32 @@ public class MyListingsProfileActivity extends AppCompatActivity implements MyLi
                 Log.w(TAG, "Failed to read value.", error.toException());
             }
         });
+
+        userReuseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Iterable<DataSnapshot> children = snapshot.getChildren();
+                for (DataSnapshot child : children) {
+                    currentItem = child.getValue(UserReuseTotal.class);
+                    System.out.println("Current item" + currentItem.getReuseID());
+                    if(currentItem.getUserID().equals(userId)){
+                        noOfReuse = currentItem.getReuseNumber();
+                        numberOfReuse = String.valueOf(noOfReuse);
+                    }
+
+                } reuseTotalTV.setText(numberOfReuse);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e(TAG, "onCancelled", error.toException());
+            }
+
+
+        });
+
+
+
 
         editProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override

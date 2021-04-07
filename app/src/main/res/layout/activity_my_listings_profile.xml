@@ -63,13 +63,24 @@
                     android:layout_toRightOf="@id/listingProfileImageView" />
 
                 <TextView
-                    android:id="@+id/profile_listing_reuseTV"
-                    android:layout_width="150dp"
+                    android:id="@+id/profile_num_of_reuseTV"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/profile_listing_ratingBar"
                     android:layout_marginLeft="20dp"
                     android:layout_toRightOf="@id/listingProfileImageView"
-                    android:text="No. of Reuses" />
+                    android:text="No. of Reuses: "
+                    android:textColor="#000"/>
+
+                <TextView
+                    android:id="@+id/profile_listing_reuseTV"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/profile_listing_ratingBar"
+                    android:layout_toRightOf="@id/profile_num_of_reuseTV"
+                    android:text="(0)"
+                    android:textColor="#000"
+                    android:textStyle="bold"/>
 
 
                 <Button
