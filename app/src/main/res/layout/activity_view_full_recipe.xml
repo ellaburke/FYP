@@ -128,11 +128,24 @@
                     android:layout_marginStart="15dp"
                     android:layout_marginLeft="15dp"
                     android:singleLine="false"
-                    android:text="Shop"
+                    android:text="@string/add_to_shopping_list"
                     android:drawableLeft="@drawable/ic_baseline_add_shopping_cart_24"
                     android:textColor="#FBA290"
                     android:textStyle="bold"
                     android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/TVLocateSupermarkets"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginLeft="15dp"
+                    android:singleLine="false"
+                    android:text="Locate Supermarket"
+                    android:drawableLeft="@drawable/ic_baseline_location_on_24"
+                    android:textColor="@color/wasteify_pink"
+                    android:textStyle="bold"
+                    android:textSize="10sp" />
 
                 <TextView
                     android:id="@+id/displayFullRecipeIngredientsListShopForTV"

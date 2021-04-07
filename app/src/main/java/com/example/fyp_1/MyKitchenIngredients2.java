@@ -36,6 +36,7 @@ import com.example.fyp_1.Recipe.ViewFullRecipeActivity;
 import com.example.fyp_1.ShoppingListTab.MyShoppingListActivity;
 import com.example.fyp_1.UserProfileAndListings.MyListingsProfileActivity;
 import com.example.fyp_1.model.FoodCategorySection;
+import com.example.fyp_1.model.MyShoppingListItem;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -64,6 +65,12 @@ public class MyKitchenIngredients2 extends AppCompatActivity {
     Dialog popupTipDialog;
     Button closePopupTipDialog;
 
+    //Firebase Delete
+    DatabaseReference rootRef;
+    DatabaseReference deleteRef;
+    DatabaseReference mDeleteDatabaseRef;
+    MyKitchenItem currentItem;
+
     //   Barcode
     String barcode;
 
@@ -76,7 +83,7 @@ public class MyKitchenIngredients2 extends AppCompatActivity {
     Boolean clicked = true;
     String myItemInput, myItemAmountInput, myItemCategory, myItemMeasurement, itemAmountAndMeasurement;
 
-    FloatingActionButton addToKitchenBtn, addToKitchenByScanBtn, addToKitchenByTextBtn, checkedItemsBtn;
+    FloatingActionButton addToKitchenBtn, addToKitchenByScanBtn, addToKitchenByTextBtn, checkedItemsBtn, deleteItemsBtn;
 
 
     ArrayList<FoodCategorySection> foodCategorySectionList = new ArrayList<>();
@@ -113,6 +120,11 @@ public class MyKitchenIngredients2 extends AppCompatActivity {
         user = FirebaseAuth.getInstance().getCurrentUser();
         userId = user.getUid();
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("myKitchenItems");
+
+        //Init Firebase delete
+        rootRef = FirebaseDatabase.getInstance().getReference();
+        deleteRef = rootRef.child("myKitchenItems");
+        mDeleteDatabaseRef = FirebaseDatabase.getInstance().getReference("myKitchenItems");
 
 
         //Init btm nav
@@ -157,6 +169,8 @@ public class MyKitchenIngredients2 extends AppCompatActivity {
         addToKitchenByTextBtn.setTooltipText("Add By Text");
         checkedItemsBtn = (FloatingActionButton) findViewById(R.id.fab_add_ingredient_selected);
         checkedItemsBtn.setTooltipText("Check Items You Wish To Use");
+        deleteItemsBtn = (FloatingActionButton) findViewById(R.id.fab_delete_ingredients);
+        deleteItemsBtn.setTooltipText("Check Items You Wish To Delete");
 
         //RCV
         mainRecyclerView = findViewById(R.id.mainRecyclerView);
@@ -283,9 +297,10 @@ public class MyKitchenIngredients2 extends AppCompatActivity {
                             myItemCategory = categorySpinner.getSelectedItem().toString();
                             myItemMeasurement = itemAmountSpinner.getSelectedItem().toString();
                             itemAmountAndMeasurement = myItemAmountInput + myItemMeasurement;
+                            itemId = mDatabaseRef.push().getKey();
                             myKitchenItem = new MyKitchenItem(myItemInput, myItemCategory, itemAmountAndMeasurement, userId, itemId);
                             mDatabaseRef = FirebaseDatabase.getInstance().getReference("myKitchenItems");
-                            itemId = mDatabaseRef.push().getKey();
+
                             mDatabaseRef.child(itemId).setValue(myKitchenItem);
                             itemInput.setText("");
                             itemAmountInput.setText("");
@@ -334,31 +349,63 @@ public class MyKitchenIngredients2 extends AppCompatActivity {
 
 
         //Delete from list by checking boxes and pressing delete FAB
-//        deleteItemsBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                ArrayList<MyKitchenItem> mSelectedItemsToDelete = myKitchenItemsAdapter2.childAdapter.listOfSelectedItems();
-//                String selectedItemToDeleteName = "";
-//
-//                if (mSelectedItemsToDelete != null) {
-//                    for (int index = 0; index < mSelectedItemsToDelete.size(); index++) {
-//                        System.out.println(mSelectedItemsToDelete.get(index).itemName);
-//                        selectedItemToDeleteName += mSelectedItemsToDelete.get(index).itemName;
-//                        if (index != mSelectedItemsToDelete.size() - 1) {
-//                            selectedItemToDeleteName += ",+";
-//                        }
-//                    }
-//                }
-//                if (selectedItemToDeleteName != "") {
-//                    Intent intentRecipe = new Intent(MyKitchenIngredients2.this, RecipeActivity.class);
-//                    intentRecipe.putExtra("ingredientList", selectedItemToDeleteName.toString());
-//                    startActivity(intentRecipe);
-//                }
-//
-//                myKitchenItemsAdapter2.childAdapter.ClearSelectedItems();
-//
-//            }
-//        });
+        deleteItemsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArrayList<MyKitchenItem> mSelectedItemsToDelete = myKitchenItemsAdapter2.childAdapter.listOfSelectedItems();
+                String selectedItemToDeleteName = "";
+                String selectedItemToDeleteID = "";
+
+                if (mSelectedItemsToDelete != null) {
+                    for (int index = 0; index < mSelectedItemsToDelete.size(); index++) {
+                        System.out.println(mSelectedItemsToDelete.get(index).itemName);
+                        //selectedItemToDeleteName += mSelectedItemsToDelete.get(index).itemName;
+                        selectedItemToDeleteID += mSelectedItemsToDelete.get(index).getItemId();
+                        if (index != mSelectedItemsToDelete.size() - 1) {
+                            //selectedItemToDeleteName += "&";
+                            selectedItemToDeleteID += "&";
+                        }
+                    }
+                }
+                if (selectedItemToDeleteID != "") {
+                    //Delete from MyKitchenItems2
+                    String[] arrOfItemsToDelete = selectedItemToDeleteID.split("&");
+
+                    for ( String ingredientToDelete : arrOfItemsToDelete) {
+                        System.out.println("DELETE LIST " + ingredientToDelete);
+
+
+                        deleteRef.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                Iterable<DataSnapshot> children = snapshot.getChildren();
+                                for (DataSnapshot child : children) {
+                                    currentItem = child.getValue(MyKitchenItem.class);
+                                    System.out.println("Current item" + currentItem.getItemId());
+                                    if(currentItem.getItemId().equals(ingredientToDelete)){
+                                        String mSLI = currentItem.getItemId();
+                                        mDeleteDatabaseRef.child(mSLI).removeValue();
+                                    }
+                                    myKitchenItemsAdapter2.notifyDataSetChanged();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                Log.e(TAG, "onCancelled", error.toException());
+                            }
+
+
+                        });
+
+
+                    }
+                }
+
+                myKitchenItemsAdapter2.childAdapter.ClearSelectedItems();
+
+            }
+        });
 
 
     }

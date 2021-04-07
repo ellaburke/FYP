@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,8 +17,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.fyp_1.AllListingsTab.Adapter;
 import com.example.fyp_1.Maps.MapToShop;
 import com.example.fyp_1.MyKitchenIngredients2;
+import com.example.fyp_1.MyKitchenItem;
 import com.example.fyp_1.Notifications.NotificationActivity;
 import com.example.fyp_1.R;
 import com.example.fyp_1.Recipe.ViewFullRecipeActivity;
@@ -36,7 +39,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class MyShoppingListActivity extends AppCompatActivity {
+public class MyShoppingListActivity extends AppCompatActivity implements MyShoppingListAdapter.OnListingListener{
 
     //TAG
     private static final String TAG = "MyKitchenIngredients";
@@ -45,6 +48,15 @@ public class MyShoppingListActivity extends AppCompatActivity {
     private FirebaseUser user;
     private String userId;
     DatabaseReference mDatabaseRef;
+    DatabaseReference rootRef;
+    DatabaseReference deleteRef;
+    DatabaseReference mDeleteDatabaseRef;
+
+    MyShoppingListItem currentItem;
+    String itemToDeleteID;
+
+    //Clicked ID
+    String itemID;
 
 
     //RCV Components
@@ -55,6 +67,7 @@ public class MyShoppingListActivity extends AppCompatActivity {
     ArrayList<MyShoppingListItem> myShoppingListItems = new ArrayList<>();
     String itemId;
     String myShoppingListItemEntry;
+    MyShoppingListAdapter myShoppingListAdapter;
 
     //XML Componenets
     FloatingActionButton addToListByDocScan;
@@ -70,10 +83,13 @@ public class MyShoppingListActivity extends AppCompatActivity {
         user = FirebaseAuth.getInstance().getCurrentUser();
         userId = user.getUid();
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("myShoppingListItems");
+        rootRef = FirebaseDatabase.getInstance().getReference();
+        deleteRef = rootRef.child("myShoppingListItems");
+        mDeleteDatabaseRef = FirebaseDatabase.getInstance().getReference("myShoppingListItems");
 
         //RCV
         myShoppingListRecyclerView = findViewById(R.id.myShoppingListRecyclerView);
-        MyShoppingListAdapter myShoppingListAdapter = new MyShoppingListAdapter(myShoppingListItems);
+        myShoppingListAdapter = new MyShoppingListAdapter(myShoppingListItems, MyShoppingListActivity.this);
         myShoppingListRecyclerView.setAdapter(myShoppingListAdapter);
         myShoppingListRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
@@ -146,8 +162,9 @@ public class MyShoppingListActivity extends AppCompatActivity {
                     // Perform action on key press
                     if (!shoppingListItemInput.getText().toString().isEmpty()) {
                         myShoppingListItemEntry = shoppingListItemInput.getText().toString();
-                        myShoppingListItem = new MyShoppingListItem(myShoppingListItemEntry, itemId, userId);
                         itemId = mDatabaseRef.push().getKey();
+                        myShoppingListItem = new MyShoppingListItem(myShoppingListItemEntry, itemId, userId);
+
                         mDatabaseRef.child(itemId).setValue(myShoppingListItem);
                     }
                     shoppingListItemInput.setText("");
@@ -183,5 +200,40 @@ public class MyShoppingListActivity extends AppCompatActivity {
         }
 
         return true;
+    }
+
+    @Override
+    public void onItemToRemoveFromList(int position) {
+        Log.d(TAG, "CHECKEDDDD");
+        myShoppingListItems.get(position);
+        itemID = myShoppingListItems.get(position).getShoppingListItemId();
+        itemToDeleteID = itemID;
+        System.out.println("Item to delete" + itemID);
+        //myShoppingListItems.remove(itemID);
+        //myShoppingListAdapter.notifyDataSetChanged();
+
+        deleteRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Iterable<DataSnapshot> children = snapshot.getChildren();
+                for (DataSnapshot child : children) {
+                    currentItem = child.getValue(MyShoppingListItem.class);
+                    System.out.println("Current item" + currentItem.getShoppingListItemId());
+                    if(currentItem.getShoppingListItemId().equals(itemID)){
+                        String mSLI = currentItem.getShoppingListItemId();
+                        mDeleteDatabaseRef.child(mSLI).removeValue();
+                    }
+                    myShoppingListAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e(TAG, "onCancelled", error.toException());
+            }
+
+
+        });
+
     }
 }

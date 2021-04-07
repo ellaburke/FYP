@@ -117,11 +117,11 @@ public class viewListingActivity extends AppCompatActivity implements Adapter.On
         Intent i = getIntent();
         String listingToSearch2 = getIntent().getStringExtra("ingredient_clicked");
         String listingToSearch = "";
-        if(!listingToSearch2.equals(" ")) {
-             listingToSearch = listingToSearch2.substring(0, listingToSearch2.length() - 1);
-        }
+//        if(!listingToSearch2.equals(" ")) {
+//             listingToSearch = listingToSearch2.substring(0, listingToSearch2.length() - 1);
+//        }
 
-        final String searchListing = listingToSearch;
+        final String searchListing = listingToSearch2;
         mDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -151,7 +151,7 @@ public class viewListingActivity extends AppCompatActivity implements Adapter.On
 //        listingToSearch = listingToSearch.substring(0, listingToSearch.length() - 1);
 
 //            search(listingToSearch);
-            mSearchView.setQuery(listingToSearch, true);
+            mSearchView.setQuery(listingToSearch2, true);
             mSearchView.setFocusedByDefault(true);
 
 

@@ -21,6 +21,7 @@ import com.example.fyp_1.Maps.MapToShop;
 import com.example.fyp_1.MyKitchenItem;
 import com.example.fyp_1.R;
 import com.example.fyp_1.model.Listing;
+import com.example.fyp_1.model.MyShoppingListItem;
 import com.example.fyp_1.model.RecipeInstructionStep;
 import com.example.fyp_1.model.RecipeInstructionStepEquipment;
 import com.example.fyp_1.model.RecipeInstructionStepIngredient;
@@ -28,6 +29,7 @@ import com.example.fyp_1.model.RecipeInstructions;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -53,7 +55,7 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
     String myIngList = "";
     String recipeNameToDisplay, recipeImageURLToDisplay;
     ImageView recipeImageView;
-    TextView recipeNameTV, recipeIngredientTV, recipeIngredientListTV, recipeIngredientListTVListed, recipeIngredientListTVShop, ingredientEquipmentTV, ingredientEquipmentListTV, ingredientMethodTV, ingredientMethodListTV, shopTVToMap, listingsAvailableNearMe;
+    TextView recipeNameTV, recipeIngredientTV, recipeIngredientListTV, recipeIngredientListTVListed, recipeIngredientListTVShop, ingredientEquipmentTV, ingredientEquipmentListTV, ingredientMethodTV, ingredientMethodListTV, addToShoppingListTV, listingsAvailableNearMe, locateSupermarket;
 
     //RCV compnents
     RecyclerView mRecyclerView;
@@ -64,6 +66,13 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
     DatabaseReference rootRef;
     DatabaseReference kitchenItemRef;
     private FirebaseAuth mAuth;
+    private FirebaseUser user;
+    private String userId;
+    String itemId;
+    DatabaseReference mDatabaseRef;
+
+    //MyShoppingListItem & List
+    MyShoppingListItem myShoppingListItem;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -82,16 +91,20 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
         ingredientEquipmentListTV = (TextView) findViewById(R.id.displayFullRecipeEquipmentListTV);
         ingredientMethodTV = (TextView) findViewById(R.id.displayFullRecipeMethodTV);
         ingredientMethodTV.setPaintFlags(ingredientMethodTV.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-        shopTVToMap = (TextView) findViewById(R.id.TVIWillShopFor);
+        addToShoppingListTV = (TextView) findViewById(R.id.TVIWillShopFor);
         listingsAvailableNearMe = (TextView) findViewById(R.id.TVListedNearMe);
         listingsAvailableNearMe.setTooltipText("Click ingredient to view listings");
         //ingredientMethodListTV = (TextView) findViewById(R.id.displayFullRecipeMethodStepsTV);
+        locateSupermarket = (TextView) findViewById(R.id.TVLocateSupermarkets);
 
         //Firebase
         //Ref to kitchen item
         mAuth = FirebaseAuth.getInstance();
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        userId = user.getUid();
         rootRef = FirebaseDatabase.getInstance().getReference();
         kitchenItemRef = rootRef.child(KITCHENITEM);
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference("myShoppingListItems");
 
         Intent i = getIntent();
         recipeToDisplay = getIntent().getIntExtra("the_recipe_id", 0);
@@ -138,7 +151,7 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String listedIngredientsString = recipeIngredientListTVListed.getText().toString();
-                String[] arr = listedIngredientsString.split(" ");
+                String[] arr = listedIngredientsString.split("\\r?\\n");
 
                 for ( String ingredientClicked : arr) {
                     System.out.println(ingredientClicked);
@@ -150,8 +163,28 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
             }
         });
 
-        shopTVToMap.setTooltipText("Locate Nearest Supermarkets");
-        shopTVToMap.setOnClickListener(new View.OnClickListener() {
+        addToShoppingListTV.setTooltipText("Add Missing Ingredients to Shopping List");
+        addToShoppingListTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String shopForIngredientsString = recipeIngredientListTVShop.getText().toString();
+                String[] arr2 = shopForIngredientsString.split("\\r?\\n");
+                String listingToAddToShoppingList = "";
+
+                for ( String ingredientClicked : arr2) {
+                    System.out.println(ingredientClicked);
+
+                    itemId = mDatabaseRef.push().getKey();
+                    myShoppingListItem = new MyShoppingListItem(ingredientClicked, itemId, userId);
+
+                    mDatabaseRef.child(itemId).setValue(myShoppingListItem);
+
+                }
+            }
+        });
+
+        locateSupermarket.setTooltipText("Locate Nearest Supermarkets");
+        locateSupermarket.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent bringMeToGroceryShopIntent = new Intent(ViewFullRecipeActivity.this, MapToShop.class);
