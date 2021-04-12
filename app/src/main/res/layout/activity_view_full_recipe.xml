@@ -225,6 +225,17 @@
                 tools:layout_editor_absoluteX="171dp"
                 tools:layout_editor_absoluteY="194dp" />
 
+            <Button
+                android:onClick="removeIng"
+                android:id="@+id/removeIngFromKitBtn"
+                android:layout_below="@+id/recipeDisplayRecyclerView"
+                android:layout_width="300dp"
+                android:layout_margin="10dp"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/custom_button"
+                android:text="@string/recipe_made_delete_ingredients_from_mykitchen"/>
+
         </RelativeLayout>
 
 

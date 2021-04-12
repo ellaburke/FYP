@@ -94,8 +94,8 @@ public class MyShoppingListActivity extends AppCompatActivity implements MyShopp
             if(itemList !=null && !(itemList.isEmpty())) {
                 String[] items = itemList.split("\n");
                 for(String item: items) {
-                    myShoppingListItem = new MyShoppingListItem(item, itemId, userId);
                     itemId = mDatabaseRef.push().getKey();
+                    myShoppingListItem = new MyShoppingListItem(item, itemId, userId);
                     mDatabaseRef.child(itemId).setValue(myShoppingListItem);
                 }
             }

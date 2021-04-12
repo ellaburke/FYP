@@ -1,5 +1,6 @@
 package com.example.fyp_1.Recipe;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,11 +14,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.fyp_1.AllListingsTab.viewListingActivity;
 import com.example.fyp_1.Maps.MapToShop;
+import com.example.fyp_1.MyKitchenIngredients2;
 import com.example.fyp_1.MyKitchenItem;
 import com.example.fyp_1.R;
 import com.example.fyp_1.model.Listing;
@@ -56,6 +59,7 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
     String recipeNameToDisplay, recipeImageURLToDisplay;
     ImageView recipeImageView;
     TextView recipeNameTV, recipeIngredientTV, recipeIngredientListTV, recipeIngredientListTVListed, recipeIngredientListTVShop, ingredientEquipmentTV, ingredientEquipmentListTV, ingredientMethodTV, ingredientMethodListTV, addToShoppingListTV, listingsAvailableNearMe, locateSupermarket;
+    Button removeFromKitchenIngBtn;
 
     //RCV compnents
     RecyclerView mRecyclerView;
@@ -65,6 +69,7 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
     //Firebase Ref
     DatabaseReference rootRef;
     DatabaseReference kitchenItemRef;
+    DatabaseReference deleteRef, mDeleteDatabaseRef;
     private FirebaseAuth mAuth;
     private FirebaseUser user;
     private String userId;
@@ -73,6 +78,8 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
 
     //MyShoppingListItem & List
     MyShoppingListItem myShoppingListItem;
+
+    ArrayList<String> doHave = new ArrayList<>();
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -96,6 +103,7 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
         listingsAvailableNearMe.setTooltipText("Click ingredient to view listings");
         //ingredientMethodListTV = (TextView) findViewById(R.id.displayFullRecipeMethodStepsTV);
         locateSupermarket = (TextView) findViewById(R.id.TVLocateSupermarkets);
+        removeFromKitchenIngBtn = (Button) findViewById(R.id.removeIngFromKitBtn);
 
         //Firebase
         //Ref to kitchen item
@@ -103,6 +111,8 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
         user = FirebaseAuth.getInstance().getCurrentUser();
         userId = user.getUid();
         rootRef = FirebaseDatabase.getInstance().getReference();
+        deleteRef = rootRef.child("myKitchenItems");
+        mDeleteDatabaseRef = FirebaseDatabase.getInstance().getReference("myKitchenItems");
         kitchenItemRef = rootRef.child(KITCHENITEM);
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("myShoppingListItems");
 
@@ -232,7 +242,6 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
         final List<RecipeInstructionStepIngredient>[] ingredientList = new List[]{new ArrayList<>()};
         List<RecipeInstructionStepEquipment> equipmentList = new ArrayList<>();
         ArrayList<RecipeInstructionStep> stepsList = new ArrayList<>();
-        ArrayList<String> doHave = new ArrayList<>();
         ArrayList<String> dontHave = new ArrayList<>();
 
         ArrayList<String> availableListings = new ArrayList<>();
@@ -420,6 +429,47 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
 
         return true;
     }
+
+    public void removeIng(View view) {
+        //Remove ing from kitchen when used
+        //doHave
+
+       for(String ingToDelFromKitchen: doHave){
+           System.out.println("INGTODELETE : " + ingToDelFromKitchen);
+
+           deleteRef.addValueEventListener(new ValueEventListener() {
+               @Override
+               public void onDataChange(@NonNull DataSnapshot snapshot) {
+                   Iterable<DataSnapshot> children = snapshot.getChildren();
+                   for (DataSnapshot child : children) {
+                       MyKitchenItem currentItem = child.getValue(MyKitchenItem.class);
+                       if(currentItem.getItemName().equalsIgnoreCase(ingToDelFromKitchen)){
+                           String mKI = currentItem.getItemId();
+                           System.out.println("INGTODELETE1 : " + ingToDelFromKitchen);
+                           System.out.println("INGTODELETE2 : " + currentItem.getItemName());
+                           mDeleteDatabaseRef.child(mKI).removeValue();
+
+                       }
+                       //mAdapter.notifyDataSetChanged();
+                       Intent bringMeBackToMyKitchen = new Intent(ViewFullRecipeActivity.this, MyKitchenIngredients2.class);
+                       startActivity(bringMeBackToMyKitchen);
+                   }
+               }
+
+               @Override
+               public void onCancelled(@NonNull DatabaseError error) {
+                   Log.e(TAG, "onCancelled", error.toException());
+               }
+
+
+           });
+       }
+
+
+
+    }
+
+
 
 
 

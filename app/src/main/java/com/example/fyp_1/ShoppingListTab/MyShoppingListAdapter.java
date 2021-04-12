@@ -73,4 +73,5 @@ public class MyShoppingListAdapter extends RecyclerView.Adapter<MyShoppingListAd
         void onItemToRemoveFromList(int position);
 
     }
+
 }

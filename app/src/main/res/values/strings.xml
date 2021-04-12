@@ -111,4 +111,5 @@
     <string name="choose_from_gallery">Choose from Gallery</string>
     <string name="add_to_shopping_list">Add to Shopping List</string>
     <string name="number_of_requests">Number of Requests: </string>
+    <string name="recipe_made_delete_ingredients_from_mykitchen">Recipe Made! Delete Ingredients from MyKitchen</string>
 </resources>
