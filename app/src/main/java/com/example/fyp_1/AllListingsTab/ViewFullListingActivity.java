@@ -44,9 +44,13 @@ public class ViewFullListingActivity extends AppCompatActivity {
     StorageReference storageRef;
     StorageReference profilerUpdateRef;
     private DatabaseReference mDatabaseRef;
+    DatabaseReference userRootRef;
 
     //Listing ID
     String IDListing;
+
+    //User Details
+    String fullName, fName, lName;
 
     //Notification
     Notification myNotification;
@@ -83,8 +87,10 @@ public class ViewFullListingActivity extends AppCompatActivity {
         storageRef = FirebaseStorage.getInstance().getReference();
         //Username
         getUserNameRef = FirebaseDatabase.getInstance().getReference("user");
+        //User ref
+        userRootRef = FirebaseDatabase.getInstance().getReference("user");
         //Notification
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference("notifications");
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference("notificationRequests");
 
         //Get Intent from ViewMyFullListing
         Intent i = getIntent();
@@ -156,6 +162,31 @@ public class ViewFullListingActivity extends AppCompatActivity {
             }
         });
 
+        userRootRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                    User user = postSnapshot.getValue(User.class);
+                    if (postSnapshot.getKey().equals(userId)) {
+                        fName = user.getFirstName();
+                        lName = user.getLastName();
+                        System.out.println("FN" + fName);
+                        break;
+
+                    }
+                }
+                fullName = fName + " " + lName;
+
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
+
         requestListingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -166,16 +197,17 @@ public class ViewFullListingActivity extends AppCompatActivity {
                 String type = "Request";
                 //User ID
                 //FLProfileUserName
+                String listingState = "Requested";
 
                 String notificationID = mDatabaseRef.push().getKey();
 
-                myNotification = new Notification(FLTitle,FLImage,type,userId,FLProfileUserName,notificationID);
+
+                myNotification = new Notification(FLTitle, FLImage, type, userId, FLProfileUserName, notificationID, listingState, fullName);
                 mDatabaseRef.child(notificationID).setValue(myNotification);
                 finish();
 
             }
         });
-
 
 
 //        getUserNameRef.addValueEventListener(new ValueEventListener() {

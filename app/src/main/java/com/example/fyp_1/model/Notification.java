@@ -8,18 +8,22 @@ public class Notification {
     String senderUserID;
     String recieverUserID;
     String notificationID;
+    String listingState;
+    String senderCollectorName;
 
     public Notification() {
 
     }
 
-    public Notification(String itemName, String itemURL, String notificationType, String senderUserID, String recieverUserID, String notificationID) {
+    public Notification(String itemName, String itemURL, String notificationType, String senderUserID, String recieverUserID, String notificationID, String listingState, String senderCollectorName) {
         this.itemName = itemName;
         this.itemURL = itemURL;
         this.notificationType = notificationType;
         this.senderUserID = senderUserID;
         this.recieverUserID = recieverUserID;
         this.notificationID = notificationID;
+        this.listingState = listingState;
+        this.senderCollectorName = senderCollectorName;
     }
 
     public String getItemName() {
@@ -70,4 +74,19 @@ public class Notification {
         this.notificationID = notificationID;
     }
 
+    public String getListingState() {
+        return listingState;
+    }
+
+    public void setListingState(String listingState) {
+        this.listingState = listingState;
+    }
+
+    public String getSenderCollectorName() {
+        return senderCollectorName;
+    }
+
+    public void setSenderCollectorName(String senderCollectorName) {
+        this.senderCollectorName = senderCollectorName;
+    }
 }

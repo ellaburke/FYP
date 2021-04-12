@@ -28,6 +28,7 @@ import android.widget.Toast;
 import com.example.fyp_1.MyKitchenIngredients2;
 import com.example.fyp_1.MyKitchenItem;
 import com.example.fyp_1.Notifications.NotificationActivity;
+import com.example.fyp_1.Notifications.RequestNotificationActivity;
 import com.example.fyp_1.R;
 import com.example.fyp_1.ShoppingListTab.MyShoppingListActivity;
 import com.example.fyp_1.UserProfileAndListings.MyListingProfileAdapter;
@@ -86,7 +87,7 @@ public class viewListingActivity extends AppCompatActivity implements Adapter.On
 
         //init FAB
         uploadListingFAB = (FloatingActionButton) findViewById(R.id.fab_upload_listing);
-        uploadListingFAB.setTooltipText("Upload Listing");
+//        uploadListingFAB.setTooltipText("Upload Listing");
 
         //Init btm nav
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -247,6 +248,7 @@ public class viewListingActivity extends AppCompatActivity implements Adapter.On
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.request_notification_menu, menu);
         getMenuInflater().inflate(R.menu.notification_menu, menu);
         getMenuInflater().inflate(R.menu.profile_menu, menu);
 
@@ -264,6 +266,11 @@ public class viewListingActivity extends AppCompatActivity implements Adapter.On
         }
         if (id == R.id.notification_menu_icon) {
             Intent profileIntent = new Intent(viewListingActivity.this, NotificationActivity.class);
+            startActivity(profileIntent);
+            return true;
+        }
+        if (id == R.id.request_notification_menu_icon) {
+            Intent profileIntent = new Intent(viewListingActivity.this, RequestNotificationActivity.class);
             startActivity(profileIntent);
             return true;
         }

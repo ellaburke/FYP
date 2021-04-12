@@ -6,6 +6,5 @@
         android:title="Profile"
         android:icon="@drawable/wasteify_no_background"
         app:showAsAction="ifRoom|collapseActionView"
-        app:actionViewClass="android.widget.SearchView"
         />
 </menu>

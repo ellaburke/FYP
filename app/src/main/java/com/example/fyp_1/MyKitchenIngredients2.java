@@ -31,6 +31,7 @@ import com.example.fyp_1.AllListingsTab.viewListingActivity;
 import com.example.fyp_1.BarcodeScan.BarcodeActivity;
 import com.example.fyp_1.BarcodeScan.CaptureAct;
 import com.example.fyp_1.Notifications.NotificationActivity;
+import com.example.fyp_1.Notifications.RequestNotificationActivity;
 import com.example.fyp_1.Recipe.RecipeActivity;
 import com.example.fyp_1.Recipe.ViewFullRecipeActivity;
 import com.example.fyp_1.ShoppingListTab.MyShoppingListActivity;
@@ -164,13 +165,13 @@ public class MyKitchenIngredients2 extends AppCompatActivity {
         //init FAB
         addToKitchenBtn = (FloatingActionButton) findViewById(R.id.fab_add_ingredient);
         addToKitchenByScanBtn = (FloatingActionButton) findViewById(R.id.fab_add_ingredient_by_scan);
-        addToKitchenByScanBtn.setTooltipText("Scan to Add");
+        //addToKitchenByScanBtn.setTooltipText("Scan to Add");
         addToKitchenByTextBtn = (FloatingActionButton) findViewById(R.id.fab_add_ingredient_by_text);
-        addToKitchenByTextBtn.setTooltipText("Add By Text");
+        //addToKitchenByTextBtn.setTooltipText("Add By Text");
         checkedItemsBtn = (FloatingActionButton) findViewById(R.id.fab_add_ingredient_selected);
-        checkedItemsBtn.setTooltipText("Check Items You Wish To Use");
+        //checkedItemsBtn.setTooltipText("Check Items You Wish To Use");
         deleteItemsBtn = (FloatingActionButton) findViewById(R.id.fab_delete_ingredients);
-        deleteItemsBtn.setTooltipText("Check Items You Wish To Delete");
+        //deleteItemsBtn.setTooltipText("Check Items You Wish To Delete");
 
         //RCV
         mainRecyclerView = findViewById(R.id.mainRecyclerView);
@@ -412,6 +413,7 @@ public class MyKitchenIngredients2 extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.request_notification_menu, menu);
         getMenuInflater().inflate(R.menu.notification_menu, menu);
         getMenuInflater().inflate(R.menu.profile_menu, menu);
 
@@ -429,6 +431,11 @@ public class MyKitchenIngredients2 extends AppCompatActivity {
         }
         if (id == R.id.notification_menu_icon) {
             Intent profileIntent = new Intent(MyKitchenIngredients2.this, NotificationActivity.class);
+            startActivity(profileIntent);
+            return true;
+        }
+        if (id == R.id.request_notification_menu_icon) {
+            Intent profileIntent = new Intent(MyKitchenIngredients2.this, RequestNotificationActivity.class);
             startActivity(profileIntent);
             return true;
         }

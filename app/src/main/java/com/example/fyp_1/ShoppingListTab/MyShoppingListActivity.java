@@ -22,8 +22,10 @@ import com.example.fyp_1.Maps.MapToShop;
 import com.example.fyp_1.MyKitchenIngredients2;
 import com.example.fyp_1.MyKitchenItem;
 import com.example.fyp_1.Notifications.NotificationActivity;
+import com.example.fyp_1.Notifications.RequestNotificationActivity;
 import com.example.fyp_1.R;
 import com.example.fyp_1.Recipe.ViewFullRecipeActivity;
+import com.example.fyp_1.TextRecognitionActivity;
 import com.example.fyp_1.UserProfileAndListings.MyListingsProfileActivity;
 import com.example.fyp_1.model.MyShoppingListItem;
 import com.example.fyp_1.AllListingsTab.viewListingActivity;
@@ -54,6 +56,7 @@ public class MyShoppingListActivity extends AppCompatActivity implements MyShopp
 
     MyShoppingListItem currentItem;
     String itemToDeleteID;
+    MyKitchenItem myKitchenItem;
 
     //Clicked ID
     String itemID;
@@ -70,7 +73,7 @@ public class MyShoppingListActivity extends AppCompatActivity implements MyShopp
     MyShoppingListAdapter myShoppingListAdapter;
 
     //XML Componenets
-    FloatingActionButton addToListByDocScan;
+    FloatingActionButton addToListByDocScan, deleteFromList;
     EditText shoppingListItemInput;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -124,8 +127,10 @@ public class MyShoppingListActivity extends AppCompatActivity implements MyShopp
 
         //XML Components
         addToListByDocScan = (FloatingActionButton) findViewById(R.id.fab_scan_doc);
-        addToListByDocScan.setTooltipText("Scan to Add To List");
+        //addToListByDocScan.setTooltipText("Scan to Add To List");
         shoppingListItemInput = (EditText) findViewById(R.id.shopping_list_item_input);
+//        deleteFromList.setTooltipText("Delete Checked Ingredients");
+//        deleteFromList = (FloatingActionButton) findViewById(R.id.fab_bin_ing);
 
         mDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -150,6 +155,9 @@ public class MyShoppingListActivity extends AppCompatActivity implements MyShopp
             @Override
             public void onClick(View v) {
                 //Text Recognition Scan Recipe
+                System.out.println("Scanbutton clicked");
+                startActivity(new Intent(getApplicationContext(), TextRecognitionActivity.class));
+                overridePendingTransition(0,0);
             }
         });
 
@@ -178,6 +186,7 @@ public class MyShoppingListActivity extends AppCompatActivity implements MyShopp
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.request_notification_menu, menu);
         getMenuInflater().inflate(R.menu.notification_menu, menu);
         getMenuInflater().inflate(R.menu.profile_menu, menu);
 
@@ -195,6 +204,11 @@ public class MyShoppingListActivity extends AppCompatActivity implements MyShopp
         }
         if (id == R.id.notification_menu_icon) {
             Intent profileIntent = new Intent(MyShoppingListActivity.this, NotificationActivity.class);
+            startActivity(profileIntent);
+            return true;
+        }
+        if (id == R.id.request_notification_menu_icon) {
+            Intent profileIntent = new Intent(MyShoppingListActivity.this, RequestNotificationActivity.class);
             startActivity(profileIntent);
             return true;
         }
@@ -222,6 +236,7 @@ public class MyShoppingListActivity extends AppCompatActivity implements MyShopp
                     if(currentItem.getShoppingListItemId().equals(itemID)){
                         String mSLI = currentItem.getShoppingListItemId();
                         mDeleteDatabaseRef.child(mSLI).removeValue();
+
                     }
                     myShoppingListAdapter.notifyDataSetChanged();
                 }

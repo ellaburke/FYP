@@ -107,4 +107,6 @@
     <string name="title_activity_map_to_shop">Map</string>
     <string name="request">Request</string>
     <string name="chat_user">Chat User</string>
+    <string name="listing_requests">Listing Requests</string>
+    <string name="my_listing_requests">My Listing Requests</string>
 </resources>

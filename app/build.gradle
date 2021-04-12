@@ -78,6 +78,11 @@ dependencies {
     //Text Detect
     implementation 'com.google.firebase:firebase-functions:19.2.0'
     implementation 'com.google.code.gson:gson:2.8.6'
+    //implementation 'com.google.firebase:firebase-ml-vision:24.1.0'
+    implementation 'com.google.android.gms:play-services-vision:20.1.1'
+    implementation 'com.google.android.gms:play-services-vision-common:19.1.1'
+    implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
+    implementation 'com.google.firebase:firebase-messaging:21.0.1'
     //viewPager
     //viewPager
     implementation 'androidx.viewpager2:viewpager2:1.0.0-beta04'

@@ -2,9 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/notification_menu_icon"
+        android:id="@+id/request_notification_menu_icon"
         android:title="Profile"
-        android:icon="@drawable/ic_baseline_circle_notifications_24"
+        android:icon="@drawable/ic_baseline_request"
         app:showAsAction="ifRoom|collapseActionView" />
 
 </menu>

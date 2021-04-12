@@ -32,8 +32,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         //notification content
         public TextView notificationTypeTitle;
         public TextView noticationItemName;
-        public Button approveBtn;
-        public Button declineBtn;
         public ImageView mImageView;
         public RelativeLayout cardLayout;
         public CardView cardView;
@@ -42,36 +40,26 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
         public ExampleViewHolder(@NonNull View itemView, OnListingListener onListingListener) {
             super(itemView);
-            mImageView = itemView.findViewById(R.id.notificationImage);
-            notificationTypeTitle = itemView.findViewById(R.id.requestOrApprovalOrDeclineTV);
-            noticationItemName = itemView.findViewById(R.id.listingTitleNotification);
-            approveBtn = itemView.findViewById(R.id.acceptBtnNotifcation);
-            declineBtn = itemView.findViewById(R.id.declineBtnNotifcation);
-            cardLayout = itemView.findViewById(R.id.notificationRelLayout);
-            cardView = itemView.findViewById(R.id.notificationCardView);
+            mImageView = itemView.findViewById(R.id.notificationImage1);
+            notificationTypeTitle = itemView.findViewById(R.id.requestOrApprovalOrDeclineTV1);
+            noticationItemName = itemView.findViewById(R.id.listingTitleNotification1);
+            cardLayout = itemView.findViewById(R.id.notificationRelLayout1);
+            cardView = itemView.findViewById(R.id.notificationCardView1);
             mOnListingListener = onListingListener;
 
-            approveBtn.setOnClickListener(this);
-            declineBtn.setOnClickListener(this);
+            itemView.setOnClickListener(this);
+
         }
 
         @Override
         public void onClick(View v) {
-            switch (v.getId()){
-                case R.id.acceptBtnNotifcation:
-                    mOnListingListener.onListingApprovalClick(this.getAdapterPosition());
-
-                    break;
-                case R.id.declineBtnNotifcation:
-                    mOnListingListener.onListingDeclineClick(this.getAdapterPosition());
-            }
+            mOnListingListener.onNotificationClick(getAdapterPosition());
         }
     }
 
     public interface OnListingListener {
-        void onListingApprovalClick(int position);
+        void onNotificationClick(int position);
 
-        void onListingDeclineClick(int position);
 
     }
 
@@ -86,7 +74,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         @NonNull
         @Override
         public NotificationAdapter.ExampleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View v = LayoutInflater.from(mContext).inflate(R.layout.notification_card, parent, false);
+            View v = LayoutInflater.from(mContext).inflate(R.layout.notification_approval_decline_card, parent, false);
             return new NotificationAdapter.ExampleViewHolder(v, mOnListingListener);
         }
 
@@ -104,18 +92,10 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
             int grey = Color.parseColor(	"#CCA9A9A9");
             if(holder.notificationTypeTitle.getText().toString().equals("Declined")) {
-                holder.approveBtn.setVisibility(View.INVISIBLE);
-                holder.declineBtn.setVisibility(View.INVISIBLE);
                 holder.cardLayout.setBackgroundColor(grey);
                 holder.mImageView.setColorFilter(grey);
             }
-            if(holder.notificationTypeTitle.getText().toString().equals("Approved")) {
-                holder.approveBtn.setVisibility(View.INVISIBLE);
-                holder.declineBtn.setVisibility(View.INVISIBLE);
-            }
-//            if(currentNotification.getNotificationState().equals("approved")){
-//
-//            }
+
 
 
         }
