@@ -17,15 +17,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.fyp_1.AllListingsTab.Adapter;
-import com.example.fyp_1.Maps.MapToShop;
 import com.example.fyp_1.MyKitchenIngredients2;
 import com.example.fyp_1.MyKitchenItem;
 import com.example.fyp_1.Notifications.NotificationActivity;
 import com.example.fyp_1.Notifications.RequestNotificationActivity;
 import com.example.fyp_1.R;
-import com.example.fyp_1.Recipe.ViewFullRecipeActivity;
-import com.example.fyp_1.TextRecognitionActivity;
+import com.example.fyp_1.TextRecognition.TextRecognitionActivity;
 import com.example.fyp_1.UserProfileAndListings.MyListingsProfileActivity;
 import com.example.fyp_1.model.MyShoppingListItem;
 import com.example.fyp_1.AllListingsTab.viewListingActivity;

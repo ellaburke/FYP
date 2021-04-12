@@ -1,8 +1,10 @@
-package com.example.fyp_1;
+package com.example.fyp_1.LoadingDialog;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.view.LayoutInflater;
+
+import com.example.fyp_1.R;
 
 public class LoadingDialog {
 

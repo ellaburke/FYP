@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,6 +36,7 @@ import com.example.fyp_1.UserProfileAndListings.MyListingProfileAdapter;
 import com.example.fyp_1.UserProfileAndListings.MyListingsProfileActivity;
 import com.example.fyp_1.UserProfileAndListings.ViewMyFullListing;
 import com.example.fyp_1.model.Listing;
+import com.example.fyp_1.model.Notification;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
@@ -46,15 +48,16 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class viewListingActivity extends AppCompatActivity implements Adapter.OnListingListener{
+public class viewListingActivity extends AppCompatActivity implements Adapter.OnListingListener {
 
     private static final String TAG = "viewListingActivity";
 
     private List<Listing> mListings;
+    private List<String> mNotifications;
     RecyclerView mRecyclerView;
     RecyclerView.Adapter mAdapter;
     RecyclerView.LayoutManager mLayoutManager;
-    DatabaseReference mDatabaseRef;
+    DatabaseReference mDatabaseRef, mDatabaseNotificationStateRef;
     SearchView mSearchView;
     ImageView filterByCategory;
 
@@ -78,7 +81,9 @@ public class viewListingActivity extends AppCompatActivity implements Adapter.On
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mListings = new ArrayList<>();
+        mNotifications = new ArrayList<>();
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("listings");
+        mDatabaseNotificationStateRef = FirebaseDatabase.getInstance().getReference("notificationRequests");
         mRecyclerView.setLayoutManager(mLayoutManager);
         mSearchView = findViewById(R.id.searchView);
         mSearchView.setIconified(false);
@@ -122,17 +127,41 @@ public class viewListingActivity extends AppCompatActivity implements Adapter.On
 //             listingToSearch = listingToSearch2.substring(0, listingToSearch2.length() - 1);
 //        }
 
+        //Get notification request state and compare to listing
+        mDatabaseNotificationStateRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                    Notification not = postSnapshot.getValue(Notification.class);
+                    //assert not != null;
+                    if (not.getListingState().equals("Approved")) {
+                        mNotifications.add(not.getListingID());
+                        System.out.println("NOTIFICATIONS" + mNotifications);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(viewListingActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
         final String searchListing = listingToSearch2;
         mDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                     Listing listing = postSnapshot.getValue(Listing.class);
-                    mListings.add(listing);
+                    if (!mNotifications.contains(listing.getListingId())) {
+                        mListings.add(listing);
+                    }
                 }
                 mAdapter = new Adapter(viewListingActivity.this, (ArrayList<Listing>) mListings, viewListingActivity.this);
                 mRecyclerView.setAdapter(mAdapter);
-                if(!searchListing.isEmpty()) {
+
+                if (!searchListing.isEmpty()) {
                     search(searchListing);
                 }
 
@@ -145,6 +174,7 @@ public class viewListingActivity extends AppCompatActivity implements Adapter.On
             }
         });
 
+
         //If ingredient passed from recipe
         //Get Intent from ViewMyFullListing
 //        Intent i = getIntent();
@@ -152,9 +182,8 @@ public class viewListingActivity extends AppCompatActivity implements Adapter.On
 //        listingToSearch = listingToSearch.substring(0, listingToSearch.length() - 1);
 
 //            search(listingToSearch);
-            mSearchView.setQuery(listingToSearch2, true);
-            mSearchView.setFocusedByDefault(true);
-
+        mSearchView.setQuery(listingToSearch2, true);
+        mSearchView.setFocusedByDefault(true);
 
 
         if (mSearchView.getQuery() != null) {
@@ -200,9 +229,9 @@ public class viewListingActivity extends AppCompatActivity implements Adapter.On
                     public void onClick(View v) {
 
                         int selectedRadioButtonId = radioGroup.getCheckedRadioButtonId();
-                            selectedRadioButton[0] = findViewById(selectedRadioButtonId);
-                            String selectedRbText = selectedRadioButton[0].getText().toString();
-                            System.out.println("SELECTED" + selectedRbText);
+                        selectedRadioButton[0] = findViewById(selectedRadioButtonId);
+                        String selectedRbText = selectedRadioButton[0].getText().toString();
+                        System.out.println("SELECTED" + selectedRbText);
 
 
                     }
@@ -226,7 +255,7 @@ public class viewListingActivity extends AppCompatActivity implements Adapter.On
     public void search(String str) {
         ArrayList<Listing> list = new ArrayList<>();
         for (Listing obj : mListings) {
-            if (obj.getName().toLowerCase().contains(str.toLowerCase()) ) {
+            if (obj.getName().toLowerCase().contains(str.toLowerCase())) {
                 list.add(obj);
             }
         }
@@ -242,7 +271,7 @@ public class viewListingActivity extends AppCompatActivity implements Adapter.On
                 list.add(obj2);
             }
         }
-        Adapter adapterClass = new Adapter(viewListingActivity.this, (ArrayList<Listing>) list, viewListingActivity.this );
+        Adapter adapterClass = new Adapter(viewListingActivity.this, (ArrayList<Listing>) list, viewListingActivity.this);
         mRecyclerView.setAdapter(adapterClass);
     }
 

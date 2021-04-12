@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.example.fyp_1.LoadingDialog;
+import com.example.fyp_1.LoadingDialog.LoadingDialog;
 import com.example.fyp_1.R;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

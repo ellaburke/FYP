@@ -285,6 +285,7 @@ public class addListingActivity extends AppCompatActivity{
         listingKeepListedFor = keepListedForSpinner.getSelectedItem().toString();
         listingFoodCategory = categorySpinner.getSelectedItem().toString();
         listingOption = optionSelected;
+        int requestTotal = 0;
 
         if (selectedImage != null) {
             StorageReference fileReference = mStorageRef.child(System.currentTimeMillis() + "." + getFileExtension(selectedImage));
@@ -305,7 +306,7 @@ public class addListingActivity extends AppCompatActivity{
 
                     //Log.d(TAG, "onSuccess: firebase download url: " + downloadUrl.toString()); //use if testing...don't need this line.
                     myListing = new Listing(listingID,listingTitleEntered, listingDescriptionEntered,listingFoodCategory, listingExpiryDateEntered, listingLocationEntered, listingPickUpTimesEntered, listingKeepListedFor,
-                             downloadUrl.toString(),listingOption, userId);
+                             downloadUrl.toString(),listingOption, userId, requestTotal);
 
                     //String uploadId = mDatabaseRef.push().getKey();
                     mDatabaseRef.child(listingID).setValue(myListing);

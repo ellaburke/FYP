@@ -43,7 +43,7 @@ public class ViewFullListingActivity extends AppCompatActivity {
     DatabaseReference getUserNameRef;
     StorageReference storageRef;
     StorageReference profilerUpdateRef;
-    private DatabaseReference mDatabaseRef;
+    private DatabaseReference mDatabaseRef, mDatabaseRequestTotalRef;
     DatabaseReference userRootRef;
 
     //Listing ID
@@ -64,13 +64,14 @@ public class ViewFullListingActivity extends AppCompatActivity {
     User currentUser;
 
     //UI Components
-    TextView listingTitleTV, listingDescriptionTV, listingLocationTV, listingExpiryTV, listingCategoryTV, listingPickUpTimesTV, listingProfileUsername;
+    TextView listingTitleTV, listingDescriptionTV, listingLocationTV, listingExpiryTV, listingCategoryTV, listingPickUpTimesTV, listingProfileUsername, listingReuseTotal;
     Button requestListingBtn, chatUserOfListingBtn;
     ImageView fullListingImage;
     ImageView profilePicIV;
 
     //String for setting text in TV
     String FLTitle, FLDescription, FLCategory, FLLocation, FLPickUpTimes, FLExpiry, FLImage, FLProfileImage, FLProfileUserName;
+    int reuse1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +84,7 @@ public class ViewFullListingActivity extends AppCompatActivity {
         getListingRef = FirebaseDatabase.getInstance().getReference("listings");
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
         DatabaseReference userRef = rootRef.child(LISTING);
+        mDatabaseRequestTotalRef = FirebaseDatabase.getInstance().getReference("listings");
         //Profile Pic ref
         storageRef = FirebaseStorage.getInstance().getReference();
         //Username
@@ -96,6 +98,7 @@ public class ViewFullListingActivity extends AppCompatActivity {
         Intent i = getIntent();
         listingToDisplay = getIntent().getStringExtra("selected_listing_to_display");
 
+
         //Init UI
         listingTitleTV = (TextView) findViewById(R.id.fullListingDisplayTitle1);
         listingDescriptionTV = (TextView) findViewById(R.id.fullListingDisplayDescription1);
@@ -103,6 +106,7 @@ public class ViewFullListingActivity extends AppCompatActivity {
         listingExpiryTV = (TextView) findViewById(R.id.fullListingDisplayExpiry1);
         listingCategoryTV = (TextView) findViewById(R.id.fullListingDisplayCategory1);
         listingPickUpTimesTV = (TextView) findViewById(R.id.fullListingDisplayPickUpTimes1);
+        listingReuseTotal = (TextView) findViewById(R.id.fullListingRequestTotal);
         requestListingBtn = (Button) findViewById(R.id.requestListingBtn);
         fullListingImage = (ImageView) findViewById(R.id.fullListingDisplayImage1);
         chatUserOfListingBtn = (Button) findViewById(R.id.chatUserOfListingBtn);
@@ -128,6 +132,7 @@ public class ViewFullListingActivity extends AppCompatActivity {
                         IDListing = currentItem.getListingId();
                         FLProfileImage = currentItem.getUserId();
                         FLProfileUserName = currentItem.getUserId();
+                        reuse1 = currentItem.getRequestTotal();
 
                         listingTitleTV.setText(FLTitle);
                         listingDescriptionTV.setText(FLDescription);
@@ -135,6 +140,7 @@ public class ViewFullListingActivity extends AppCompatActivity {
                         listingLocationTV.setText(FLLocation);
                         listingPickUpTimesTV.setText(FLPickUpTimes);
                         listingExpiryTV.setText(FLExpiry);
+                        listingReuseTotal.setText("(" + reuse1 + ")");
                         fullListingImage.setImageURI(Uri.parse(FLImage));
                         Picasso.get().load(FLImage).into(fullListingImage);
 
@@ -202,8 +208,13 @@ public class ViewFullListingActivity extends AppCompatActivity {
                 String notificationID = mDatabaseRef.push().getKey();
 
 
-                myNotification = new Notification(FLTitle, FLImage, type, userId, FLProfileUserName, notificationID, listingState, fullName);
+                myNotification = new Notification(FLTitle, FLImage, type, userId, FLProfileUserName, notificationID, listingState, fullName, listingToDisplay);
                 mDatabaseRef.child(notificationID).setValue(myNotification);
+
+                //Update request total
+                int reuseNo2 = reuse1 + 1;
+                mDatabaseRequestTotalRef.child(listingToDisplay).child("requestTotal").setValue(reuseNo2);
+
                 finish();
 
             }

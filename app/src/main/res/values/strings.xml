@@ -110,4 +110,5 @@
     <string name="my_listing_requests">My Listing Requests</string>
     <string name="choose_from_gallery">Choose from Gallery</string>
     <string name="add_to_shopping_list">Add to Shopping List</string>
+    <string name="number_of_requests">Number of Requests: </string>
 </resources>

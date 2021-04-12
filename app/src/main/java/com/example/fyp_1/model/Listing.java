@@ -15,6 +15,7 @@ public class Listing {
     String foodTypeWantOrOffering;
     private String userId;
     String listingId;
+    int requestTotal;
 
     public Listing() {
 
@@ -26,7 +27,7 @@ public class Listing {
         listingImageURL = null;
     }
 
-    public Listing(String listingId, String name, String description, String category, String expiryDate, String location, String pickUpTime, String keepListedFor, String listingImageURL, String foodTypeWantOrOffering, String userId) {
+    public Listing(String listingId, String name, String description, String category, String expiryDate, String location, String pickUpTime, String keepListedFor, String listingImageURL, String foodTypeWantOrOffering, String userId, int requestTotal) {
         this.listingId = listingId;
         this.name = name;
         this.description = description;
@@ -38,6 +39,7 @@ public class Listing {
         this.listingImageURL = listingImageURL;
         this.foodTypeWantOrOffering = foodTypeWantOrOffering;
         this.userId = userId;
+        this.requestTotal = requestTotal;
 
     }
 
@@ -119,6 +121,14 @@ public class Listing {
 
     public void setFoodTypeWantOrOffering(String foodTypeWantOrOffering) {
         this.foodTypeWantOrOffering = foodTypeWantOrOffering;
+    }
+
+    public int getRequestTotal() {
+        return requestTotal;
+    }
+
+    public void setRequestTotal(int requestTotal) {
+        this.requestTotal = requestTotal;
     }
 
     public String getUserId() {

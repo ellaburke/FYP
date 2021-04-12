@@ -232,6 +232,7 @@ public class RequestNotificationActivity extends AppCompatActivity implements Re
 
                 String title = mNotifications.get(position).getItemName();
                 String imageURL = mNotifications.get(position).getItemURL();
+                String listingID = mNotifications.get(position).getListingID();
                 String type = "Approved";
                 String approvalUserID = userId;
                 String UserRequestApprovedID = mNotifications.get(position).getSenderUserID();
@@ -240,7 +241,7 @@ public class RequestNotificationActivity extends AppCompatActivity implements Re
 
 
                 String notificationID = mDatabaseRef.push().getKey();
-                myNotification = new Notification(title, imageURL, type, approvalUserID, UserRequestApprovedID, notificationID, listingState , fullName);
+                myNotification = new Notification(title, imageURL, type, approvalUserID, UserRequestApprovedID, notificationID, listingState , fullName, listingID);
                 mDatabaseRef.child(notificationID).setValue(myNotification);
 
                 //Update listing state
@@ -311,6 +312,7 @@ public class RequestNotificationActivity extends AppCompatActivity implements Re
 
                 String title = mNotifications.get(position).getItemName();
                 String imageURL = mNotifications.get(position).getItemURL();
+                String listingID = mNotifications.get(position).getListingID();
                 String type = "Declined";
                 String approvalUserID = userId;
                 String UserRequestApprovedID = mNotifications.get(position).getSenderUserID();
@@ -319,7 +321,7 @@ public class RequestNotificationActivity extends AppCompatActivity implements Re
 
 
                 String notificationID = mDatabaseRef.push().getKey();
-                myNotification = new Notification(title, imageURL, type, approvalUserID, UserRequestApprovedID, notificationID, listingState, fullName);
+                myNotification = new Notification(title, imageURL, type, approvalUserID, UserRequestApprovedID, notificationID, listingState, fullName, listingID);
                 mDatabaseRef.child(notificationID).setValue(myNotification);
 
                 //Update listing state

@@ -65,7 +65,7 @@
         <activity android:name=".Recipe.ViewAllRecipesActivity" />
         <activity android:name=".MoveItemToListingActivity" />
         <activity android:name=".Recipe.RecipeActivity" />
-        <activity android:name=".TextRecognitionActivity" />
+        <activity android:name=".TextRecognition.TextRecognitionActivity" />
         <activity android:name=".ScanActivity" />
         <activity android:name=".UserRating" />
         <activity
