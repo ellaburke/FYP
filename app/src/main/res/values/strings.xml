@@ -81,7 +81,6 @@
     <string name="for_home_cooking">for Home Cooking</string>
     <string name="check_items_to_search_for_recipe">Check items to search for recipe</string>
     <string name="got_it">Got It!</string>
-    <string name="add_to_shopping_list">Add to Shopping List</string>
     <string name="barcode_item">Barcode Item</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="delete">Delete</string>
@@ -109,4 +108,6 @@
     <string name="chat_user">Chat User</string>
     <string name="listing_requests">Listing Requests</string>
     <string name="my_listing_requests">My Listing Requests</string>
+    <string name="choose_from_gallery">Choose from Gallery</string>
+    <string name="add_to_shopping_list">Add to Shopping List</string>
 </resources>

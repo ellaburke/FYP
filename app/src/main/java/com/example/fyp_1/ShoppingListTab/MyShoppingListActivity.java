@@ -90,6 +90,20 @@ public class MyShoppingListActivity extends AppCompatActivity implements MyShopp
         deleteRef = rootRef.child("myShoppingListItems");
         mDeleteDatabaseRef = FirebaseDatabase.getInstance().getReference("myShoppingListItems");
 
+        //Retrieve itemsList and saved it to DB
+        Intent prevIntent = getIntent();
+        if(prevIntent != null){
+            String itemList = prevIntent.getStringExtra("addToDB");
+            if(itemList !=null && !(itemList.isEmpty())) {
+                String[] items = itemList.split("\n");
+                for(String item: items) {
+                    myShoppingListItem = new MyShoppingListItem(item, itemId, userId);
+                    itemId = mDatabaseRef.push().getKey();
+                    mDatabaseRef.child(itemId).setValue(myShoppingListItem);
+                }
+            }
+        }
+
         //RCV
         myShoppingListRecyclerView = findViewById(R.id.myShoppingListRecyclerView);
         myShoppingListAdapter = new MyShoppingListAdapter(myShoppingListItems, MyShoppingListActivity.this);
