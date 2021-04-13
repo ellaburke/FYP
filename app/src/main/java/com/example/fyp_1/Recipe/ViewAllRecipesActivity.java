@@ -7,13 +7,17 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.fyp_1.AllListingsTab.viewListingActivity;
 import com.example.fyp_1.MyKitchenIngredients2;
 import com.example.fyp_1.R;
+import com.example.fyp_1.ShoppingListTab.MyShoppingListActivity;
 import com.example.fyp_1.model.Recipe;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -72,6 +76,38 @@ public class ViewAllRecipesActivity extends AppCompatActivity implements Recipes
         Log.d("USERID", userId);
         updateRef = FirebaseDatabase.getInstance().getReference("user");
         storageRef = FirebaseStorage.getInstance().getReference();
+
+
+
+        //Init btm nav
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        //Set Home Selected
+        bottomNavigationView.setSelectedItemId(R.id.MyKitchenNav);
+
+        //Perform ItemSelectedListener
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.MyKitchenNav:
+                        startActivity(new Intent(getApplicationContext(), MyKitchenIngredients2.class));
+                        overridePendingTransition(0, 0);
+                        return true;
+                    case R.id.SearchListingNav:
+                        Intent emptyIntent = new Intent(ViewAllRecipesActivity.this, viewListingActivity.class);
+                        emptyIntent.putExtra("ingredient_clicked", " ");
+                        startActivity(emptyIntent);
+                        overridePendingTransition(0, 0);
+                        return true;
+                    case R.id.MyShoppingListNav:
+                        startActivity(new Intent(getApplicationContext(), MyShoppingListActivity.class));
+                        overridePendingTransition(0, 0);
+                        return true;
+                }
+                return false;
+            }
+        });
 
     }
 

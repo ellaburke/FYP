@@ -53,7 +53,6 @@
             android:windowSoftInputMode="adjustNothing" />
         <activity android:name=".UserProfileAndListings.ViewMyFullListing" />
         <activity android:name=".UserProfileAndListings.MyListingsProfileActivity" />
-        <activity android:name=".TextDetectActivity" />
         <activity
             android:name=".ShoppingListTab.MyShoppingListActivity"
             android:windowSoftInputMode="adjustNothing" />
@@ -62,11 +61,11 @@
             android:windowSoftInputMode="adjustNothing" />
         <activity android:name=".BarcodeScan.BarcodeActivity" />
         <activity android:name=".Recipe.ViewFullRecipeActivity" />
-        <activity android:name=".Recipe.ViewAllRecipesActivity" />
+        <activity android:name=".Recipe.ViewAllRecipesActivity"
+            android:windowSoftInputMode="adjustNothing" />
         <activity android:name=".MoveItemToListingActivity" />
         <activity android:name=".Recipe.RecipeActivity" />
         <activity android:name=".TextRecognition.TextRecognitionActivity" />
-        <activity android:name=".ScanActivity" />
         <activity android:name=".UserRating" />
         <activity
             android:name=".BarcodeScan.CaptureAct"
