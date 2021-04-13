@@ -5,15 +5,17 @@ public class MyShoppingListItem {
     String name;
     String shoppingListItemId;
     String userId;
+    String itemCategory;
 
     public MyShoppingListItem() {
 
     }
 
-    public MyShoppingListItem(String name, String shoppingListItemId, String userId) {
+    public MyShoppingListItem(String name, String shoppingListItemId, String userId, String itemCategory) {
         this.name = name;
         this.shoppingListItemId = shoppingListItemId;
         this.userId = userId;
+        this.itemCategory = itemCategory;
     }
 
     public String getName() {
@@ -38,5 +40,13 @@ public class MyShoppingListItem {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getItemCategory() {
+        return itemCategory;
+    }
+
+    public void setItemCategory(String itemCategory) {
+        this.itemCategory = itemCategory;
     }
 }

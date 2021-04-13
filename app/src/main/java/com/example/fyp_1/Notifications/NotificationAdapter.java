@@ -19,6 +19,8 @@ import com.example.fyp_1.R;
 import com.example.fyp_1.model.Notification;
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +34,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         //notification content
         public TextView notificationTypeTitle;
         public TextView noticationItemName;
+        public TextView notificationPhoneNumber;
         public ImageView mImageView;
         public RelativeLayout cardLayout;
         public CardView cardView;
@@ -43,6 +46,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             mImageView = itemView.findViewById(R.id.notificationImage1);
             notificationTypeTitle = itemView.findViewById(R.id.requestOrApprovalOrDeclineTV1);
             noticationItemName = itemView.findViewById(R.id.listingTitleNotification1);
+            notificationPhoneNumber = itemView.findViewById(R.id.listingPhoneNumber);
             cardLayout = itemView.findViewById(R.id.notificationRelLayout1);
             cardView = itemView.findViewById(R.id.notificationCardView1);
             mOnListingListener = onListingListener;
@@ -83,6 +87,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             Notification currentNotification = mNotifications.get(position);
             holder.notificationTypeTitle.setText(currentNotification.getNotificationType());
             holder.noticationItemName.setText(currentNotification.getItemName());
+            holder.notificationPhoneNumber.setText("Lister's Number: " + currentNotification.getRecieverPhoneNumber());
             Picasso.get()
                     .load(currentNotification.getItemURL())
                     .placeholder(R.mipmap.ic_launcher)

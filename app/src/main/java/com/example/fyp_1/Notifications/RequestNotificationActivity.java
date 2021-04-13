@@ -74,7 +74,7 @@ public class RequestNotificationActivity extends AppCompatActivity implements Re
     String notificationIDInList;
 
     //User
-    String fullName, fName, lName;
+    String fullName, fName, lName, pNumber;
 
 
 
@@ -145,6 +145,7 @@ public class RequestNotificationActivity extends AppCompatActivity implements Re
                     if (postSnapshot.getKey().equals(userId)) {
                         fName = user.getFirstName();
                         lName = user.getLastName();
+                        pNumber = user.getPhoneNumber();
                         System.out.println("FN" + fName);
                         break;
 
@@ -240,8 +241,9 @@ public class RequestNotificationActivity extends AppCompatActivity implements Re
                 String listingState = "Approved";
 
 
+
                 String notificationID = mDatabaseRef.push().getKey();
-                myNotification = new Notification(title, imageURL, type, approvalUserID, UserRequestApprovedID, notificationID, listingState , fullName, listingID);
+                myNotification = new Notification(title, imageURL, type, approvalUserID, UserRequestApprovedID, notificationID, listingState , fullName, listingID, pNumber);
                 mDatabaseRef.child(notificationID).setValue(myNotification);
 
                 //Update listing state
@@ -321,7 +323,7 @@ public class RequestNotificationActivity extends AppCompatActivity implements Re
 
 
                 String notificationID = mDatabaseRef.push().getKey();
-                myNotification = new Notification(title, imageURL, type, approvalUserID, UserRequestApprovedID, notificationID, listingState, fullName, listingID);
+                myNotification = new Notification(title, imageURL, type, approvalUserID, UserRequestApprovedID, notificationID, listingState, fullName, listingID, pNumber);
                 mDatabaseRef.child(notificationID).setValue(myNotification);
 
                 //Update listing state

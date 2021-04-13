@@ -50,7 +50,7 @@ public class ViewFullListingActivity extends AppCompatActivity {
     String IDListing;
 
     //User Details
-    String fullName, fName, lName;
+    String fullName, fName, lName, pNumber;
 
     //Notification
     Notification myNotification;
@@ -176,6 +176,7 @@ public class ViewFullListingActivity extends AppCompatActivity {
                     if (postSnapshot.getKey().equals(userId)) {
                         fName = user.getFirstName();
                         lName = user.getLastName();
+                        pNumber = user.getPhoneNumber();
                         System.out.println("FN" + fName);
                         break;
 
@@ -206,9 +207,10 @@ public class ViewFullListingActivity extends AppCompatActivity {
                 String listingState = "Requested";
 
                 String notificationID = mDatabaseRef.push().getKey();
+                //String phoneNumber = userId.getPhoneNumber();
 
 
-                myNotification = new Notification(FLTitle, FLImage, type, userId, FLProfileUserName, notificationID, listingState, fullName, listingToDisplay);
+                myNotification = new Notification(FLTitle, FLImage, type, userId, FLProfileUserName, notificationID, listingState, fullName, listingToDisplay, pNumber);
                 mDatabaseRef.child(notificationID).setValue(myNotification);
 
                 //Update request total

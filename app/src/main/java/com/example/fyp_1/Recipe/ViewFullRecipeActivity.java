@@ -185,7 +185,8 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
                     System.out.println(ingredientClicked);
 
                     itemId = mDatabaseRef.push().getKey();
-                    myShoppingListItem = new MyShoppingListItem(ingredientClicked, itemId, userId);
+                    String myItemCategoryCupboard = "Cupboard";
+                    myShoppingListItem = new MyShoppingListItem(ingredientClicked, itemId, userId, myItemCategoryCupboard);
 
                     mDatabaseRef.child(itemId).setValue(myShoppingListItem);
 

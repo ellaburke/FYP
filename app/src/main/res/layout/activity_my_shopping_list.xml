@@ -50,6 +50,55 @@
             android:imeOptions="actionSearch"
             android:textColor="#000"
             android:textSize="15sp" />
+
+        <Spinner
+
+            android:id="@+id/food_category_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/shopping_list_item_input"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="20dp"
+            android:spinnerMode="dropdown" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/addToShoppingListRelLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/white_border"
+        android:elevation="10dp">
+
+
+        <Spinner
+            android:id="@+id/food_category_spinner_2"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="20dp"
+            android:spinnerMode="dropdown" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/addToShoppingListRelLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/custom_button3"
+        android:elevation="10dp">
+
+        <Button
+            android:id="@+id/addToListBtn"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/custom_button3"
+            android:text="Add To List"
+            android:textColor="@color/wasteify_pink"/>
     </RelativeLayout>
 
 
@@ -82,6 +131,38 @@
             app:elevation="6dp"
             app:layout_anchorGravity="bottom|right"
             app:pressedTranslationZ="12dp" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_add_ingredient_selected1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="70dp"
+            android:layout_toLeftOf="@+id/fab_scan_doc"
+            android:layout_marginRight="10dp"
+            android:backgroundTint="#FB9FDF"
+            android:focusable="true"
+            android:src="@drawable/ic_baseline_check_24"
+            app:elevation="6dp"
+            app:pressedTranslationZ="12dp"
+            android:layout_toStartOf="@+id/fab_scan_doc"
+            android:layout_marginEnd="10dp" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_delete_ingredients1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="70dp"
+            android:layout_toLeftOf="@+id/fab_add_ingredient_selected1"
+            android:layout_marginRight="10dp"
+            android:backgroundTint="#FB9FDF"
+            android:focusable="true"
+            android:src="@drawable/ic_baseline_delete_24"
+            app:elevation="6dp"
+            app:pressedTranslationZ="12dp"
+            android:layout_toStartOf="@+id/fab_add_ingredient_selected1"
+            android:layout_marginEnd="10dp" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation"
