@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.fyp_1.R;
+import com.example.fyp_1.homePageActivity;
 import com.example.fyp_1.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -141,65 +142,82 @@ public class RegisterActivity extends AppCompatActivity {
     public void updateUI(FirebaseUser currentUser, String userId) {
         //String keyId = mDatabase.push().getKey();
         mDatabase.child(userId).setValue(user);
-        Intent loginIntent = new Intent(this, LoginActivity.class);
-        startActivity(loginIntent);
+//        Intent loginIntent = new Intent(this, LoginActivity.class);
+//        startActivity(loginIntent);
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    Log.d(TAG, "signInWithEmail:success");
+                    FirebaseUser user = mAuth.getCurrentUser();
+                    Intent intent = new Intent(RegisterActivity.this, homePageActivity.class);
+                    startActivity(intent);
+                } else {
+                    Log.w(TAG, "signInWithEmail:failure", task.getException());
+                    Toast.makeText(RegisterActivity.this, "Authentication failed.",
+                            Toast.LENGTH_SHORT).show();
+
+                }
+
+            }
+        });
     }
 
-    private boolean validateEmail() {
-        email = emailET.getText().toString().trim();
+            private boolean validateEmail() {
+                email = emailET.getText().toString().trim();
 
-        if (email.isEmpty()) {
-            emailET.setError("Field can't be empty");
-            return false;
-        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            emailET.setError("Please enter a valid email address");
-            return false;
+                if (email.isEmpty()) {
+                    emailET.setError("Field can't be empty");
+                    return false;
+                } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                    emailET.setError("Please enter a valid email address");
+                    return false;
 
-        } else {
-            emailET.setError(null);
-            return true;
-        }
+                } else {
+                    emailET.setError(null);
+                    return true;
+                }
 
-    }
+            }
 
-    private boolean validatePassword() {
-        password = passwordET.getText().toString().trim();
+            private boolean validatePassword() {
+                password = passwordET.getText().toString().trim();
 
-        if (password.isEmpty()) {
-            passwordET.setError("Field can't be empty");
-            return false;
-        } else if (!PASSWORD_PATTERN.matcher(password).matches()) {
-            passwordET.setError("Password too weak");
-            return false;
+                if (password.isEmpty()) {
+                    passwordET.setError("Field can't be empty");
+                    return false;
+                } else if (!PASSWORD_PATTERN.matcher(password).matches()) {
+                    passwordET.setError("Password too weak");
+                    return false;
 //        } else if (!password.equals(password2)) {
 //            passwordET.setError("Passwords don't match");
 //            confirmPasswordET.setError("Passwords don't match");
 //            return false;
-        } else {
-            passwordET.setError(null);
-            return true;
-        }
-    }
+                } else {
+                    passwordET.setError(null);
+                    return true;
+                }
+            }
 
-    private boolean validateTextFields() {
-        firstName = firstNameET.getText().toString().trim();
-        lastName = lastNameET.getText().toString().trim();
-        phoneNumber = phoneNumberET.getText().toString().trim();
+            private boolean validateTextFields() {
+                firstName = firstNameET.getText().toString().trim();
+                lastName = lastNameET.getText().toString().trim();
+                phoneNumber = phoneNumberET.getText().toString().trim();
 
-        if (firstName.isEmpty()) {
-            firstNameET.setError("Field can't be empty");
-            return false;
-        } else if (lastName.isEmpty()) {
-            lastNameET.setError("Field can't be empty");
-            return false;
-        } else if (phoneNumber.isEmpty()) {
-            phoneNumberET.setError("Field can't be empty");
-            return false;
-        }else {
-            firstNameET.setError(null);
-            lastNameET.setError(null);
-            phoneNumberET.setError(null);
-            return true;
+                if (firstName.isEmpty()) {
+                    firstNameET.setError("Field can't be empty");
+                    return false;
+                } else if (lastName.isEmpty()) {
+                    lastNameET.setError("Field can't be empty");
+                    return false;
+                } else if (phoneNumber.isEmpty()) {
+                    phoneNumberET.setError("Field can't be empty");
+                    return false;
+                } else {
+                    firstNameET.setError(null);
+                    lastNameET.setError(null);
+                    phoneNumberET.setError(null);
+                    return true;
+                }
+            }
         }
-    }
-}
