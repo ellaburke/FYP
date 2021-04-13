@@ -86,7 +86,8 @@ public class viewListingActivity extends AppCompatActivity implements Adapter.On
         mDatabaseNotificationStateRef = FirebaseDatabase.getInstance().getReference("notificationRequests");
         mRecyclerView.setLayoutManager(mLayoutManager);
         mSearchView = findViewById(R.id.searchView);
-        mSearchView.setIconified(false);
+        //mSearchView.setIconified(false);
+        mSearchView.setIconifiedByDefault(false);
         filterByCategory = (ImageView) findViewById(R.id.filterByCategory);
 
 
@@ -161,7 +162,7 @@ public class viewListingActivity extends AppCompatActivity implements Adapter.On
                 mAdapter = new Adapter(viewListingActivity.this, (ArrayList<Listing>) mListings, viewListingActivity.this);
                 mRecyclerView.setAdapter(mAdapter);
 
-                if (!searchListing.isEmpty()) {
+                if (!searchListing.isEmpty() && !searchListing.equals(" ")) {
                     search(searchListing);
                 }
 
@@ -174,16 +175,12 @@ public class viewListingActivity extends AppCompatActivity implements Adapter.On
             }
         });
 
-
-        //If ingredient passed from recipe
-        //Get Intent from ViewMyFullListing
-//        Intent i = getIntent();
-//        String listingToSearch = getIntent().getStringExtra("ingredient_clicked");
-//        listingToSearch = listingToSearch.substring(0, listingToSearch.length() - 1);
-
-//            search(listingToSearch);
-        mSearchView.setQuery(listingToSearch2, true);
-        mSearchView.setFocusedByDefault(true);
+        if(listingToSearch2.equals(" ")) {
+            mSearchView.setFocusedByDefault(false);
+        } else{
+            mSearchView.setQuery(listingToSearch2, true);
+            mSearchView.setFocusedByDefault(true);
+        }
 
 
         if (mSearchView.getQuery() != null) {

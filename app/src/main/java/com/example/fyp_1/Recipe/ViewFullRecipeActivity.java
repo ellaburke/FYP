@@ -26,6 +26,7 @@ import com.example.fyp_1.R;
 import com.example.fyp_1.ShoppingListTab.MyShoppingListActivity;
 import com.example.fyp_1.model.Listing;
 import com.example.fyp_1.model.MyShoppingListItem;
+import com.example.fyp_1.model.Notification;
 import com.example.fyp_1.model.RecipeInstructionStep;
 import com.example.fyp_1.model.RecipeInstructionStepEquipment;
 import com.example.fyp_1.model.RecipeInstructionStepIngredient;
@@ -165,7 +166,7 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
                 String listedIngredientsString = recipeIngredientListTVListed.getText().toString();
                 String[] arr = listedIngredientsString.split("\\r?\\n");
 
-                for ( String ingredientClicked : arr) {
+                for (String ingredientClicked : arr) {
                     System.out.println(ingredientClicked);
                     Intent bringMeToListingIntent = new Intent(ViewFullRecipeActivity.this, viewListingActivity.class);
 
@@ -183,7 +184,7 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
                 String[] arr2 = shopForIngredientsString.split("\\r?\\n");
                 String listingToAddToShoppingList = "";
 
-                for ( String ingredientClicked : arr2) {
+                for (String ingredientClicked : arr2) {
                     System.out.println(ingredientClicked);
 
                     itemId = mDatabaseRef.push().getKey();
@@ -363,9 +364,11 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             Listing availableListing = snapshot.getValue(Listing.class);
                             if (itemsByName.contains(availableListing.getName().toLowerCase())) {
-                                availableListings.add(availableListing.getName().toLowerCase());
-                                ingredientsThatAreListedDisplay += availableListing.getName() + System.getProperty("line.separator");
-
+                                Notification notApprove = snapshot.getValue(Notification.class);
+                                if (availableListing.getListingId().equals(notApprove.getListingID()) && !notApprove.getListingState().equals("Appoved")) {
+                                    availableListings.add(availableListing.getName().toLowerCase());
+                                    ingredientsThatAreListedDisplay += availableListing.getName() + System.getProperty("line.separator");
+                                }
 
                             } else {
                                 //System.out.println("3. NOT IN LIST: " + availableListing.getName());
@@ -375,7 +378,7 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
                             System.out.println("REMOVED LIST 2: " + itemsByName);
 
                         }
-                        for(String ingToShop: itemsByName) {
+                        for (String ingToShop : itemsByName) {
                             ingredientsThatAreNotListedDisplay += ingToShop + System.getProperty("line.separator");
                         }
                         recipeIngredientListTVShop.setText(ingredientsThatAreNotListedDisplay);
@@ -468,44 +471,39 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
         //Remove ing from kitchen when used
         //doHave
 
-       for(String ingToDelFromKitchen: doHave){
-           System.out.println("INGTODELETE : " + ingToDelFromKitchen);
+        for (String ingToDelFromKitchen : doHave) {
+            System.out.println("INGTODELETE : " + ingToDelFromKitchen);
 
-           deleteRef.addValueEventListener(new ValueEventListener() {
-               @Override
-               public void onDataChange(@NonNull DataSnapshot snapshot) {
-                   Iterable<DataSnapshot> children = snapshot.getChildren();
-                   for (DataSnapshot child : children) {
-                       MyKitchenItem currentItem = child.getValue(MyKitchenItem.class);
-                       if(currentItem.getItemName().equalsIgnoreCase(ingToDelFromKitchen)){
-                           String mKI = currentItem.getItemId();
-                           System.out.println("INGTODELETE1 : " + ingToDelFromKitchen);
-                           System.out.println("INGTODELETE2 : " + currentItem.getItemName());
-                           mDeleteDatabaseRef.child(mKI).removeValue();
+            deleteRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    Iterable<DataSnapshot> children = snapshot.getChildren();
+                    for (DataSnapshot child : children) {
+                        MyKitchenItem currentItem = child.getValue(MyKitchenItem.class);
+                        if (currentItem.getItemName().equalsIgnoreCase(ingToDelFromKitchen)) {
+                            String mKI = currentItem.getItemId();
+                            System.out.println("INGTODELETE1 : " + ingToDelFromKitchen);
+                            System.out.println("INGTODELETE2 : " + currentItem.getItemName());
+                            mDeleteDatabaseRef.child(mKI).removeValue();
 
-                       }
-                       //mAdapter.notifyDataSetChanged();
-                       Intent bringMeBackToMyKitchen = new Intent(ViewFullRecipeActivity.this, MyKitchenIngredients2.class);
-                       startActivity(bringMeBackToMyKitchen);
-                   }
-               }
+                        }
+                        //mAdapter.notifyDataSetChanged();
+                        Intent bringMeBackToMyKitchen = new Intent(ViewFullRecipeActivity.this, MyKitchenIngredients2.class);
+                        startActivity(bringMeBackToMyKitchen);
+                    }
+                }
 
-               @Override
-               public void onCancelled(@NonNull DatabaseError error) {
-                   Log.e(TAG, "onCancelled", error.toException());
-               }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Log.e(TAG, "onCancelled", error.toException());
+                }
 
 
-           });
-       }
-
+            });
+        }
 
 
     }
-
-
-
-
 
 
 }
