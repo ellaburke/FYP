@@ -88,8 +88,9 @@ public class TextRecognitionActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //call MyShopping List Activity
+                newItemsList += textView.getText();
                 Intent myShoppingListIntent = new Intent(getApplicationContext(), MyShoppingListActivity.class);
-                myShoppingListIntent.putExtra("addToDB",itemsList);
+                myShoppingListIntent.putExtra("addToDB",newItemsList);
                 startActivity(myShoppingListIntent);
                 overridePendingTransition(0,0);
             }
@@ -132,8 +133,6 @@ public class TextRecognitionActivity extends AppCompatActivity {
 
 
     private void detectTextFromImage() {
-        // int rotationDegree = 0;
-        // InputImage firebaseVisionImage = InputImage.fromBitmap(imageBitmap,rotationDegree);
         TextRecognizer recognizer = TextRecognition.getClient();
 
         Task<Text> result = recognizer.process(inputVisionImage)
