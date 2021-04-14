@@ -99,6 +99,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             if(holder.notificationTypeTitle.getText().toString().equals("Declined")) {
                 holder.cardLayout.setBackgroundColor(grey);
                 holder.mImageView.setColorFilter(grey);
+                holder.notificationPhoneNumber.setVisibility(View.INVISIBLE);
             }
 
 

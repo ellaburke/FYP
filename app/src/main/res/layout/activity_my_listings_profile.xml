@@ -57,6 +57,7 @@
                     android:id="@+id/profile_listing_ratingBar"
                     style="?android:attr/ratingBarStyleSmall"
                     android:layout_width="wrap_content"
+                    android:progressTint="#FFFF4F"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/profile_user_location_display"
                     android:layout_marginLeft="20dp"

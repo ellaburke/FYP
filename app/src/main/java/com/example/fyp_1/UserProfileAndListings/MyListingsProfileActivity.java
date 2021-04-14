@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +27,7 @@ import com.example.fyp_1.R;
 import com.example.fyp_1.Recipe.ViewFullRecipeActivity;
 import com.example.fyp_1.ShoppingListTab.MyShoppingListActivity;
 import com.example.fyp_1.model.Listing;
+import com.example.fyp_1.model.UserRating;
 import com.example.fyp_1.model.UserReuseTotal;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -53,7 +55,7 @@ public class MyListingsProfileActivity extends AppCompatActivity implements MyLi
     private FirebaseAuth mAuth;
     private FirebaseUser user;
     DatabaseReference userRef;
-    DatabaseReference mDatabaseRef;
+    DatabaseReference mDatabaseRef, mDatabaseRatingRef;
     DatabaseReference rootRef;
     DatabaseReference userProfileRef;
     StorageReference storageRef;
@@ -81,6 +83,12 @@ public class MyListingsProfileActivity extends AppCompatActivity implements MyLi
     int noOfReuse;
     String numberOfReuse;
 
+    //Rating Bar
+    RatingBar userRatingBar;
+    private List<Float> mRatings;
+    Float floatValue;
+    Float sum;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,7 +114,8 @@ public class MyListingsProfileActivity extends AppCompatActivity implements MyLi
         profilerUpdateRef = storageRef.child(user.getUid() + ".jpg");
         //Reuse ref
         userReuseRef = FirebaseDatabase.getInstance().getReference("userReuses");
-
+        //Rating ref
+        mDatabaseRatingRef = FirebaseDatabase.getInstance().getReference("userRating");
 
         //Init UI
         uploadProfileImage = (ImageView) findViewById(R.id.listingProfileImageView);
@@ -115,6 +124,9 @@ public class MyListingsProfileActivity extends AppCompatActivity implements MyLi
         editProfileButton = (Button) findViewById(R.id.editMyProfileBtn);
         logOutProfileButton = (Button) findViewById(R.id.logOutProfileBtn);
         reuseTotalTV = (TextView) findViewById(R.id.profile_listing_reuseTV);
+        userRatingBar = (RatingBar) findViewById(R.id.profile_listing_ratingBar);
+        //rating array
+        mRatings = new ArrayList<>();
 
         //Init RCV
         mRecyclerView = findViewById(R.id.myListingsOnProfileRCV);
@@ -160,6 +172,38 @@ public class MyListingsProfileActivity extends AppCompatActivity implements MyLi
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(MyListingsProfileActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+
+        mDatabaseRatingRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                    UserRating UR = postSnapshot.getValue(UserRating.class);
+                    if (UR.getUserID().equals(userId)) {
+                        Float rateNo = UR.getUserRating();
+                        mRatings.add(rateNo);
+                        System.out.println("RATING IS" + mRatings);
+                    }
+                }
+                sum = 0.0f;
+                if(!mRatings.isEmpty()) {
+                    for (Float mark : mRatings) {
+                        sum += mark;
+                    }
+                    floatValue = sum.floatValue() / mRatings.size();
+                    System.out.println("AVERAGE" + floatValue);
+                    userRatingBar.setRating(floatValue);
+                }else{
+                    userRatingBar.setRating(0f);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });

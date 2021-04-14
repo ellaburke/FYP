@@ -1,29 +1,23 @@
 package com.example.fyp_1.Notifications;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
-import android.widget.Toast;
 
-import com.example.fyp_1.AllListingsTab.Adapter;
-import com.example.fyp_1.AllListingsTab.ViewFullListingActivity;
 import com.example.fyp_1.AllListingsTab.viewListingActivity;
 import com.example.fyp_1.MyKitchenIngredients2;
 import com.example.fyp_1.R;
+import com.example.fyp_1.RatingDialog.RatingDialog;
 import com.example.fyp_1.ShoppingListTab.MyShoppingListActivity;
 import com.example.fyp_1.UserProfileAndListings.MyListingsProfileActivity;
-import com.example.fyp_1.model.Listing;
 import com.example.fyp_1.model.Notification;
 import com.example.fyp_1.model.UserReuseTotal;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -73,6 +67,9 @@ public class NotificationActivity extends AppCompatActivity implements Notificat
     private FirebaseAuth mAuth;
     private FirebaseUser user;
     private String userId;
+
+    public static String userIDSent = "";
+    String userIDToRate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,6 +134,8 @@ public class NotificationActivity extends AppCompatActivity implements Notificat
                     Notification not = postSnapshot.getValue(Notification.class);
                     if (not.getRecieverUserID().equals(userId)) {
                         mNotifications.add(not);
+                        userIDToRate = not.getSenderUserID();
+                        userIDSent = userIDToRate;
                     }
 
                 }
@@ -185,7 +184,25 @@ public class NotificationActivity extends AppCompatActivity implements Notificat
     @Override
     public void onNotificationClick(int position) {
 
+        Log.d(TAG, "onListingClicked:  clicked");
+        mNotifications.get(position);
+        String userIDToRate = mNotifications.get(position).getSenderUserID();
+        Log.d(TAG, "USER ID TO RATE: " + userIDToRate);
+
+        Intent i = new Intent(NotificationActivity.this, RatingDialog.class);
+        i.putExtra("userIDKey", userIDToRate);
+        CreateDialogWithRatingBar();
 
     }
 
+    public void CreateDialogWithRatingBar() {
+        // Rating Dialog
+        RatingDialog ratingDialog = new RatingDialog(NotificationActivity.this);
+        ratingDialog.startRatingDialog();
+
+    }
+
+    public void sendValue(){
+        userIDToRate  = userIDToRate;
+    }
 }

@@ -6,19 +6,26 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.example.fyp_1.MyKitchenIngredients2;
 import com.example.fyp_1.R;
+import com.example.fyp_1.Recipe.ViewFullRecipeActivity;
+import com.example.fyp_1.ShoppingListTab.MyShoppingListActivity;
 import com.example.fyp_1.model.Listing;
 import com.example.fyp_1.model.Notification;
 import com.example.fyp_1.model.User;
+import com.example.fyp_1.model.UserRating;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -31,6 +38,7 @@ import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ViewFullListingActivity extends AppCompatActivity {
 
@@ -43,7 +51,7 @@ public class ViewFullListingActivity extends AppCompatActivity {
     DatabaseReference getUserNameRef;
     StorageReference storageRef;
     StorageReference profilerUpdateRef;
-    private DatabaseReference mDatabaseRef, mDatabaseRequestTotalRef;
+    private DatabaseReference mDatabaseRef, mDatabaseRequestTotalRef, mDatabaseRatingRef;
     DatabaseReference userRootRef;
 
     //Listing ID
@@ -52,8 +60,17 @@ public class ViewFullListingActivity extends AppCompatActivity {
     //User Details
     String fullName, fName, lName, pNumber;
 
+    //User Listing Name
+    String finalFullUserName;
+
     //Notification
     Notification myNotification;
+
+    //Rating Bar
+    RatingBar userRatingBar;
+    private List<Float> mRatings;
+    Float floatValue;
+    Float sum;
 
 
     //Set value for listing being passed from intent
@@ -93,6 +110,8 @@ public class ViewFullListingActivity extends AppCompatActivity {
         userRootRef = FirebaseDatabase.getInstance().getReference("user");
         //Notification
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("notificationRequests");
+        //Rating ref
+        mDatabaseRatingRef = FirebaseDatabase.getInstance().getReference("userRating");
 
         //Get Intent from ViewMyFullListing
         Intent i = getIntent();
@@ -112,6 +131,40 @@ public class ViewFullListingActivity extends AppCompatActivity {
         chatUserOfListingBtn = (Button) findViewById(R.id.chatUserOfListingBtn);
         profilePicIV = (ImageView) findViewById(R.id.profilePicOnListing);
         listingProfileUsername = (TextView) findViewById(R.id.profileUsernameOnListing);
+        userRatingBar = (RatingBar) findViewById(R.id.ratingBarPerUser);
+
+        //rating array
+        mRatings = new ArrayList<>();
+
+        //Init btm nav
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        //Set Home Selected
+        bottomNavigationView.setSelectedItemId(R.id.SearchListingNav);
+
+        //Perform ItemSelectedListener
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.MyKitchenNav:
+                        startActivity(new Intent(getApplicationContext(), MyKitchenIngredients2.class));
+                        overridePendingTransition(0, 0);
+                        return true;
+                    case R.id.SearchListingNav:
+                        Intent emptyIntent = new Intent(ViewFullListingActivity.this, viewListingActivity.class);
+                        emptyIntent.putExtra("ingredient_clicked", " ");
+                        startActivity(emptyIntent);
+                        overridePendingTransition(0, 0);
+                        return true;
+                    case R.id.MyShoppingListNav:
+                        startActivity(new Intent(getApplicationContext(), MyShoppingListActivity.class));
+                        overridePendingTransition(0, 0);
+                        return true;
+                }
+                return false;
+            }
+        });
 
 
         userRef.addValueEventListener(new ValueEventListener() {
@@ -165,6 +218,59 @@ public class ViewFullListingActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
                 // Failed to read value
                 Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
+
+        getUserNameRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                    User user = postSnapshot.getValue(User.class);
+                    if (postSnapshot.getKey().equals(FLProfileUserName)) {
+                        String finalUserName = user.getFirstName();
+                        String finalUserLastName = user.getLastName();
+                        System.out.println("FINAL N" + finalUserName);
+                        System.out.println("FINAL L N" + finalUserLastName);
+                        finalFullUserName = finalUserName + " " + finalUserLastName;
+                    }
+                }
+                listingProfileUsername.setText(finalFullUserName);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        mDatabaseRatingRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                    UserRating UR = postSnapshot.getValue(UserRating.class);
+                    if (UR.getUserID().equals(FLProfileImage)) {
+                        Float rateNo = UR.getUserRating();
+                        mRatings.add(rateNo);
+                        System.out.println("RATING IS" + mRatings);
+                    }
+                }
+                sum = 0.0f;
+                if(!mRatings.isEmpty()) {
+                    for (Float mark : mRatings) {
+                        sum += mark;
+                    }
+                    floatValue = sum.floatValue() / mRatings.size();
+                    System.out.println("AVERAGE" + floatValue);
+                    userRatingBar.setRating(floatValue);
+                }else{
+                    userRatingBar.setRating(0f);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
 
@@ -222,30 +328,6 @@ public class ViewFullListingActivity extends AppCompatActivity {
             }
         });
 
-
-//        getUserNameRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                Iterable<DataSnapshot> children = snapshot.getChildren();
-//                for (DataSnapshot child : children) {
-//                    System.out.println("CURRENT USER" + currentUser);
-//                    System.out.println("USER ID" + FLProfileUserName);
-//                    if (currentUser.equals(FLProfileUserName)) {
-//                        String userFirstName = currentUser.getFirstName();
-//                        String userLastName = currentUser.getLastName();
-//                        String theUserName = userFirstName + " " + userLastName;
-//
-//                        listingProfileUsername.setText(theUserName);
-//                    }
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
     }
 
     @Override

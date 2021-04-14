@@ -12,7 +12,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA"
+    <uses-permission
+        android:name="android.permission.CAMERA"
         android:required="true"
         android:requiredFeature="true"
         tools:targetApi="o" />
@@ -29,7 +30,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FYP_1">
-        <activity android:name=".Notifications.RequestNotificationActivity"></activity>
+        <activity android:name=".Notifications.RequestNotificationActivity" />
         <activity android:name=".Chat.ChatActivity" />
         <activity android:name=".Notifications.NotificationActivity" />
         <activity android:name=".AllListingsTab.ViewFullListingActivity" />
@@ -61,12 +62,12 @@
             android:windowSoftInputMode="adjustNothing" />
         <activity android:name=".BarcodeScan.BarcodeActivity" />
         <activity android:name=".Recipe.ViewFullRecipeActivity" />
-        <activity android:name=".Recipe.ViewAllRecipesActivity"
+        <activity
+            android:name=".Recipe.ViewAllRecipesActivity"
             android:windowSoftInputMode="adjustNothing" />
         <activity android:name=".MoveItemToListingActivity" />
         <activity android:name=".Recipe.RecipeActivity" />
         <activity android:name=".TextRecognition.TextRecognitionActivity" />
-        <activity android:name=".UserRating" />
         <activity
             android:name=".BarcodeScan.CaptureAct"
             android:screenOrientation="fullSensor"
