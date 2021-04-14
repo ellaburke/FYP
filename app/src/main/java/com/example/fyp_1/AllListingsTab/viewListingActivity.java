@@ -8,6 +8,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -59,7 +61,7 @@ public class viewListingActivity extends AppCompatActivity implements Adapter.On
     RecyclerView.LayoutManager mLayoutManager;
     DatabaseReference mDatabaseRef, mDatabaseNotificationStateRef;
     SearchView mSearchView;
-    ImageView filterByCategory;
+    Button filterByCategory;
 
     //FAB
     FloatingActionButton uploadListingFAB;
@@ -69,6 +71,11 @@ public class viewListingActivity extends AppCompatActivity implements Adapter.On
 
     //Clicked ID
     String listingID;
+
+    //Alert Dialog
+    AlertDialog alertDialogWithRadioButtons;
+    String optionSelectedForFilter;
+
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -88,7 +95,7 @@ public class viewListingActivity extends AppCompatActivity implements Adapter.On
         mSearchView = findViewById(R.id.searchView);
         //mSearchView.setIconified(false);
         mSearchView.setIconifiedByDefault(false);
-        filterByCategory = (ImageView) findViewById(R.id.filterByCategory);
+        filterByCategory = (Button) findViewById(R.id.filterByCategory);
 
 
         //init FAB
@@ -175,9 +182,9 @@ public class viewListingActivity extends AppCompatActivity implements Adapter.On
             }
         });
 
-        if(listingToSearch2.equals(" ")) {
+        if (listingToSearch2.equals(" ")) {
             mSearchView.setFocusedByDefault(false);
-        } else{
+        } else {
             mSearchView.setQuery(listingToSearch2, true);
             mSearchView.setFocusedByDefault(true);
         }
@@ -213,37 +220,7 @@ public class viewListingActivity extends AppCompatActivity implements Adapter.On
             @Override
             public void onClick(View v) {
 
-                AlertDialog.Builder mBuilder = new AlertDialog.Builder(viewListingActivity.this);
-                View mView = getLayoutInflater().inflate(R.layout.filter_by_category_dialog, null);
-                //init variables for dialog
-                TextView cancelTV = (TextView) mView.findViewById(R.id.cancel_dialog_option1);
-                TextView addTV = (TextView) mView.findViewById(R.id.add_dialog_option1);
-                RadioGroup radioGroup = findViewById(R.id.radioGroupCategory);
-                final RadioButton[] selectedRadioButton = new RadioButton[1];
-
-                addTV.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        int selectedRadioButtonId = radioGroup.getCheckedRadioButtonId();
-                        selectedRadioButton[0] = findViewById(selectedRadioButtonId);
-                        String selectedRbText = selectedRadioButton[0].getText().toString();
-                        System.out.println("SELECTED" + selectedRbText);
-
-
-                    }
-                });
-                mBuilder.setView(mView);
-                AlertDialog dialog = mBuilder.create();
-                dialog.show();
-
-                cancelTV.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
-
+                CreateDialogWithRadioButtons();
             }
         });
 
@@ -261,10 +238,13 @@ public class viewListingActivity extends AppCompatActivity implements Adapter.On
         mRecyclerView.setAdapter(adapterClass);
     }
 
-    public void searchByCategory() {
+    public void searchByCategory(String optionSelectedForFilter) {
         ArrayList<Listing> list = new ArrayList<>();
         for (Listing obj2 : mListings) {
-            if (obj2.getCategory().toLowerCase().contains(myItemCategory.toLowerCase())) {
+            if (optionSelectedForFilter.equals("All")) {
+                    list.add(obj2);
+            }
+            else if (obj2.getCategory().toLowerCase().contains(optionSelectedForFilter.toLowerCase())) {
                 list.add(obj2);
             }
         }
@@ -313,6 +293,65 @@ public class viewListingActivity extends AppCompatActivity implements Adapter.On
         Intent viewFullListingIntent = new Intent(this, ViewFullListingActivity.class);
         viewFullListingIntent.putExtra("selected_listing_to_display", listingID);
         startActivity(viewFullListingIntent);
+
+    }
+
+    public void CreateDialogWithRadioButtons(){
+        CharSequence[] value = {"All", "Fruit", "Veg", "Bread/Cereal", "Cupboard", "Dairy", "Meat/Poultry", "Fish", "Freezer"};
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(viewListingActivity.this);
+        builder.setTitle("Filter By Category");
+
+        builder.setSingleChoiceItems(value, -1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which)
+                {
+                    case 0 :
+                        System.out.println("All Clicked");
+                        optionSelectedForFilter = "All";
+                        break;
+                    case 1 :
+                        System.out.println("Fruit Clicked");
+                        optionSelectedForFilter = "Fruit";
+                        break;
+                    case 2 :
+                        System.out.println("Veg Clicked");
+                        optionSelectedForFilter = "Veg";
+                        break;
+                    case 3 :
+                        System.out.println("Bread/Cereal Clicked");
+                        optionSelectedForFilter = "Bread/Cereal";
+                        break;
+                    case 4 :
+                        System.out.println("Cupboard");
+                        optionSelectedForFilter = "Cupboard";
+                        break;
+                    case 5 :
+                        System.out.println("Dairy");
+                        optionSelectedForFilter = "Dairy";
+                        break;
+                    case 6 :
+                        System.out.println("Meat/Poultry");
+                        optionSelectedForFilter = "Meat/Poultry";
+                        break;
+                    case 7 :
+                        System.out.println("Fish");
+                        optionSelectedForFilter = "Fish";
+                        break;
+                    case 8 :
+                        System.out.println("Freezer");
+                        optionSelectedForFilter = "Freezer";
+                        break;
+                }
+                alertDialogWithRadioButtons.dismiss();
+                searchByCategory(optionSelectedForFilter);
+
+            }
+        });
+
+        alertDialogWithRadioButtons = builder.create();
+        alertDialogWithRadioButtons.show();
 
     }
 

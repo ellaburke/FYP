@@ -10,9 +10,7 @@ public class Listing {
     String expiryDate;
     String location;
     String pickUpTime;
-    String keepListedFor;
     String listingImageURL;
-    String foodTypeWantOrOffering;
     private String userId;
     String listingId;
     int requestTotal;
@@ -27,7 +25,7 @@ public class Listing {
         listingImageURL = null;
     }
 
-    public Listing(String listingId, String name, String description, String category, String expiryDate, String location, String pickUpTime, String keepListedFor, String listingImageURL, String foodTypeWantOrOffering, String userId, int requestTotal) {
+    public Listing(String listingId, String name, String description, String category, String expiryDate, String location, String pickUpTime, String listingImageURL, String userId, int requestTotal) {
         this.listingId = listingId;
         this.name = name;
         this.description = description;
@@ -35,9 +33,7 @@ public class Listing {
         this.expiryDate = expiryDate;
         this.location = location;
         this.pickUpTime = pickUpTime;
-        this.keepListedFor = keepListedFor;
         this.listingImageURL = listingImageURL;
-        this.foodTypeWantOrOffering = foodTypeWantOrOffering;
         this.userId = userId;
         this.requestTotal = requestTotal;
 
@@ -99,13 +95,6 @@ public class Listing {
         this.pickUpTime = pickUpTime;
     }
 
-    public String getKeepListedFor() {
-        return keepListedFor;
-    }
-
-    public void setKeepListedFor(String keepListedFor) {
-        this.keepListedFor = keepListedFor;
-    }
 
     public String getListingImageURL() {
         return listingImageURL;
@@ -115,13 +104,6 @@ public class Listing {
         this.listingImageURL = listingImageURL;
     }
 
-    public String getFoodTypeWantOrOffering() {
-        return foodTypeWantOrOffering;
-    }
-
-    public void setFoodTypeWantOrOffering(String foodTypeWantOrOffering) {
-        this.foodTypeWantOrOffering = foodTypeWantOrOffering;
-    }
 
     public int getRequestTotal() {
         return requestTotal;

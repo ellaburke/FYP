@@ -28,14 +28,14 @@
         tools:ignore="MissingConstraints" />
 
 
-    <ImageButton
+    <Button
         android:id="@+id/filterByCategory"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:background="@drawable/ic_baseline_filter_none_24"
-        android:layout_toRightOf="@id/AllListingsHeading"
+        android:layout_toEndOf="@id/AllListingsHeading"
         android:layout_marginRight="10dp" />
 
 

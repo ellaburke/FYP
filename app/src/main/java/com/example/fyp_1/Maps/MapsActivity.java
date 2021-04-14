@@ -28,6 +28,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -131,25 +132,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (!title.equals("My Location")) {
             MarkerOptions options = new MarkerOptions()
                     .position(latLng)
-                    .title(title);
+                    .title(title)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
             mMap.addMarker(options);
         }
 
-        //hideSoftKeyboard();
     }
-
-//    private void hideSoftKeyboard(){
-//        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-//    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-//        LatLng dublin = new LatLng(53.350140, -6.266155);
-//        mMap.addMarker(new MarkerOptions().position(dublin).title("Marker in Dublin"));
-//        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(dublin, 10));
-
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             enableUserLocation();
@@ -197,7 +189,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onSuccess(Location location) {
                 LatLng latlng = new LatLng(location.getLatitude(), location.getLongitude());
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng,15));
-                mMap.addMarker(new MarkerOptions().position(latlng).title("My Location!"));
+                mMap.addMarker(new MarkerOptions().position(latlng).title("My Location!").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
             }
         });
     }

@@ -81,7 +81,7 @@ public class MyKitchenIngredients2 extends AppCompatActivity {
     Animation animatorFromBottom;
     Animation animatorToBottom;
 
-    Boolean clicked = true;
+    Boolean clicked = false;
     String myItemInput, myItemAmountInput, myItemCategory, myItemMeasurement, itemAmountAndMeasurement;
 
     FloatingActionButton addToKitchenBtn, addToKitchenByScanBtn, addToKitchenByTextBtn, checkedItemsBtn, deleteItemsBtn;

@@ -120,24 +120,13 @@ public class MoveItemToListingActivity extends AppCompatActivity{
                     currentItem = child.getValue(MyKitchenItem.class);
                     Log.d(TAG, "LISTING TO UPDATE 3: " + currentItem.getItemId());
                     Log.d(TAG, "LISTING TO UPDATE 4: " + itemToList);
-                    /*if (currentItem.getItemId().equals(itemToList)) {
-                        itemName = currentItem.getItemName();
-                        itemAmount = currentItem.getItemAmount();
-                        itemCategory = currentItem.getItemCategory();
-                        listingTitle.setText(itemName);
-                        listingDescription.setText("Item Amount: " + itemAmount);
-                        //categorySpinner.setSelection(itemCategory.get);
-                    }*/
+
                     if (itemToList.equalsIgnoreCase(currentItem.getItemId())) {
                         // Retrieved item from DB
                         currentItem.getItemAmount();
 
                         // Set the rest of the fields
                         listingTitle.setText(currentItem.getItemName());
-                        //listingDescription.setText(currentItem.get);
-                        //listingFoodCategory
-                        //currentItem.getItemCategory() == "Meat"
-
 
                         categorySpinner.setSelection(2);
                     }
@@ -150,12 +139,9 @@ public class MoveItemToListingActivity extends AppCompatActivity{
             }
         });
 
-        keepListedForSpinner = (Spinner) findViewById(R.id.keep_listed_for_spinner1);
         categorySpinner = (Spinner) findViewById(R.id.food_category_spinner1);
         expiryDate = (EditText) findViewById(R.id.expiryDate_et1);
         uploadImage = (ImageView) findViewById(R.id.uploadImageView1);
-        offeringButton = (Button) findViewById(R.id.offering_button1);
-        wantButton = (Button) findViewById(R.id.want_button1);
         doneButton = (Button) findViewById(R.id.doneButton1);
         listingDescription = (EditText) findViewById(R.id.description_et1);
         listingLocation = (EditText) findViewById(R.id.location_et1);
@@ -164,18 +150,14 @@ public class MoveItemToListingActivity extends AppCompatActivity{
 
 
         // Create an ArrayAdapter using the string array and a default spinner
-        ArrayAdapter<CharSequence> staticAdapter = ArrayAdapter.createFromResource(this, R.array.keep_listed_for_array,
-                android.R.layout.simple_spinner_item);
         ArrayAdapter<CharSequence> staticAdapter2 = ArrayAdapter.createFromResource(this, R.array.food_category_array,
                 android.R.layout.simple_spinner_item);
 
 
         // Specify the layout to use when the list of choices appears
-        staticAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         staticAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         // Apply the adapter to the spinner
-        keepListedForSpinner.setAdapter(staticAdapter);
         categorySpinner.setAdapter(staticAdapter2);
 
         listingLocation.setOnClickListener(new View.OnClickListener() {
@@ -285,9 +267,7 @@ public class MoveItemToListingActivity extends AppCompatActivity{
         listingLocationEntered = listingLocation.getText().toString();
         listingPickUpTimesEntered = listingPickUpTimes.getText().toString();
         listingExpiryDateEntered = expiryDate.getText().toString();
-        listingKeepListedFor = keepListedForSpinner.getSelectedItem().toString();
         listingFoodCategory = categorySpinner.getSelectedItem().toString();
-        listingOption = optionSelected;
         int requestTotal = 0;
 
         if (selectedImage != null) {
@@ -308,8 +288,8 @@ public class MoveItemToListingActivity extends AppCompatActivity{
                     String listingID = mDatabaseRef.push().getKey();
 
                     //Log.d(TAG, "onSuccess: firebase download url: " + downloadUrl.toString()); //use if testing...don't need this line.
-                    myListing = new Listing(listingID,listingTitleEntered, listingDescriptionEntered,listingFoodCategory, listingExpiryDateEntered, listingLocationEntered, listingPickUpTimesEntered, listingKeepListedFor,
-                            downloadUrl.toString(),listingOption, userId, requestTotal);
+                    myListing = new Listing(listingID,listingTitleEntered, listingDescriptionEntered,listingFoodCategory, listingExpiryDateEntered, listingLocationEntered, listingPickUpTimesEntered,
+                            downloadUrl.toString(), userId, requestTotal);
 
                     String uploadId = mDatabaseRef.push().getKey();
                     mDatabaseRef.child(listingID).setValue(myListing);
