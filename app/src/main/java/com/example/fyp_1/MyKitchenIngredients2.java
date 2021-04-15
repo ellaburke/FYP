@@ -10,8 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,11 +31,9 @@ import com.example.fyp_1.BarcodeScan.CaptureAct;
 import com.example.fyp_1.Notifications.NotificationActivity;
 import com.example.fyp_1.Notifications.RequestNotificationActivity;
 import com.example.fyp_1.Recipe.RecipeActivity;
-import com.example.fyp_1.Recipe.ViewFullRecipeActivity;
 import com.example.fyp_1.ShoppingListTab.MyShoppingListActivity;
 import com.example.fyp_1.UserProfileAndListings.MyListingsProfileActivity;
 import com.example.fyp_1.model.FoodCategorySection;
-import com.example.fyp_1.model.MyShoppingListItem;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -187,51 +183,84 @@ public class MyKitchenIngredients2 extends AppCompatActivity {
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                     MyKitchenItem mKI = postSnapshot.getValue(MyKitchenItem.class);
                     if (mKI.getUserId().equals(userId) && mKI.itemCategory.equals("Dairy")) {
-                        dairySectionItems.add(mKI);
-                        foodCategorySectionList.add(new FoodCategorySection(dairySection, dairySectionItems));
+                        if(dairySectionItems.isEmpty()) {
+                            dairySectionItems.add(mKI);
+                            foodCategorySectionList.add(new FoodCategorySection(dairySection, dairySectionItems));
+                        }else{
+                            dairySectionItems.add(mKI);
+                        }
                         Log.d("hello", String.valueOf(dairySectionItems));
                         Log.d(TAG, "initData: " + foodCategorySectionList);
                         System.out.println(foodCategorySectionList);
 
                     } else if (mKI.getUserId().equals(userId) && mKI.itemCategory.equals("Veg")) {
-                        vegSectionItems.add(mKI);
-                        foodCategorySectionList.add(new FoodCategorySection(vegSection, vegSectionItems));
+                        if(vegSectionItems.isEmpty()) {
+                            vegSectionItems.add(mKI);
+                            foodCategorySectionList.add(new FoodCategorySection(vegSection, vegSectionItems));
+
+                        }else{
+                            vegSectionItems.add(mKI);
+                        }
                         Log.d(TAG, "initData: " + foodCategorySectionList);
                         System.out.println(foodCategorySectionList);
 
                     } else if (mKI.getUserId().equals(userId) && mKI.itemCategory.equals("Fruit")) {
-                        fruitSectionItems.add(mKI);
-                        foodCategorySectionList.add(new FoodCategorySection(fruitSection, fruitSectionItems));
+                        if(fruitSectionItems.isEmpty()) {
+                            fruitSectionItems.add(mKI);
+                            foodCategorySectionList.add(new FoodCategorySection(fruitSection, fruitSectionItems));
+                        }else{
+                            fruitSectionItems.add(mKI);
+                        }
                         Log.d(TAG, "initData: " + foodCategorySectionList);
                         System.out.println(foodCategorySectionList);
 
                     } else if (mKI.getUserId().equals(userId) && mKI.itemCategory.equals("Meat/Poultry")) {
-                        meatOrPoultrySectionItems.add(mKI);
-                        foodCategorySectionList.add(new FoodCategorySection(meatOrPoultrySection, meatOrPoultrySectionItems));
+                        if(meatOrPoultrySectionItems.isEmpty()) {
+                            meatOrPoultrySectionItems.add(mKI);
+                            foodCategorySectionList.add(new FoodCategorySection(meatOrPoultrySection, meatOrPoultrySectionItems));
+                        }else{
+                            meatOrPoultrySectionItems.add(mKI);
+                        }
                         Log.d(TAG, "initData: " + foodCategorySectionList);
                         System.out.println(foodCategorySectionList);
 
                     } else if (mKI.getUserId().equals(userId) && mKI.itemCategory.equals("Fish")) {
-                        fishSectionItems.add(mKI);
-                        foodCategorySectionList.add(new FoodCategorySection(fishSection, fishSectionItems));
+                        if(fishSectionItems.isEmpty()) {
+                            fishSectionItems.add(mKI);
+                            foodCategorySectionList.add(new FoodCategorySection(fishSection, fishSectionItems));
+                        }else{
+                            fishSectionItems.add(mKI);
+                        }
                         Log.d(TAG, "initData: " + foodCategorySectionList);
                         System.out.println(foodCategorySectionList);
 
                     } else if (mKI.getUserId().equals(userId) && mKI.itemCategory.equals("Cupboard")) {
-                        cupboardSectionItems.add(mKI);
-                        foodCategorySectionList.add(new FoodCategorySection(cupboardSection, cupboardSectionItems));
+                        if(cupboardSectionItems.isEmpty()) {
+                            cupboardSectionItems.add(mKI);
+                            foodCategorySectionList.add(new FoodCategorySection(cupboardSection, cupboardSectionItems));
+                        }else{
+                            cupboardSectionItems.add(mKI);
+                        }
                         Log.d(TAG, "initData: " + foodCategorySectionList);
                         System.out.println(foodCategorySectionList);
 
                     } else if (mKI.getUserId().equals(userId) && mKI.itemCategory.equals("Bread/Cereal")) {
-                        breadOrCerealSectionItems.add(mKI);
-                        foodCategorySectionList.add(new FoodCategorySection(breadOrCerealSection, breadOrCerealSectionItems));
+                        if(breadOrCerealSectionItems.isEmpty()) {
+                            breadOrCerealSectionItems.add(mKI);
+                            foodCategorySectionList.add(new FoodCategorySection(breadOrCerealSection, breadOrCerealSectionItems));
+                        }else{
+                            breadOrCerealSectionItems.add(mKI);
+                        }
                         Log.d(TAG, "initData: " + foodCategorySectionList);
                         System.out.println(foodCategorySectionList);
 
                     } else if (mKI.getUserId().equals(userId) && mKI.itemCategory.equals("Freezer")) {
-                        frozenSectionItems.add(mKI);
-                        foodCategorySectionList.add(new FoodCategorySection(frozenSection, frozenSectionItems));
+                        if(frozenSectionItems.isEmpty()) {
+                            frozenSectionItems.add(mKI);
+                            foodCategorySectionList.add(new FoodCategorySection(frozenSection, frozenSectionItems));
+                        }else{
+                            frozenSectionItems.add(mKI);
+                        }
                         Log.d(TAG, "initData: " + foodCategorySectionList);
                         System.out.println(foodCategorySectionList);
                     }

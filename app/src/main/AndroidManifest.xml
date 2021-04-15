@@ -31,7 +31,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FYP_1">
         <activity android:name=".Notifications.RequestNotificationActivity" />
-        <activity android:name=".Chat.ChatActivity" />
         <activity android:name=".Notifications.NotificationActivity" />
         <activity android:name=".AllListingsTab.ViewFullListingActivity" />
         <!--

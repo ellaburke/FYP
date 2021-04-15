@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.fyp_1"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -86,8 +86,8 @@ dependencies {
     //viewPager
     implementation 'androidx.viewpager2:viewpager2:1.0.0-beta04'
     implementation 'androidx.fragment:fragment-ktx:1.2.0-alpha04'
-    //Chat SDK
-    //implementation "sdk.chat:firebase-app:5.0.0rc15"
+
+
 
 
 

@@ -40,18 +40,7 @@
                     android:textColor="@android:color/black"
                     android:textSize="20sp" />
 
-                <TextView
-                    android:id="@+id/profile_user_location_display"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/profile_listing_name_display"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_toRightOf="@id/listingProfileImageView"
-                    android:drawableLeft="@drawable/ic_baseline_location_on_24"
-                    android:text="Location"
-                    android:textColor="@android:color/black"
-                    android:textSize="14sp" />
+
 
                 <RatingBar
                     android:id="@+id/profile_listing_ratingBar"
@@ -59,7 +48,7 @@
                     android:layout_width="wrap_content"
                     android:progressTint="#FFFF4F"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/profile_user_location_display"
+                    android:layout_below="@+id/profile_listing_name_display"
                     android:layout_marginLeft="20dp"
                     android:layout_toRightOf="@id/listingProfileImageView" />
 

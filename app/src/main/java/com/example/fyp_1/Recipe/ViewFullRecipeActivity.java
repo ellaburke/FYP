@@ -281,6 +281,7 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
 
         ArrayList<String> availableListings = new ArrayList<>();
         ArrayList<String> notAvailableAsListing = new ArrayList<>();
+        ArrayList<String> availableListingIDs = new ArrayList<>();
 
         // Loop over each recipe (expecting only 1)
         for (RecipeInstructions recipeInstruction : recipeInstructions) {
@@ -334,7 +335,7 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
                         String ingredientsListDisplay2 = "";
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             MyKitchenItem mKI = snapshot.getValue(MyKitchenItem.class);
-                            if (itemsByName.contains(mKI.getItemName().toLowerCase())) {
+                            if (itemsByName.contains(mKI.getItemName().toLowerCase()) && mKI.getUserId().equals(userId)) {
                                 doHave.add(mKI.getItemName().toLowerCase());
                                 ingredientsListDisplay2 += mKI.getItemName() + System.getProperty("line.separator");
 
@@ -355,6 +356,24 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
 
                 });
 
+        FirebaseDatabase.getInstance().getReference().child("notificationRequests")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            Notification availableNotification = snapshot.getValue(Notification.class);
+                            if (availableNotification.getListingState().equals("Approved")) {
+                                availableListingIDs.add(availableNotification.getListingID());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+
+                });
+
         FirebaseDatabase.getInstance().getReference().child("listings")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -363,24 +382,22 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
                         String ingredientsThatAreNotListedDisplay = "";
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             Listing availableListing = snapshot.getValue(Listing.class);
-                            if (itemsByName.contains(availableListing.getName().toLowerCase())) {
-                                Notification notApprove = snapshot.getValue(Notification.class);
-                                if (availableListing.getListingId().equals(notApprove.getListingID()) && !notApprove.getListingState().equals("Appoved")) {
-                                    availableListings.add(availableListing.getName().toLowerCase());
-                                    ingredientsThatAreListedDisplay += availableListing.getName() + System.getProperty("line.separator");
-                                }
-
-                            } else {
-                                //System.out.println("3. NOT IN LIST: " + availableListing.getName());
+                            if (itemsByName.contains(availableListing.getName().toLowerCase()) && !availableListingIDs.contains(availableListing.getListingId())) {
+                                availableListings.add(availableListing.getName().toLowerCase());
+                                ingredientsThatAreListedDisplay += availableListing.getName() + System.getProperty("line.separator");
                             }
+
+
                             recipeIngredientListTVListed.setText(ingredientsThatAreListedDisplay);
                             itemsByName.removeAll(availableListings);
                             System.out.println("REMOVED LIST 2: " + itemsByName);
 
                         }
+
                         for (String ingToShop : itemsByName) {
                             ingredientsThatAreNotListedDisplay += ingToShop + System.getProperty("line.separator");
                         }
+
                         recipeIngredientListTVShop.setText(ingredientsThatAreNotListedDisplay);
                     }
 
@@ -391,19 +408,32 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
 
                 });
 
+
         //Set UI
         recipeNameTV.setText(recipeNameToDisplay);
         //recipeIngredientListTV.setText(ingredientsListDisplay2);
         ingredientEquipmentListTV.setText(equipmentListDisplay);
         Picasso.get()
-                .load(recipeImageURLToDisplay)
-                .into(recipeImageView);
+                .
 
-        mRecyclerView = findViewById(R.id.recipeDisplayRecyclerView);
+                        load(recipeImageURLToDisplay)
+                .
+
+                        into(recipeImageView);
+
+        mRecyclerView =
+
+                findViewById(R.id.recipeDisplayRecyclerView);
         mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new DisplayRecipeStepAdapter(ViewFullRecipeActivity.this, stepsList);
+        mLayoutManager = new
+
+                LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(new
+
+                LinearLayoutManager(this));
+        mAdapter = new
+
+                DisplayRecipeStepAdapter(ViewFullRecipeActivity.this, stepsList);
         mRecyclerView.setAdapter(mAdapter);
     }
 

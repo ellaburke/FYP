@@ -58,6 +58,7 @@ public class MapToShop extends AppCompatActivity implements OnMapReadyCallback {
         private Button findGroceryShopBtn;
         private double myLat;
         private double myLng;
+        //Grocery Shop list
         private ArrayList<GroceryShop> GroceryShops = new ArrayList<com.example.fyp_1.model.GroceryShop>();
 
         @Override
@@ -94,7 +95,7 @@ public class MapToShop extends AppCompatActivity implements OnMapReadyCallback {
             if (requestCode == 100 && grantResults.length > 0 && (grantResults[0] + grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
                 getCurrentLocation();
             } else {
-                Toast.makeText(MapToShop.this, "Permission denied", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MapToShop.this, "Permission Request Denied", Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -171,6 +172,24 @@ public class MapToShop extends AppCompatActivity implements OnMapReadyCallback {
             groceryMarkers();
         }
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        if (mMap != null) {
+            int permission = ContextCompat.checkSelfPermission(MapToShop.this, Manifest.permission.ACCESS_FINE_LOCATION);
+            if (permission == PackageManager.PERMISSION_GRANTED) {
+                mMap.setMyLocationEnabled(true);
+                mMap.getUiSettings().setZoomControlsEnabled(true);
+            } else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
+                }
+            }
+
+        }
+    }
+
 
         public void groceryMarkers() {
             for (GroceryShop shop : GroceryShops) {
@@ -179,22 +198,5 @@ public class MapToShop extends AppCompatActivity implements OnMapReadyCallback {
             }
         }
 
-        @Override
-        public void onMapReady(GoogleMap googleMap) {
-            mMap = googleMap;
-
-            if (mMap != null) {
-                int permission = ContextCompat.checkSelfPermission(MapToShop.this, Manifest.permission.ACCESS_FINE_LOCATION);
-                if (permission == PackageManager.PERMISSION_GRANTED) {
-                    mMap.setMyLocationEnabled(true);
-                    mMap.getUiSettings().setZoomControlsEnabled(true);
-                } else {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
-                    }
-                }
-
-            }
-        }
 
 }
