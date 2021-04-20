@@ -179,7 +179,7 @@ public class MyKitchenIngredients2 extends AppCompatActivity {
         mDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                foodCategorySectionList.clear();
+                //foodCategorySectionList.clear();
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                     MyKitchenItem mKI = postSnapshot.getValue(MyKitchenItem.class);
                     if (mKI.getUserId().equals(userId) && mKI.itemCategory.equals("Dairy")) {
@@ -267,6 +267,7 @@ public class MyKitchenIngredients2 extends AppCompatActivity {
                 }
                 myKitchenItemsAdapter2.notifyDataSetChanged();
 
+
             }
 
 
@@ -334,6 +335,9 @@ public class MyKitchenIngredients2 extends AppCompatActivity {
                             mDatabaseRef.child(itemId).setValue(myKitchenItem);
                             itemInput.setText("");
                             itemAmountInput.setText("");
+                            myKitchenItemsAdapter2.notifyDataSetChanged();
+                            mainRecyclerView.setAdapter(myKitchenItemsAdapter2);
+
                         }
                     }
                 });

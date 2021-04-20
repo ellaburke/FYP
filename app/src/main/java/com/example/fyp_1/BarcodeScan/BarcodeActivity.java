@@ -170,9 +170,9 @@ public class BarcodeActivity extends AppCompatActivity {
                     itemAmountAndMeasurement = myItemAmountInput + myItemMeasurement;
                     System.out.println("FOODITEM" + itemAmountAndMeasurement);
 
+                    itemId = mDatabaseRef.push().getKey();
                     myKitchenItem = new MyKitchenItem(myItemInput, myItemCategory, itemAmountAndMeasurement, userId, itemId);
                     mDatabaseRef = FirebaseDatabase.getInstance().getReference("myKitchenItems");
-                    itemId = mDatabaseRef.push().getKey();
                     mDatabaseRef.child(itemId).setValue(myKitchenItem);
                     Intent backToKitchenIngIntent = new Intent(BarcodeActivity.this, MyKitchenIngredients2.class);
                     startActivity(backToKitchenIngIntent);

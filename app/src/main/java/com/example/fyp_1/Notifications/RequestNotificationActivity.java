@@ -283,6 +283,7 @@ public class RequestNotificationActivity extends AppCompatActivity implements Re
                     userReuseRef.child(theReuseID).child("reuseNumber").setValue(reuseNo2);
                 }
 
+                mAdapter.notifyDataSetChanged();
             }
 
         });

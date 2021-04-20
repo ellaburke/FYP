@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.example.fyp_1.Chat.ChatActivity;
 import com.example.fyp_1.MyKitchenIngredients2;
 import com.example.fyp_1.R;
 import com.example.fyp_1.Recipe.ViewFullRecipeActivity;
@@ -325,6 +326,14 @@ public class ViewFullListingActivity extends AppCompatActivity {
 
                 finish();
 
+            }
+        });
+
+        chatUserOfListingBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent chatIntent = new Intent(ViewFullListingActivity.this, ChatActivity.class);
+                startActivity(chatIntent);
             }
         });
 
