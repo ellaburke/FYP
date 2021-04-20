@@ -229,7 +229,7 @@ public class viewListingActivity extends AppCompatActivity implements Adapter.On
     public void search(String str) {
         ArrayList<Listing> list = new ArrayList<>();
         for (Listing obj : mListings) {
-            if (obj.getName().toLowerCase().contains(str.toLowerCase())) {
+            if (obj.getName().toLowerCase().contains(str.toLowerCase()) || obj.getLocation().toLowerCase().contains(str.toLowerCase()) || obj.getCategory().toLowerCase().contains(str.toLowerCase())) {
                 list.add(obj);
             }
         }

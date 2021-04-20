@@ -13,6 +13,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -20,7 +22,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.example.fyp_1.MyKitchenIngredients2;
 import com.example.fyp_1.R;
+import com.example.fyp_1.UserProfileAndListings.MyListingsProfileActivity;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -275,5 +279,24 @@ public class ChatActivity extends AppCompatActivity {
         }
 
         return ANONYMOUS;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.go_back, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.go_back_icon) {
+            Intent backToProfileIntent = new Intent(ChatActivity.this, MyKitchenIngredients2.class);
+            startActivity(backToProfileIntent);
+            return true;
+        }
+
+        return true;
     }
 }
