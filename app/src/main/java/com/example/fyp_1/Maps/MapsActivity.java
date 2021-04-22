@@ -190,6 +190,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 LatLng latlng = new LatLng(location.getLatitude(), location.getLongitude());
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng,15));
                 mMap.addMarker(new MarkerOptions().position(latlng).title("My Location!").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
+
+                String add = null;
+                Geocoder geocoder=new Geocoder(MapsActivity.this);
+
+                try {
+                    List<Address> addressList=geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),1);
+
+                    for(Address address:addressList){
+                        Log.d("TAG",address.getAddressLine(0));
+
+
+                        moveCamera(new LatLng(address.getLatitude(), address.getLongitude()), DEFAULT_ZOOM,
+                                address.getAddressLine(0));
+
+                        add = address.getAddressLine(0);
+                        mSearchText.setText(add);
+                    }
+                    geoLocate();
+
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

@@ -254,14 +254,13 @@ public class MyShoppingListActivity extends AppCompatActivity {
                                         itemMatchedCategory = currentItem.getItemCategory();
                                         itemMatchedName = currentItem.getName();
 
-                                        //Delete from List
-                                        mDeleteDatabaseRef.child(mSLI).removeValue();
-
                                         //Add To Kitchen
                                         itemIdToAdd = mDatabaseRef.push().getKey();
                                         myKitchenItem = new MyKitchenItem(itemMatchedName, itemMatchedCategory, "0", userId, itemIdToAdd);
                                         mDatabaseKitchenItemRef.child(itemIdToAdd).setValue(myKitchenItem);
 
+                                        //Delete from List
+                                        mDeleteDatabaseRef.child(mSLI).removeValue();
 
                                         myShoppingListAdapter.notifyDataSetChanged();
                                     }
