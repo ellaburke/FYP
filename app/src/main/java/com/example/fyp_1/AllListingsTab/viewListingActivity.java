@@ -160,6 +160,7 @@ public class viewListingActivity extends AppCompatActivity implements Adapter.On
         mDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                mListings.clear();
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                     Listing listing = postSnapshot.getValue(Listing.class);
                     if (!mNotifications.contains(listing.getListingId())) {

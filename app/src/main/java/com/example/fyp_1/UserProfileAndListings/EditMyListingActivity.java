@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.fyp_1.AllListingsTab.addListingActivity;
 import com.example.fyp_1.AllListingsTab.viewListingActivity;
 import com.example.fyp_1.Maps.MapsActivity;
 import com.example.fyp_1.MyKitchenIngredients2;
@@ -28,6 +31,7 @@ import com.example.fyp_1.homePageActivity;
 import com.example.fyp_1.model.Listing;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -213,14 +217,16 @@ public class EditMyListingActivity extends AppCompatActivity {
         updateDoneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                updatePicture();
                 if (isLTitleChanged() || isLDescriptionChanged() || isLLocationChanged() || isLPickUpTimesChanged() || isLExpiryDateChanged() || isLCategoryChanged()) {
                     Toast.makeText(EditMyListingActivity.this, "Listing Updated", Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(EditMyListingActivity.this, MyListingsProfileActivity.class);
                     startActivity(intent);
 
-                } else
-                    Toast.makeText(EditMyListingActivity.this, "Details are the same & Can not be updated!", Toast.LENGTH_LONG).show();
+                } //else
+                    //Toast.makeText(EditMyListingActivity.this, "Details are the same & Can not be updated!", Toast.LENGTH_LONG).show();
             }
+
         });
 
         //Init btm nav
@@ -334,19 +340,11 @@ public class EditMyListingActivity extends AppCompatActivity {
         }
     }
 
-//    private boolean isLPicChanged() {
-//        Uri imageCompare = Uri.parse(listingImageUpdated);
-//        listingImage.setImageURI(Uri.parse(listingImageUpdated));
-//        Picasso.get().load(listingImageUpdated).into(listingImage);
-//
-//        if (!imageCompare.equals(selectedImage2)) {
-//
-//            updateRef.child(listingToEdit).child("listingImageUrl").setValue(selectedImage2);
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
+    private String getFileExtension(Uri uri) {
+        ContentResolver cR = getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(cR.getType(uri));
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -367,5 +365,25 @@ public class EditMyListingActivity extends AppCompatActivity {
             }
         }
 
+    }
+
+    private void updatePicture() {
+
+        if (selectedImage2 != null) {
+            StorageReference fileReference = storageRef.child(System.currentTimeMillis() + "." + getFileExtension(selectedImage2));
+
+            fileReference.putFile(selectedImage2).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Toast.makeText(EditMyListingActivity.this, "Upload Successful", Toast.LENGTH_SHORT).show();
+
+                    Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
+                    while (!urlTask.isSuccessful()) ;
+                    Uri downloadUrl = urlTask.getResult();
+
+                    updateRef.child(listingToEdit).child("listingImageURL").setValue(downloadUrl.toString());
+                }
+            });
+        };
     }
 }

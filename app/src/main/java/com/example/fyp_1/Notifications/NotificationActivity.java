@@ -130,6 +130,7 @@ public class NotificationActivity extends AppCompatActivity implements Notificat
         mDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                mNotifications.clear();
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                     Notification not = postSnapshot.getValue(Notification.class);
                     if (not.getRecieverUserID().equals(userId)) {

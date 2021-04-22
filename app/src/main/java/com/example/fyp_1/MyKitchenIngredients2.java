@@ -180,6 +180,14 @@ public class MyKitchenIngredients2 extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 //foodCategorySectionList.clear();
+                dairySectionItems.clear();
+                vegSectionItems.clear();
+                fruitSectionItems.clear();
+                frozenSectionItems.clear();
+                cupboardSectionItems.clear();
+                breadOrCerealSectionItems.clear();
+                fishSectionItems.clear();
+
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                     MyKitchenItem mKI = postSnapshot.getValue(MyKitchenItem.class);
                     if (mKI.getUserId().equals(userId) && mKI.itemCategory.equals("Dairy")) {
@@ -335,6 +343,7 @@ public class MyKitchenIngredients2 extends AppCompatActivity {
                             mDatabaseRef.child(itemId).setValue(myKitchenItem);
                             itemInput.setText("");
                             itemAmountInput.setText("");
+
                             myKitchenItemsAdapter2.notifyDataSetChanged();
                             mainRecyclerView.setAdapter(myKitchenItemsAdapter2);
 

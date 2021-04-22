@@ -49,9 +49,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private static final int REQUEST_INVITE = 1;
     private static final int REQUEST_IMAGE = 2;
-    private static final String MESSAGE_URL = "http://friendlychat.firebase.google.com/message/";
     private static final String LOADING_IMAGE_URL = "https://www.google.com/images/spin-32.gif";
-    private static final String MESSAGE_SENT_EVENT = "message_sent";
 
     private SharedPreferences mSharedPreferences;
 
@@ -275,6 +273,7 @@ public class ChatActivity extends AppCompatActivity {
     private String getUserName() {
         FirebaseUser user = mFirebaseAuth.getCurrentUser();
         if (user != null) {
+            System.out.println("USER" + user);
             return user.getDisplayName();
         }
 

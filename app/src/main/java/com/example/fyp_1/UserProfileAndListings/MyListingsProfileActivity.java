@@ -158,6 +158,7 @@ public class MyListingsProfileActivity extends AppCompatActivity implements MyLi
         mDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                mListings.clear();
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                     Listing listing = postSnapshot.getValue(Listing.class);
                     if (listing.getUserId().equals(userId)) {

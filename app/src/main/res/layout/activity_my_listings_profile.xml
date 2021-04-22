@@ -25,7 +25,7 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_margin="20dp"
-                    android:src="@drawable/profilepic"
+                    tools:src="@drawable/profilepic"
                     app:civ_border_color="#FF000000"
                     app:civ_border_width="2dp" />
 
