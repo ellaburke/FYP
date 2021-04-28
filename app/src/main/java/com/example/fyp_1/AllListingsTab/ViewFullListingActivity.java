@@ -16,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.example.fyp_1.Chat.ChatActivity;
 import com.example.fyp_1.MyKitchenIngredients2;
 import com.example.fyp_1.R;
 import com.example.fyp_1.Recipe.ViewFullRecipeActivity;
@@ -83,7 +82,7 @@ public class ViewFullListingActivity extends AppCompatActivity {
 
     //UI Components
     TextView listingTitleTV, listingDescriptionTV, listingLocationTV, listingExpiryTV, listingCategoryTV, listingPickUpTimesTV, listingProfileUsername, listingReuseTotal;
-    Button requestListingBtn, chatUserOfListingBtn;
+    Button requestListingBtn;
     ImageView fullListingImage;
     ImageView profilePicIV;
 
@@ -132,7 +131,6 @@ public class ViewFullListingActivity extends AppCompatActivity {
         listingReuseTotal = (TextView) findViewById(R.id.fullListingRequestTotal);
         requestListingBtn = (Button) findViewById(R.id.requestListingBtn);
         fullListingImage = (ImageView) findViewById(R.id.fullListingDisplayImage1);
-        chatUserOfListingBtn = (Button) findViewById(R.id.chatUserOfListingBtn);
         profilePicIV = (ImageView) findViewById(R.id.profilePicOnListing);
         listingProfileUsername = (TextView) findViewById(R.id.profileUsernameOnListing);
         userRatingBar = (RatingBar) findViewById(R.id.ratingBarPerUser);
@@ -322,16 +320,6 @@ public class ViewFullListingActivity extends AppCompatActivity {
 
                 finish();
 
-            }
-        });
-
-        chatUserOfListingBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent chatIntent = new Intent(ViewFullListingActivity.this, ChatActivity.class);
-                chatIntent.putExtra("userFrom", userFrom);
-                chatIntent.putExtra("userTo", userTo);
-                startActivity(chatIntent);
             }
         });
 

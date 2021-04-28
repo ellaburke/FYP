@@ -288,20 +288,9 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="20dp"
+                    android:layout_marginBottom="70dp"
                     android:background="@drawable/custom_button"
                     android:text="@string/request"
-                    app:backgroundTint="@color/wasteify_pink" />
-
-                <Button
-                    android:id="@+id/chatUserOfListingBtn"
-                    android:layout_width="250dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/requestListingBtn"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="60dp"
-                    android:background="@drawable/custom_button"
-                    android:text="@string/chat_user"
                     app:backgroundTint="@color/wasteify_pink" />
 
 
