@@ -26,9 +26,11 @@ public class MessageViewHolder extends RecyclerView.ViewHolder {
     ImageView messageImageView;
     TextView messengerTextView;
     CircleImageView messengerImageView;
+    View container;
 
     public MessageViewHolder(View v) {
         super(v);
+        container = itemView.findViewById(R.id.container);
         messageTextView = (TextView) itemView.findViewById(R.id.messageTextView);
         messageImageView = (ImageView) itemView.findViewById(R.id.messageImageView);
         messengerTextView = (TextView) itemView.findViewById(R.id.messengerTextView);
@@ -71,5 +73,9 @@ public class MessageViewHolder extends RecyclerView.ViewHolder {
             messageImageView.setVisibility(ImageView.VISIBLE);
             messageTextView.setVisibility(TextView.GONE);
         }
+    }
+
+    public void hide() {
+        container.setVisibility(TextView.GONE);
     }
 }

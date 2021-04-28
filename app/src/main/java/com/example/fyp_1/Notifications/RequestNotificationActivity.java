@@ -33,6 +33,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class RequestNotificationActivity extends AppCompatActivity implements RequestNotificationAdapter.OnListingListener{
@@ -88,6 +89,8 @@ public class RequestNotificationActivity extends AppCompatActivity implements Re
         mRecyclerView = findViewById(R.id.recyclerViewRequestNotification);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
+        ((LinearLayoutManager) mLayoutManager).setReverseLayout(true);
+        ((LinearLayoutManager) mLayoutManager).setStackFromEnd(true);
         mNotifications = new ArrayList<>();
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new RequestNotificationAdapter(RequestNotificationActivity.this, (ArrayList<Notification>) mNotifications, RequestNotificationActivity.this);

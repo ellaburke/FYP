@@ -223,6 +223,7 @@ public class MyShoppingListActivity extends AppCompatActivity {
             public void onClick(View v) {
                 ArrayList<MyShoppingListItem> mSelectedItems = myShoppingListAdapter.listOfSelectedItems();
                 String selectedItemID = "";
+                System.out.println("SLECTED LIST" + mSelectedItems);
 
                 if (mSelectedItems != null) {
                     for (int index = 0; index < mSelectedItems.size(); index++) {
@@ -241,7 +242,7 @@ public class MyShoppingListActivity extends AppCompatActivity {
                     for (String ing : items) {
                         System.out.println("DELETE LIST " + ing);
 
-                        deleteRef.addValueEventListener(new ValueEventListener() {
+                        deleteRef.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 Iterable<DataSnapshot> children = snapshot.getChildren();
@@ -262,7 +263,7 @@ public class MyShoppingListActivity extends AppCompatActivity {
                                         //Delete from List
                                         mDeleteDatabaseRef.child(mSLI).removeValue();
 
-                                        myShoppingListAdapter.notifyDataSetChanged();
+                                        //myShoppingListAdapter.notifyDataSetChanged();
                                     }
 
                                 }
@@ -275,6 +276,7 @@ public class MyShoppingListActivity extends AppCompatActivity {
 
 
                         });
+
                     }
                 }
 

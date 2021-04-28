@@ -27,10 +27,12 @@ import com.example.fyp_1.R;
 import com.example.fyp_1.UserProfileAndListings.MyListingsProfileActivity;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.firebase.ui.database.SnapshotParser;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -73,6 +75,8 @@ public class ChatActivity extends AppCompatActivity {
     EditText messageEditText;
     Button messageSendButton;
     ImageView addMessageImageView;
+    private String userTo;
+    private String userFrom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +84,10 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
 
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        userTo = getIntent().getStringExtra("userTo");
+        userFrom = getIntent().getStringExtra("userFrom");
+        System.out.println("userFrom: " + userFrom + " - userTo: " + userTo);
 
         // Initialize Firebase Auth
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -92,7 +100,10 @@ public class ChatActivity extends AppCompatActivity {
 
         // Initialize Realtime Database
         mDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference messagesRef = mDatabase.getReference().child(MESSAGES_CHILD);
+        //DatabaseReference messagesRef = mDatabase.getReference().child(MESSAGES_CHILD);
+        DatabaseReference messagesRef = mDatabase
+                .getReference()
+                .child(MESSAGES_CHILD);
 
         //Init UI
         progressBar = (ProgressBar) findViewById(R.id.progressBar1);
@@ -117,8 +128,20 @@ public class ChatActivity extends AppCompatActivity {
 
             @Override
             protected void onBindViewHolder(MessageViewHolder vh, int position, ChatMessage message) {
-                progressBar.setVisibility(ProgressBar.INVISIBLE);
-                vh.bindMessage(message);
+                //progressBar.setVisibility(ProgressBar.INVISIBLE);
+                //vh.bindMessage(message);
+                if ((message.getFromIdUser() != null && message.getFromIdUser().equals(userFrom))
+                        || (message.getToIdUser() != null && message.getToIdUser().equals(userFrom))
+                        &&
+                        ((message.getFromIdUser() != null && message.getFromIdUser().equals(userTo))
+                                || (message.getToIdUser() != null && message.getToIdUser().equals(userTo)))
+                ) {
+
+                    progressBar.setVisibility(ProgressBar.INVISIBLE);
+                    vh.bindMessage(message);
+                } else {
+                    vh.hide();
+                }
             }
         };
 
@@ -145,7 +168,9 @@ public class ChatActivity extends AppCompatActivity {
                         ChatMessage(messageEditText.getText().toString(),
                         getUserName(),
                         getUserPhotoUrl(),
-                        null /* no image */);
+                        null /* no image */,
+                        userFrom,
+                        userTo);
 
                 mDatabase.getReference().child(MESSAGES_CHILD).push().setValue(chatMessage);
                 messageEditText.setText("");
@@ -200,7 +225,7 @@ public class ChatActivity extends AppCompatActivity {
 
                 final FirebaseUser user = mFirebaseAuth.getCurrentUser();
                 ChatMessage tempMessage = new ChatMessage(
-                        null, getUserName(), getUserPhotoUrl(), LOADING_IMAGE_URL);
+                        null, getUserName(), getUserPhotoUrl(), LOADING_IMAGE_URL, userFrom, userTo);
 
                 mDatabase.getReference().child(MESSAGES_CHILD).push()
                         .setValue(tempMessage, new DatabaseReference.CompletionListener() {
@@ -241,7 +266,7 @@ public class ChatActivity extends AppCompatActivity {
                                     @Override
                                     public void onSuccess(Uri uri) {
                                         ChatMessage friendlyMessage = new ChatMessage(
-                                                null, getUserName(), getUserPhotoUrl(), uri.toString());
+                                                null, getUserName(), getUserPhotoUrl(), uri.toString(), userFrom, userTo);
                                         mDatabase.getReference()
                                                 .child(MESSAGES_CHILD)
                                                 .child(key)
@@ -257,7 +282,6 @@ public class ChatActivity extends AppCompatActivity {
                     }
                 });
     }
-
 
 
     @Nullable

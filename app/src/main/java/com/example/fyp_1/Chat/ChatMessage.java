@@ -6,16 +6,20 @@ public class ChatMessage {
     private String name;
     private String photoUrl;
     private String imageUrl;
+    private String fromIdUser;
+    private String toIdUser;
 
     public ChatMessage() {
 
     }
 
-    public ChatMessage(String text, String name, String photoUrl, String imageUrl) {
+    public ChatMessage(String text, String name, String photoUrl, String imageUrl, String fromIdUser, String toIdUser) {
         this.text = text;
         this.name = name;
         this.photoUrl = photoUrl;
         this.imageUrl = imageUrl;
+        this.fromIdUser = fromIdUser;
+        this.toIdUser = toIdUser;
     }
 
     public String getText() {
@@ -48,5 +52,21 @@ public class ChatMessage {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public String getFromIdUser() {
+        return fromIdUser;
+    }
+
+    public void setFromIdUser(String fromIdUser) {
+        this.fromIdUser = fromIdUser;
+    }
+
+    public String getToIdUser() {
+        return toIdUser;
+    }
+
+    public void setToIdUser(String toIdUser) {
+        this.toIdUser = toIdUser;
     }
 }

@@ -90,6 +90,8 @@ public class ViewFullListingActivity extends AppCompatActivity {
     //String for setting text in TV
     String FLTitle, FLDescription, FLCategory, FLLocation, FLPickUpTimes, FLExpiry, FLImage, FLProfileImage, FLProfileUserName;
     int reuse1;
+    private String userFrom;
+    private String userTo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +101,7 @@ public class ViewFullListingActivity extends AppCompatActivity {
         //Init Firebase
         user = FirebaseAuth.getInstance().getCurrentUser();
         userId = user.getUid();
+        userFrom = user.getEmail();
         getListingRef = FirebaseDatabase.getInstance().getReference("listings");
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
         DatabaseReference userRef = rootRef.child(LISTING);
@@ -229,6 +232,7 @@ public class ViewFullListingActivity extends AppCompatActivity {
                     User user = postSnapshot.getValue(User.class);
                     if (postSnapshot.getKey().equals(FLProfileUserName)) {
                         String finalUserName = user.getFirstName();
+                        userTo = user.getEmail();
                         String finalUserLastName = user.getLastName();
                         System.out.println("FINAL N" + finalUserName);
                         System.out.println("FINAL L N" + finalUserLastName);
@@ -333,6 +337,8 @@ public class ViewFullListingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent chatIntent = new Intent(ViewFullListingActivity.this, ChatActivity.class);
+                chatIntent.putExtra("userFrom", userFrom);
+                chatIntent.putExtra("userTo", userTo);
                 startActivity(chatIntent);
             }
         });

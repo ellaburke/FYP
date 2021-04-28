@@ -42,6 +42,7 @@
         <item>tbsp</item>
         <item>Other</item>
     </string-array>
+
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_my_listings_tabbed">MyListingsTabbedActivity</string>
     <string name="tab_text_1">Tab 1</string>

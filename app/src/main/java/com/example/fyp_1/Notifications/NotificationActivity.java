@@ -30,6 +30,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class NotificationActivity extends AppCompatActivity implements NotificationAdapter.OnListingListener {
@@ -80,6 +81,8 @@ public class NotificationActivity extends AppCompatActivity implements Notificat
         mRecyclerView = findViewById(R.id.recyclerViewNotification);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
+        ((LinearLayoutManager) mLayoutManager).setReverseLayout(true);
+        ((LinearLayoutManager) mLayoutManager).setStackFromEnd(true);
         mNotifications = new ArrayList<>();
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new NotificationAdapter(NotificationActivity.this, (ArrayList<Notification>) mNotifications, NotificationActivity.this);

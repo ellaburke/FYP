@@ -2,12 +2,18 @@ package com.example.fyp_1.Recipe;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,7 +32,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ViewAllRecipesActivity extends AppCompatActivity implements RecipesAdapter.OnRecipeListener{
 
@@ -59,9 +67,7 @@ public class ViewAllRecipesActivity extends AppCompatActivity implements Recipes
         mRecyclerView = findViewById(R.id.recipeRecyclerView);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
-        //mRecyclerView.setLayoutManager(new LinearLayoutManager);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        //mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true));
 
         for (Recipe recipe : recipes) {
             mRecipes.add(recipe);
@@ -76,7 +82,6 @@ public class ViewAllRecipesActivity extends AppCompatActivity implements Recipes
         Log.d("USERID", userId);
         updateRef = FirebaseDatabase.getInstance().getReference("user");
         storageRef = FirebaseStorage.getInstance().getReference();
-
 
 
         //Init btm nav
@@ -145,8 +150,5 @@ public class ViewAllRecipesActivity extends AppCompatActivity implements Recipes
         viewRecipeIntent.putExtra("the_recipe_image_url", recipeImageUrl);
         startActivity(viewRecipeIntent);
     }
-
-
-
 
 }
