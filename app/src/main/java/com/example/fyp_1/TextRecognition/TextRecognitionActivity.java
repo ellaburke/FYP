@@ -58,9 +58,6 @@ public class TextRecognitionActivity extends AppCompatActivity {
         imageView = findViewById(R.id.image_view);
         textView = findViewById(R.id.text_display);
 
-        // set text for demo
-        //textView.setText("Please choose / capture an image!!");
-
         galleryImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

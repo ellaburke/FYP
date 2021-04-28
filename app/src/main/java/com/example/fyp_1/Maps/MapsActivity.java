@@ -45,7 +45,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static String TAG = "MapsActivity";
     private static final float DEFAULT_ZOOM = 15f;
     FusedLocationProviderClient fusedLocationProviderClient;
-    //Polyline directionLine;
 
     //widgets
     private EditText mSearchText;
@@ -102,7 +101,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Address address = list.get(0);
 
             Log.d(TAG, "geoLocate: found a location: " + address.toString());
-            //Toast.makeText(this, address.toString(), Toast.LENGTH_SHORT).show();
 
             moveCamera(new LatLng(address.getLatitude(), address.getLongitude()), DEFAULT_ZOOM,
                     address.getAddressLine(0));

@@ -21,19 +21,15 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.example.fyp_1.AllListingsTab.addListingActivity;
 import com.example.fyp_1.AllListingsTab.viewListingActivity;
 import com.example.fyp_1.Maps.MapsActivity;
 import com.example.fyp_1.MyKitchenIngredients2;
 import com.example.fyp_1.R;
 import com.example.fyp_1.ShoppingListTab.MyShoppingListActivity;
-import com.example.fyp_1.homePageActivity;
 import com.example.fyp_1.model.Listing;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -60,7 +56,6 @@ public class EditMyListingActivity extends AppCompatActivity {
     private String userId;
     private FirebaseUser user;
     DatabaseReference updateRef;
-    DatabaseReference getListingRef;
     StorageReference storageRef;
 
     //Set value for listing being passed from intent

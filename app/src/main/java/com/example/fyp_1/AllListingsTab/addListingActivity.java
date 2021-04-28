@@ -3,8 +3,6 @@ package com.example.fyp_1.AllListingsTab;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.app.DatePickerDialog;
 import android.content.ContentResolver;
@@ -31,13 +29,12 @@ import com.example.fyp_1.Maps.MapsActivity;
 import com.example.fyp_1.MyKitchenIngredients2;
 import com.example.fyp_1.R;
 import com.example.fyp_1.ShoppingListTab.MyShoppingListActivity;
-import com.example.fyp_1.homePageActivity;
+import com.example.fyp_1.HomePage.homePageActivity;
 import com.example.fyp_1.model.Listing;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -58,38 +55,24 @@ public class addListingActivity extends AppCompatActivity{
     private StorageReference mStorageRef;
     private DatabaseReference mDatabaseRef;
     Listing myListing;
-    //String listingID;
     private Uri selectedImage;
     private String userId;
     private FirebaseUser user;
     ImageView uploadImage;
-    Spinner keepListedForSpinner;
     Spinner categorySpinner;
     EditText expiryDate;
-    Button offeringButton;
-    Button wantButton;
     Button doneButton;
     EditText listingTitle;
     EditText listingDescription;
     EditText listingLocation;
     EditText listingPickUpTimes;
-    String optionSelected;
     String listingTitleEntered;
     String listingDescriptionEntered;
     String listingLocationEntered;
     String listingPickUpTimesEntered;
     String listingExpiryDateEntered;
-    String listingKeepListedFor;
-    String listingOption;
     String listingFoodCategory;
     DatePickerDialog.OnDateSetListener mDateSetListener;
-
-    //Variables
-    DrawerLayout drawerLayout;
-    NavigationView navigationView;
-    private Toolbar toolbar;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -256,11 +239,9 @@ public class addListingActivity extends AppCompatActivity{
 
                     String listingID = mDatabaseRef.push().getKey();
 
-                    //Log.d(TAG, "onSuccess: firebase download url: " + downloadUrl.toString()); //use if testing...don't need this line.
                     myListing = new Listing(listingID,listingTitleEntered, listingDescriptionEntered,listingFoodCategory, listingExpiryDateEntered, listingLocationEntered, listingPickUpTimesEntered,
                              downloadUrl.toString(), userId, requestTotal);
 
-                    //String uploadId = mDatabaseRef.push().getKey();
                     mDatabaseRef.child(listingID).setValue(myListing);
 
 

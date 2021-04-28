@@ -308,18 +308,10 @@ public class ViewFullListingActivity extends AppCompatActivity {
         requestListingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Title
-                //FLTitle
-                //Image
-                //profilePicIV
                 String type = "Request";
-                //User ID
-                //FLProfileUserName
                 String listingState = "Requested";
 
                 String notificationID = mDatabaseRef.push().getKey();
-                //String phoneNumber = userId.getPhoneNumber();
-
 
                 myNotification = new Notification(FLTitle, FLImage, type, userId, FLProfileUserName, notificationID, listingState, fullName, listingToDisplay, pNumber);
                 mDatabaseRef.child(notificationID).setValue(myNotification);

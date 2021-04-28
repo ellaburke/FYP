@@ -262,8 +262,6 @@ public class MyShoppingListActivity extends AppCompatActivity {
 
                                         //Delete from List
                                         mDeleteDatabaseRef.child(mSLI).removeValue();
-
-                                        //myShoppingListAdapter.notifyDataSetChanged();
                                     }
 
                                 }
@@ -293,10 +291,8 @@ public class MyShoppingListActivity extends AppCompatActivity {
                 if (mSelectedItemsToDelete != null) {
                     for (int index = 0; index < mSelectedItemsToDelete.size(); index++) {
                         System.out.println(mSelectedItemsToDelete.get(index).getName());
-                        //selectedItemToDeleteName += mSelectedItemsToDelete.get(index).itemName;
                         selectedItemToDeleteID += mSelectedItemsToDelete.get(index).getShoppingListItemId();
                         if (index != mSelectedItemsToDelete.size() - 1) {
-                            //selectedItemToDeleteName += "&";
                             selectedItemToDeleteID += " ";
                         }
                     }

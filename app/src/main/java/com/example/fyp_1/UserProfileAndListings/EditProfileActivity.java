@@ -22,7 +22,7 @@ import com.example.fyp_1.AllListingsTab.viewListingActivity;
 import com.example.fyp_1.MyKitchenIngredients2;
 import com.example.fyp_1.R;
 import com.example.fyp_1.ShoppingListTab.MyShoppingListActivity;
-import com.example.fyp_1.homePageActivity;
+import com.example.fyp_1.HomePage.homePageActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;

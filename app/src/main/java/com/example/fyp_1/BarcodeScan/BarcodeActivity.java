@@ -120,8 +120,6 @@ public class BarcodeActivity extends AppCompatActivity {
                             } catch (JsonProcessingException e) {
                                 e.printStackTrace();
                             }
-
-                            //mTextViewResult.setText(myResponse);
                         }
                     });
                 }

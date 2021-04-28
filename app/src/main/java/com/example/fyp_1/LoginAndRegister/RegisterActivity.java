@@ -14,7 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.fyp_1.R;
-import com.example.fyp_1.homePageActivity;
+import com.example.fyp_1.HomePage.homePageActivity;
 import com.example.fyp_1.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -140,10 +140,8 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void updateUI(FirebaseUser currentUser, String userId) {
-        //String keyId = mDatabase.push().getKey();
         mDatabase.child(userId).setValue(user);
-//        Intent loginIntent = new Intent(this, LoginActivity.class);
-//        startActivity(loginIntent);
+
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -189,10 +187,6 @@ public class RegisterActivity extends AppCompatActivity {
                 } else if (!PASSWORD_PATTERN.matcher(password).matches()) {
                     passwordET.setError("Password too weak");
                     return false;
-//        } else if (!password.equals(password2)) {
-//            passwordET.setError("Passwords don't match");
-//            confirmPasswordET.setError("Passwords don't match");
-//            return false;
                 } else {
                     passwordET.setError(null);
                     return true;

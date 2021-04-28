@@ -241,7 +241,6 @@ public class RequestNotificationActivity extends AppCompatActivity implements Re
                 String type = "Approved";
                 String approvalUserID = userId;
                 String UserRequestApprovedID = mNotifications.get(position).getSenderUserID();
-                //String notificationID = mNotifications.get(position).getNotificationID();
                 String listingState = "Approved";
 
 
@@ -323,7 +322,6 @@ public class RequestNotificationActivity extends AppCompatActivity implements Re
                 String type = "Declined";
                 String approvalUserID = userId;
                 String UserRequestApprovedID = mNotifications.get(position).getSenderUserID();
-                //String notificationID = mNotifications.get(position).getNotificationID();
                 String listingState = "Declined";
 
 
@@ -333,9 +331,7 @@ public class RequestNotificationActivity extends AppCompatActivity implements Re
 
                 //Update listing state
                 mDatabaseRequestRef.child(notificationIDInList).child("listingState").setValue(listingState);
-                //finish();
-                //mNotifications.remove(position);
-                //Toast.makeText(NotificationActivity.this, "Request Declined", Toast.LENGTH_SHORT).show();
+
                 mAdapter.notifyDataSetChanged();
 
             }

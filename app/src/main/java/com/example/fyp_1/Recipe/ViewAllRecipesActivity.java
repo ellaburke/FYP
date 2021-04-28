@@ -53,7 +53,6 @@ public class ViewAllRecipesActivity extends AppCompatActivity implements Recipes
     RecyclerView.LayoutManager mLayoutManager;
     int recipeId;
     List<Recipe> mRecipes = new ArrayList<>();
-    //StaggeredGridLayoutManager mStaggeredGridLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,7 +143,6 @@ public class ViewAllRecipesActivity extends AppCompatActivity implements Recipes
         String recipeImageUrl = mRecipes.get(position).getImage();
         Log.d(TAG, "THE RECIPE ID: " + recipeId);
         Intent viewRecipeIntent = new Intent(this, ViewFullRecipeActivity.class);
-        //viewRecipeIntent.putExtra("the_recipe_id", (Parcelable) mRecipes.get(position));
         viewRecipeIntent.putExtra("the_recipe_id", recipeId);
         viewRecipeIntent.putExtra("the_recipe_name", recipeName);
         viewRecipeIntent.putExtra("the_recipe_image_url", recipeImageUrl);

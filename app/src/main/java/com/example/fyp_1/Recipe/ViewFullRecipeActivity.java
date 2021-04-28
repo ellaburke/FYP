@@ -104,7 +104,6 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
         addToShoppingListTV = (TextView) findViewById(R.id.TVIWillShopFor);
         listingsAvailableNearMe = (TextView) findViewById(R.id.TVListedNearMe);
         listingsAvailableNearMe.setTooltipText("Click ingredient to view listings");
-        //ingredientMethodListTV = (TextView) findViewById(R.id.displayFullRecipeMethodStepsTV);
         locateSupermarket = (TextView) findViewById(R.id.TVLocateSupermarkets);
         removeFromKitchenIngBtn = (Button) findViewById(R.id.removeIngFromKitBtn);
 
@@ -517,7 +516,6 @@ public class ViewFullRecipeActivity extends AppCompatActivity {
                             mDeleteDatabaseRef.child(mKI).removeValue();
 
                         }
-                        //mAdapter.notifyDataSetChanged();
                         Intent bringMeBackToMyKitchen = new Intent(ViewFullRecipeActivity.this, MyKitchenIngredients2.class);
                         startActivity(bringMeBackToMyKitchen);
                     }

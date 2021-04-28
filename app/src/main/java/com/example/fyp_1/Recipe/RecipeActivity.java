@@ -114,9 +114,6 @@ public class RecipeActivity extends AppCompatActivity {
             intent4.putExtra("recipes", recipes);
             startActivity(intent4);
 
-            //bundle.putString("");
-            //bundle.putString(recipes);
-
 
         } catch (JsonProcessingException e) {
             e.printStackTrace();

@@ -57,7 +57,6 @@ public class MyListingsProfileActivity extends AppCompatActivity implements MyLi
     DatabaseReference userRef;
     DatabaseReference mDatabaseRef, mDatabaseRatingRef;
     DatabaseReference rootRef;
-    DatabaseReference userProfileRef;
     StorageReference storageRef;
     StorageReference profilerUpdateRef;
     DatabaseReference userRootRef;

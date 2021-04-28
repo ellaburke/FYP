@@ -65,7 +65,6 @@
         <activity
             android:name=".Recipe.ViewAllRecipesActivity"
             android:windowSoftInputMode="adjustNothing" />
-        <activity android:name=".MoveItemToListingActivity" />
         <activity android:name=".Recipe.RecipeActivity" />
         <activity android:name=".TextRecognition.TextRecognitionActivity" />
         <activity
@@ -85,8 +84,7 @@
         <activity
             android:name=".AllListingsTab.addListingActivity"
             android:windowSoftInputMode="adjustNothing" />
-        <activity android:name=".getLocationActivity" />
-        <activity android:name=".homePageActivity" />
+        <activity android:name=".HomePage.homePageActivity" />
         <activity android:name=".LoginAndRegister.RegisterActivity" />
         <activity android:name=".LoginAndRegister.LoginActivity">
             <meta-data
