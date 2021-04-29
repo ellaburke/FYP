@@ -32,6 +32,7 @@ public class RequestNotificationAdapter extends RecyclerView.Adapter<RequestNoti
         public TextView notificationTypeTitle;
         public TextView noticationItemName;
         public TextView notificationCollectorName;
+        public TextView notificationRequestName;
         public Button approveBtn;
         public Button declineBtn;
         public ImageView mImageView;
@@ -45,6 +46,8 @@ public class RequestNotificationAdapter extends RecyclerView.Adapter<RequestNoti
             notificationTypeTitle = itemView.findViewById(R.id.requestOrApprovalOrDeclineTV);
             noticationItemName = itemView.findViewById(R.id.listingTitleNotification);
             notificationCollectorName = itemView.findViewById(R.id.collectorNameTV);
+            notificationRequestName = itemView.findViewById(R.id.requesterName);
+
             approveBtn = itemView.findViewById(R.id.acceptBtnNotifcation);
             declineBtn = itemView.findViewById(R.id.declineBtnNotifcation);
             cardLayout = itemView.findViewById(R.id.notificationRelLayout);
@@ -94,6 +97,7 @@ public class RequestNotificationAdapter extends RecyclerView.Adapter<RequestNoti
         Notification currentNotification = mNotifications.get(position);
         holder.notificationTypeTitle.setText(currentNotification.getNotificationType());
         holder.noticationItemName.setText(currentNotification.getItemName());
+        holder.notificationRequestName.setText("Requested By: " + currentNotification.getSenderCollectorName());
         Picasso.get()
                 .load(currentNotification.getItemURL())
                 .placeholder(R.mipmap.ic_launcher)
@@ -105,8 +109,8 @@ public class RequestNotificationAdapter extends RecyclerView.Adapter<RequestNoti
             holder.approveBtn.setVisibility(View.INVISIBLE);
             holder.declineBtn.setVisibility(View.INVISIBLE);
             holder.notificationTypeTitle.setText("Request Approved");
-            holder.notificationCollectorName.setVisibility(View.VISIBLE);
-            holder.notificationCollectorName.setText("Collector: " + currentNotification.getSenderCollectorName());
+            //holder.notificationCollectorName.setVisibility(View.VISIBLE);
+            holder.notificationRequestName.setText("Collector: " + currentNotification.getSenderCollectorName());
         }
 
         int grey = Color.parseColor(	"#CCA9A9A9");

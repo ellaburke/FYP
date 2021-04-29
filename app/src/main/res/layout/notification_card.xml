@@ -42,15 +42,27 @@
             android:layout_alignParentRight="true"
             android:layout_margin="10dp" />
 
+        <TextView
+            android:id="@+id/requesterName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/listingTitleNotification"
+            android:layout_marginLeft="15dp"
+            android:layout_marginBottom="8dp"
+            android:text="Requester name"
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
+
         <Button
             android:id="@+id/acceptBtnNotifcation"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_below="@+id/listingTitleNotification"
+            android:layout_below="@+id/requesterName"
             android:layout_marginLeft="15dp"
             android:background="@drawable/circle_button"
             android:gravity="center"
             android:textAllCaps="true"
+            android:layout_marginBottom="8dp"
             app:backgroundTint="@color/wasteify_pink"
             app:icon="@drawable/ic_baseline_check_24"
             app:iconGravity="textStart"
@@ -61,11 +73,12 @@
             android:id="@+id/declineBtnNotifcation"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_below="@+id/listingTitleNotification"
+            android:layout_below="@+id/requesterName"
             android:layout_marginLeft="5dp"
             android:layout_toRightOf="@id/acceptBtnNotifcation"
             android:background="@drawable/circle_button"
             android:gravity="center"
+            android:layout_marginBottom="8dp"
             android:textAllCaps="true"
             app:backgroundTint="#FFFF7A"
             app:icon="@drawable/ic_decline"
