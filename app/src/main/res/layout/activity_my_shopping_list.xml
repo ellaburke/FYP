@@ -7,16 +7,31 @@
     android:orientation="vertical"
     tools:context=".ShoppingListTab.MyShoppingListActivity">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Shopping List"
-        android:textSize="25sp"
-        android:layout_marginLeft="10dp"
-        android:textColor="#000"
-        android:textStyle="bold"
-        android:fontFamily="@font/suravaram"
-        android:id="@+id/ShoppingListHeading"/>
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/ShoppingListHeading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="2"
+            android:fontFamily="@font/suravaram"
+            android:text="Shopping List"
+            android:textColor="#000"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <Spinner
+            android:id="@+id/sort_spinner"
+            android:layout_width="50dp"
+            android:layout_weight="2"
+            android:layout_height="50dp"
+            android:layout_marginLeft="5dp"
+            android:spinnerMode="dropdown" />
+
+    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/addToShoppingListRelLayout"
@@ -43,11 +58,11 @@
             android:layout_centerVertical="true"
             android:layout_toRightOf="@id/ic_magnify"
             android:background="@null"
-            android:maxLines="1"
-            android:lines="1"
-            android:inputType="text"
             android:hint="@string/add_to_shopping_list"
             android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:lines="1"
+            android:maxLines="1"
             android:textColor="#000"
             android:textSize="15sp" />
 
@@ -98,15 +113,14 @@
             android:layout_height="50dp"
             android:background="@drawable/custom_button3"
             android:text="Add To List"
-            android:textColor="@color/wasteify_pink"/>
+            android:textColor="@color/wasteify_pink" />
     </RelativeLayout>
 
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="20dp"
-       >
+        android:layout_marginTop="20dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/myShoppingListRecyclerView"
@@ -137,32 +151,32 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="70dp"
-            android:layout_toLeftOf="@+id/fab_scan_doc"
+            android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
+            android:layout_marginBottom="70dp"
+            android:layout_toStartOf="@+id/fab_scan_doc"
+            android:layout_toLeftOf="@+id/fab_scan_doc"
             android:backgroundTint="#FB9FDF"
             android:focusable="true"
             android:src="@drawable/ic_baseline_check_24"
             app:elevation="6dp"
-            app:pressedTranslationZ="12dp"
-            android:layout_toStartOf="@+id/fab_scan_doc"
-            android:layout_marginEnd="10dp" />
+            app:pressedTranslationZ="12dp" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_delete_ingredients1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="70dp"
-            android:layout_toLeftOf="@+id/fab_add_ingredient_selected1"
+            android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
+            android:layout_marginBottom="70dp"
+            android:layout_toStartOf="@+id/fab_add_ingredient_selected1"
+            android:layout_toLeftOf="@+id/fab_add_ingredient_selected1"
             android:backgroundTint="#FB9FDF"
             android:focusable="true"
             android:src="@drawable/ic_baseline_delete_24"
             app:elevation="6dp"
-            app:pressedTranslationZ="12dp"
-            android:layout_toStartOf="@+id/fab_add_ingredient_selected1"
-            android:layout_marginEnd="10dp" />
+            app:pressedTranslationZ="12dp" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation"

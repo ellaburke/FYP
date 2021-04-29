@@ -14,6 +14,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -42,6 +43,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.stream.Collectors;
 
 public class MyShoppingListActivity extends AppCompatActivity {
 
@@ -85,6 +88,7 @@ public class MyShoppingListActivity extends AppCompatActivity {
 
     //Matched Item Category
     String itemMatchedCategory, itemMatchedName;
+    Spinner sortSpinner;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -100,6 +104,18 @@ public class MyShoppingListActivity extends AppCompatActivity {
         rootRef = FirebaseDatabase.getInstance().getReference();
         deleteRef = rootRef.child("myShoppingListItems");
         mDeleteDatabaseRef = FirebaseDatabase.getInstance().getReference("myShoppingListItems");
+
+        sortSpinner = (Spinner) findViewById(R.id.sort_spinner);
+
+        // Create an ArrayAdapter using the string array and a default spinner
+        ArrayAdapter<CharSequence> staticAdapter = ArrayAdapter.createFromResource(this, R.array.sort_array,
+                android.R.layout.simple_spinner_item);
+
+        // Specify the layout to use when the list of choices appears
+        staticAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // Apply the adapter to the spinner
+        sortSpinner.setAdapter(staticAdapter);
 
         //Retrieve itemsList and save to DB
         Intent prevIntent = getIntent();
@@ -163,7 +179,7 @@ public class MyShoppingListActivity extends AppCompatActivity {
         addToListBtn = (Button) findViewById(R.id.addToListBtn);
 
         // Create an ArrayAdapter using the string array and a default spinner
-        ArrayAdapter<CharSequence> staticAdapter = ArrayAdapter.createFromResource(MyShoppingListActivity.this, R.array.food_category_array,
+        ArrayAdapter<CharSequence> staticAdapter2 = ArrayAdapter.createFromResource(MyShoppingListActivity.this, R.array.food_category_array,
                 android.R.layout.simple_spinner_item);
 
 
@@ -171,7 +187,7 @@ public class MyShoppingListActivity extends AppCompatActivity {
         staticAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         // Apply the adapter to the spinner
-        categorySpinner.setAdapter(staticAdapter);
+        categorySpinner.setAdapter(staticAdapter2);
 
         mDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -337,6 +353,22 @@ public class MyShoppingListActivity extends AppCompatActivity {
             }
         });
 
+        sortSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                myShoppingListItems= sortByOrder(parent.getItemAtPosition(position).toString());
+                myShoppingListAdapter = new MyShoppingListAdapter(myShoppingListItems);
+                myShoppingListRecyclerView.setAdapter(myShoppingListAdapter);
+                myShoppingListAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
 
     }
 
@@ -370,6 +402,25 @@ public class MyShoppingListActivity extends AppCompatActivity {
         }
 
         return true;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public ArrayList<MyShoppingListItem> sortByOrder(String sort) {
+        switch (sort) {
+            case "Latest":
+                return (ArrayList<MyShoppingListItem>) myShoppingListItems;
+            case "A-Z":
+                return (ArrayList<MyShoppingListItem>) myShoppingListItems.stream()
+                        .sorted(Comparator.comparing(MyShoppingListItem::getName)).collect(Collectors.toList());
+            case "Z-A":
+                return (ArrayList<MyShoppingListItem>) myShoppingListItems.stream()
+                        .sorted(Comparator.comparing(MyShoppingListItem::getName).reversed()).collect(Collectors.toList());
+            case "Category":
+                return (ArrayList<MyShoppingListItem>) myShoppingListItems.stream()
+                        .sorted(Comparator.comparing(MyShoppingListItem::getItemCategory)).collect(Collectors.toList());
+
+        }
+        return null;
     }
 
 

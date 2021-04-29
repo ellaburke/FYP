@@ -187,6 +187,8 @@ public class MyKitchenIngredients2 extends AppCompatActivity {
                 cupboardSectionItems.clear();
                 breadOrCerealSectionItems.clear();
                 fishSectionItems.clear();
+                meatOrPoultrySectionItems.clear();
+                foodCategorySectionList.clear();
 
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                     MyKitchenItem mKI = postSnapshot.getValue(MyKitchenItem.class);
