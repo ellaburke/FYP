@@ -161,13 +161,13 @@ public class MyKitchenIngredients2 extends AppCompatActivity {
         //init FAB
         addToKitchenBtn = (FloatingActionButton) findViewById(R.id.fab_add_ingredient);
         addToKitchenByScanBtn = (FloatingActionButton) findViewById(R.id.fab_add_ingredient_by_scan);
-        //addToKitchenByScanBtn.setTooltipText("Scan to Add");
+        addToKitchenByScanBtn.setTooltipText("Scan to Add");
         addToKitchenByTextBtn = (FloatingActionButton) findViewById(R.id.fab_add_ingredient_by_text);
-        //addToKitchenByTextBtn.setTooltipText("Add By Text");
+        addToKitchenByTextBtn.setTooltipText("Add By Text");
         checkedItemsBtn = (FloatingActionButton) findViewById(R.id.fab_add_ingredient_selected);
-        //checkedItemsBtn.setTooltipText("Check Items You Wish To Use");
+        checkedItemsBtn.setTooltipText("Check Items You Wish To Use");
         deleteItemsBtn = (FloatingActionButton) findViewById(R.id.fab_delete_ingredients);
-        //deleteItemsBtn.setTooltipText("Check Items You Wish To Delete");
+        deleteItemsBtn.setTooltipText("Check Items You Wish To Delete");
 
         //RCV
         mainRecyclerView = findViewById(R.id.mainRecyclerView);

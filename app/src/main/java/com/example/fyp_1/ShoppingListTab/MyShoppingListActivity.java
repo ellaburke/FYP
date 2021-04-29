@@ -169,12 +169,13 @@ public class MyShoppingListActivity extends AppCompatActivity {
 
         //XML Components
         addToListByDocScan = (FloatingActionButton) findViewById(R.id.fab_scan_doc);
-        //addToListByDocScan.setTooltipText("Scan to Add To List");
+        addToListByDocScan.setTooltipText("Scan to Add To List");
         shoppingListItemInput = (EditText) findViewById(R.id.shopping_list_item_input);
-//        deleteFromList.setTooltipText("Delete Checked Ingredients");
 //        deleteFromList = (FloatingActionButton) findViewById(R.id.fab_bin_ing);
         deleteFromList = (FloatingActionButton) findViewById(R.id.fab_delete_ingredients1);
+        deleteFromList.setTooltipText("Delete Checked Ingredients");
         moveToKitchenIng = (FloatingActionButton) findViewById(R.id.fab_add_ingredient_selected1);
+        moveToKitchenIng.setTooltipText("Check Ingredients To Move to Kitchen");
         categorySpinner = (Spinner) findViewById(R.id.food_category_spinner_2);
         addToListBtn = (Button) findViewById(R.id.addToListBtn);
 

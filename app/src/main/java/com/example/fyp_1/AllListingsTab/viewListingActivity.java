@@ -100,7 +100,7 @@ public class viewListingActivity extends AppCompatActivity implements Adapter.On
 
         //init FAB
         uploadListingFAB = (FloatingActionButton) findViewById(R.id.fab_upload_listing);
-//        uploadListingFAB.setTooltipText("Upload Listing");
+        uploadListingFAB.setTooltipText("Upload Listing");
 
         //Init btm nav
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
