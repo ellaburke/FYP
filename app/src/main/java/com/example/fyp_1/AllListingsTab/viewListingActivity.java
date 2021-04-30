@@ -76,6 +76,7 @@ public class viewListingActivity extends AppCompatActivity implements Adapter.On
     AlertDialog alertDialogWithRadioButtons;
     String optionSelectedForFilter;
 
+    ArrayList<Listing> list = new ArrayList<>();
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -224,8 +225,16 @@ public class viewListingActivity extends AppCompatActivity implements Adapter.On
 
     }
 
+//    @Override
+//    protected void onResume(){
+//        super.onResume();
+//        mAdapter = new Adapter(viewListingActivity.this, (ArrayList<Listing>) mListings, viewListingActivity.this);
+//        mRecyclerView.setAdapter(mAdapter);
+//    }
+
+
     public void search(String str) {
-        ArrayList<Listing> list = new ArrayList<>();
+        list.clear();
         for (Listing obj : mListings) {
             if (obj.getName().toLowerCase().contains(str.toLowerCase()) || obj.getLocation().toLowerCase().contains(str.toLowerCase()) || obj.getCategory().toLowerCase().contains(str.toLowerCase())) {
                 list.add(obj);
@@ -237,12 +246,12 @@ public class viewListingActivity extends AppCompatActivity implements Adapter.On
     }
 
     public void searchByCategory(String optionSelectedForFilter) {
-        ArrayList<Listing> list = new ArrayList<>();
+        //ArrayList<Listing> list = new ArrayList<>();
+        list.clear();
         for (Listing obj2 : mListings) {
             if (optionSelectedForFilter.equals("All")) {
-                    list.add(obj2);
-            }
-            else if (obj2.getCategory().toLowerCase().contains(optionSelectedForFilter.toLowerCase())) {
+                list.add(obj2);
+            } else if (obj2.getCategory().toLowerCase().contains(optionSelectedForFilter.toLowerCase())) {
                 list.add(obj2);
             }
         }
@@ -285,8 +294,13 @@ public class viewListingActivity extends AppCompatActivity implements Adapter.On
     @Override
     public void onListingClick(int position) {
         Log.d(TAG, "onListingClicked:  clicked");
-        mListings.get(position);
-        listingID = mListings.get(position).getListingId();
+        if (list.size() == 0) {
+            //list.get(position);
+            listingID = mListings.get(position).getListingId();
+        }else {
+            //list.get(position);
+            listingID = list.get(position).getListingId();
+        }
         Log.d(TAG, "THE LISTING ID: " + listingID);
         Intent viewFullListingIntent = new Intent(this, ViewFullListingActivity.class);
         viewFullListingIntent.putExtra("selected_listing_to_display", listingID);
@@ -294,7 +308,7 @@ public class viewListingActivity extends AppCompatActivity implements Adapter.On
 
     }
 
-    public void CreateDialogWithRadioButtons(){
+    public void CreateDialogWithRadioButtons() {
         CharSequence[] value = {"All", "Fruit", "Veg", "Bread/Cereal", "Cupboard", "Dairy", "Meat/Poultry", "Fish", "Freezer"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(viewListingActivity.this);
@@ -303,41 +317,40 @@ public class viewListingActivity extends AppCompatActivity implements Adapter.On
         builder.setSingleChoiceItems(value, -1, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                switch (which)
-                {
-                    case 0 :
+                switch (which) {
+                    case 0:
                         System.out.println("All Clicked");
                         optionSelectedForFilter = "All";
                         break;
-                    case 1 :
+                    case 1:
                         System.out.println("Fruit Clicked");
                         optionSelectedForFilter = "Fruit";
                         break;
-                    case 2 :
+                    case 2:
                         System.out.println("Veg Clicked");
                         optionSelectedForFilter = "Veg";
                         break;
-                    case 3 :
+                    case 3:
                         System.out.println("Bread/Cereal Clicked");
                         optionSelectedForFilter = "Bread/Cereal";
                         break;
-                    case 4 :
+                    case 4:
                         System.out.println("Cupboard");
                         optionSelectedForFilter = "Cupboard";
                         break;
-                    case 5 :
+                    case 5:
                         System.out.println("Dairy");
                         optionSelectedForFilter = "Dairy";
                         break;
-                    case 6 :
+                    case 6:
                         System.out.println("Meat/Poultry");
                         optionSelectedForFilter = "Meat/Poultry";
                         break;
-                    case 7 :
+                    case 7:
                         System.out.println("Fish");
                         optionSelectedForFilter = "Fish";
                         break;
-                    case 8 :
+                    case 8:
                         System.out.println("Freezer");
                         optionSelectedForFilter = "Freezer";
                         break;
